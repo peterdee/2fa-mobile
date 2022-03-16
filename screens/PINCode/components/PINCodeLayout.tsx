@@ -7,6 +7,7 @@ import Loader from '../../../components/Loader';
 import PINBlockLayout from './PINBlockLayout';
 import styles from '../styles';
 import WideButton from '../../../components/WideButton';
+import PINSetModal from './PINSetModal';
 
 interface PINCodeLayoutProps {
   disableBackspace: boolean;
@@ -18,6 +19,7 @@ interface PINCodeLayoutProps {
   loading: boolean;
   PIN: string;
   PINError: string;
+  showPINSetModal: boolean;
 }
 
 function PINCodeLayout(props: PINCodeLayoutProps): React.ReactElement {
@@ -31,6 +33,7 @@ function PINCodeLayout(props: PINCodeLayoutProps): React.ReactElement {
     loading,
     PIN,
     PINError,
+    showPINSetModal,
   } = props;
 
   const PINText = !hasPIN
@@ -44,6 +47,11 @@ function PINCodeLayout(props: PINCodeLayoutProps): React.ReactElement {
       ) }
       { !loading && (
         <View style={styles.content}>
+          <PINSetModal
+            handleClose={() => console.log('close')}
+            PIN={PIN}
+            showPINSetModal={showPINSetModal}
+          />
           <Text style={styles.title}>
             { PINText }
           </Text>

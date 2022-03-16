@@ -23,6 +23,7 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
   const [loading, setLoading] = useState<boolean>(true);
   const [PIN, setPIN] = useState<string>('');
   const [PINError, setPINError] = useState<string>('');
+  const [showPINSetModal, setShowPINSetModal] = useState<boolean>(true);
 
   useEffect(
     (): void => {
@@ -113,6 +114,7 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
       loading={loading}
       PIN={input}
       PINError={PINError}
+      showPINSetModal={showPINSetModal}
     />
   );
 }
