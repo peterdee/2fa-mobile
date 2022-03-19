@@ -15,7 +15,7 @@ import {
 import { KEYBOARD, PIN_REQUIRED } from '../../constants';
 import PINCodeLayout from './components/PINCodeLayout';
 import { PINRequired } from '../../types/models';
-import { RootStackScreenProps } from '../../types';
+import { RootStackScreenProps } from '../../types/navigation';
 
 function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactElement {
   const [disableBackspace, setDisableBackspace] = useState<boolean>(true);
