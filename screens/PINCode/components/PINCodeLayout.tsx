@@ -17,6 +17,7 @@ interface PINCodeLayoutProps {
   hasPIN: boolean;
   loading: boolean;
   PIN: string;
+  PINError: string;
 }
 
 function PINCodeLayout(props: PINCodeLayoutProps): React.ReactElement {
@@ -29,6 +30,7 @@ function PINCodeLayout(props: PINCodeLayoutProps): React.ReactElement {
     hasPIN,
     loading,
     PIN,
+    PINError,
   } = props;
 
   return (
@@ -52,6 +54,15 @@ function PINCodeLayout(props: PINCodeLayoutProps): React.ReactElement {
             PIN={PIN}
             showDigits={!hasPIN}
           />
+          { hasPIN && (
+            <View>
+              { !!PINError && (
+                <Text>
+                  { PINError }
+                </Text>
+              ) }
+            </View>
+          ) }
           <KeyboardLayout
             disableBackspace={disableBackspace}
             disableKeyboard={disableKeyboard}

@@ -19,8 +19,10 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
   const [disableBackspace, setDisableBackspace] = useState<boolean>(true);
   const [disableKeyboard, setDisableKeyboard] = useState<boolean>(false);
   const [hasPIN, setHasPIN] = useState<boolean>(false);
+  const [input, setInput] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
   const [PIN, setPIN] = useState<string>('');
+  const [PINError, setPINError] = useState<string>('');
 
   useEffect(
     (): void => {
@@ -48,21 +50,30 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
   const handlePress = useCallback(
     (value: string): void => {
       setDisableBackspace(false);
-      if (value === KEYBOARD.backspace && PIN.length > 0) {
-        const newPIN = PIN.slice(0, PIN.length - 1);
+      setPINError('');
+
+      if (value === KEYBOARD.backspace && input.length > 0) {
+        const newPIN = input.slice(0, input.length - 1);
         if (newPIN.length === 0) {
           setDisableBackspace(true);
         }
         setDisableKeyboard(false);
-        return setPIN(newPIN);
+        return setInput(newPIN);
       }
-      const newPIN = `${PIN}${value}`;
+      const newPIN = `${input}${value}`;
       if (newPIN.length === 4) {
         setDisableKeyboard(true);
+        if (Number(PIN) === Number(newPIN)) {
+          return navigation.replace('Root');
+        }
+        setDisableBackspace(true);
+        setDisableKeyboard(false);
+        setInput('');
+        return setPINError('Entered PIN code is invalid');
       }
-      return setPIN(newPIN);
+      return setInput(newPIN);
     },
-    [PIN],
+    [input, PIN],
   );
 
   const handleSetPIN = useCallback(
@@ -78,7 +89,7 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
       // TODO: show a notification that PIN is set
       return navigation.replace('Root');
     },
-    [PIN],
+    [input],
   );
 
   const handleSkipPIN = async (): Promise<void> => {
@@ -100,7 +111,8 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
       handleSkipPIN={handleSkipPIN}
       hasPIN={hasPIN}
       loading={loading}
-      PIN={PIN}
+      PIN={input}
+      PINError={PINError}
     />
   );
 }
