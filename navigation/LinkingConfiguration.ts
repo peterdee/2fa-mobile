@@ -7,6 +7,8 @@ const linking: LinkingOptions<RootStackParamList> = {
   prefixes: [Linking.makeUrl('/')],
   config: {
     screens: {
+      Modal: 'modal',
+      NotFound: '*',
       PINCode: 'pin',
       Root: {
         screens: {
@@ -22,8 +24,6 @@ const linking: LinkingOptions<RootStackParamList> = {
           },
         },
       },
-      Modal: 'modal',
-      NotFound: '*',
     },
   },
 };
