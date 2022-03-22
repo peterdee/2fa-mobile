@@ -29,7 +29,6 @@ function CodeScannerLayout(props: CodeScannerLayoutProps): React.ReactElement {
     token,
   } = props;
 
-  console.log(loading, havePermission, scanned, token);
   return (
     <View style={styles.container}>
       { loading && (
@@ -40,23 +39,19 @@ function CodeScannerLayout(props: CodeScannerLayoutProps): React.ReactElement {
           Please provide an access to camera in order for the scanner to work!
         </Text>
       ) }
-      { !loading && havePermission && (
-        <View style={styles.container}>
-          { !scanned && (
-            <BarCodeScanner
-              onBarCodeScanned={scanned ? undefined : handleScanned}
-              style={StyleSheet.absoluteFillObject}
-            />
-          ) }
-          { scanned && token && (
-            <SaveTokenModal
-              handleCancel={handleCancel}
-              handleSaveToken={handleSaveToken}
-              showSaveTokenModal={showSaveTokenModal}
-              token={token}
-            />
-          ) }
-        </View>
+      { !loading && havePermission && !scanned && (
+        <BarCodeScanner
+          onBarCodeScanned={scanned ? undefined : handleScanned}
+          style={StyleSheet.absoluteFillObject}
+        />
+      ) }
+      { !loading && scanned && token && (
+        <SaveTokenModal
+          handleCancel={handleCancel}
+          handleSaveToken={handleSaveToken}
+          showSaveTokenModal={showSaveTokenModal}
+          token={token}
+        />
       ) }
     </View>
   );

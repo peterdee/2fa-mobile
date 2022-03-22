@@ -3,6 +3,7 @@ import { Text } from 'react-native';
 
 import { COLORS, SPACER } from '../../../constants';
 import ModalWrap from '../../../components/ModalWrap';
+import styles from '../styles';
 import WideButton from '../../../components/WideButton';
 
 interface SaveTokenModalProps {
@@ -22,7 +23,7 @@ function SaveTokenModal(props: SaveTokenModalProps): React.ReactElement {
 
   return (
     <ModalWrap isVisible={showSaveTokenModal}>
-      <Text>
+      <Text style={styles.modalText}>
         { `Token: ${token}` }
       </Text>
       <WideButton

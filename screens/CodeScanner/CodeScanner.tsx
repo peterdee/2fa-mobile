@@ -8,9 +8,10 @@ import { BarCodeScanner, BarCodeScannerResult } from 'expo-barcode-scanner';
 
 import CodeScannerLayout from './components/CodeScannerLayout';
 import { getValue, KEYS, storeValue } from '../../utilities/storage';
+import { RootStackScreenProps } from '../../types/navigation';
 import { TokenEntry } from '../../types/models';
 
-function CodeScanner(): React.ReactElement {
+function CodeScanner({ navigation }: RootStackScreenProps<'Root'>): React.ReactElement {
   const [havePermission, setHavePermission] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [scanned, setScanned] = useState<boolean>(false);
@@ -53,7 +54,8 @@ function CodeScanner(): React.ReactElement {
 
       setScanned(false);
       setShowSaveTokenModal(false);
-      return setToken('');
+      setToken('');
+      return navigation.push('Root');
     },
     [token],
   );
