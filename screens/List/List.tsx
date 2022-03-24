@@ -34,7 +34,6 @@ function List(): React.ReactElement {
       { !loading && list.length > 0 && list.map((item: TokenEntry): React.ReactElement => (
         <ListItem
           key={item.name}
-          timeLeft={30}
           tokenEntry={item}
         />
       )) }

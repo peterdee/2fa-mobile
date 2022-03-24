@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { Text } from 'react-native';
 
 import { COLORS, SPACER } from '../../../constants';
+import generateOTP from '../../../utilities/otp';
 import ModalWrap from '../../../components/ModalWrap';
 import styles from '../styles';
 import WideButton from '../../../components/WideButton';
@@ -25,6 +26,9 @@ function SaveTokenModal(props: SaveTokenModalProps): React.ReactElement {
     <ModalWrap isVisible={showSaveTokenModal}>
       <Text style={styles.modalText}>
         { `Token: ${token}` }
+      </Text>
+      <Text style={styles.modalText}>
+        { `Secret: ${generateOTP(token.split('secret=')[1].split('&')[0])}` }
       </Text>
       <WideButton
         buttonStyle={{
