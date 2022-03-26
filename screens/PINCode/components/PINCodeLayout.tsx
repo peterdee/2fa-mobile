@@ -3,8 +3,8 @@ import { Text, View } from 'react-native';
 
 import KeyboardLayout from './KeyboardLayout';
 import Loader from '../../../components/Loader';
-import styles from '../styles';
 import PINBlockLayout from './PINBlockLayout';
+import styles from '../styles';
 
 interface PINCodeLayoutProps {
   disableBackspace: boolean;

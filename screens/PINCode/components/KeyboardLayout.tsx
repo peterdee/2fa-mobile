@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 import { View } from 'react-native';
 
-import KeyLayout from './KeyLayout';
 import { KEYBOARD } from '../../../constants';
+import KeyLayout from './KeyLayout';
 import styles from '../styles';
 
 interface KeyboardLayoutProps {

@@ -61,7 +61,13 @@ export default StyleSheet.create({
   },
   PINBlockEntry: {
     borderRadius: SPACER + SPACER_HALF,
-    height: SPACER * 3,
-    width: SPACER * 3,
+    height: SPACER_HALF * 3,
+    marginVertical: SPACER * 2,
+    marginHorizontal: SPACER_HALF,
+    width: SPACER_HALF * 3,
+  },
+  PINBlockText: {
+    color: COLORS.accent,
+    fontSize: SPACER + SPACER_HALF / 2,
   },
 });
