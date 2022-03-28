@@ -4,17 +4,15 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { Text, View } from 'react-native';
 
 import { getValue, KEYS } from '../../utilities/storage';
 import { KEYBOARD } from '../../constants';
-import KeyboardLayout from './components/KeyboardLayout';
-import Loader from '../../components/Loader';
-import styles from './styles';
+import PINCodeLayout from './components/PINCodeLayout';
 
 function PINCode(): React.ReactElement {
   const [disableBackspace, setDisableBackspace] = useState<boolean>(true);
   const [disableKeyboard, setDisableKeyboard] = useState<boolean>(false);
+  const [hasPIN, setHasPIN] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [PIN, setPIN] = useState<string>('');
 
@@ -23,6 +21,7 @@ function PINCode(): React.ReactElement {
       async function checkPin() {
         const pinValue = await getValue<number>(KEYS.pin);
         if (pinValue) {
+          setHasPIN(true);
           setPIN(`${pinValue}`);
         }
         setLoading(false);
@@ -54,23 +53,14 @@ function PINCode(): React.ReactElement {
   );
 
   return (
-    <View style={styles.container}>
-      { loading && (
-        <Loader />
-      ) }
-      { !loading && (
-        <>
-          <Text style={styles.title}>
-            { `${PIN ? 'Has PIN' : 'Set up PIN Code'}` }
-          </Text>
-          <KeyboardLayout
-            disableBackspace={disableBackspace}
-            disableKeyboard={disableKeyboard}
-            handlePress={handlePress}
-          />
-        </>
-      ) }
-    </View>
+    <PINCodeLayout
+      disableBackspace={disableBackspace}
+      disableKeyboard={disableKeyboard}
+      handlePress={handlePress}
+      hasPIN={hasPIN}
+      loading={loading}
+      PIN={PIN}
+    />
   );
 }
 

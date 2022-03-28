@@ -52,4 +52,16 @@ export default StyleSheet.create({
     color: COLORS.text,
     fontSize: SPACER + (SPACER_HALF / 2),
   },
+  // PIN block
+  PINBlockContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  PINBlockEntry: {
+    borderRadius: SPACER + SPACER_HALF,
+    height: SPACER * 3,
+    width: SPACER * 3,
+  },
 });

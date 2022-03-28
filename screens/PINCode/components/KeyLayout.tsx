@@ -14,14 +14,14 @@ import {
 } from '../../../constants';
 import styles from '../styles';
 
-interface KeyProps {
+interface KeyLayoutProps {
   disableBackspace: boolean;
   disableKeyboard: boolean;
   onPress: (value: string) => void;
   value: string;
 }
 
-function Key(props: KeyProps): React.ReactElement {
+function KeyLayout(props: KeyLayoutProps): React.ReactElement {
   const {
     disableBackspace,
     disableKeyboard,
@@ -72,4 +72,4 @@ function Key(props: KeyProps): React.ReactElement {
   );
 }
 
-export default memo(Key);
+export default memo(KeyLayout);
