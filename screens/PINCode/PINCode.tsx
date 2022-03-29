@@ -7,13 +7,12 @@ import React, {
 import { Text, View } from 'react-native';
 
 import { getValue, KEYS } from '../../utilities/storage';
+import { KEYBOARD } from '../../constants';
 import KeyboardLayout from './components/KeyboardLayout';
 import Loader from '../../components/Loader';
 import styles from './styles';
-import { KEYBOARD } from '../../constants';
 
 function PINCode(): React.ReactElement {
-  // TODO: this should be disabled at the start
   const [disableBackspace, setDisableBackspace] = useState<boolean>(true);
   const [disableKeyboard, setDisableKeyboard] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
@@ -36,11 +35,20 @@ function PINCode(): React.ReactElement {
 
   const handlePress = useCallback(
     (value: string): void => {
+      setDisableBackspace(false);
       if (value === KEYBOARD.backspace && PIN.length > 0) {
-        return setPIN(PIN.slice(0, PIN.length - 1));
+        const newPIN = PIN.slice(0, PIN.length - 1);
+        if (newPIN.length === 0) {
+          setDisableBackspace(true);
+        }
+        setDisableKeyboard(false);
+        return setPIN(newPIN);
       }
-      setPIN(`${PIN}${value}`);
-      return console.log('entered', PIN);
+      const newPIN = `${PIN}${value}`;
+      if (newPIN.length === 4) {
+        setDisableKeyboard(true);
+      }
+      return setPIN(newPIN);
     },
     [PIN],
   );

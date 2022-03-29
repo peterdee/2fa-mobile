@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { View } from 'react-native';
 
-import Key from './Key';
+import KeyLayout from './KeyLayout';
 import { KEYBOARD } from '../../../constants';
 import styles from '../styles';
 
@@ -33,12 +33,9 @@ function KeyboardLayout(props: KeyboardLayoutProps): React.ReactElement {
           style={styles.keyboardRowLayout}
         >
           { row.map((key: string): React.ReactElement => (
-            <Key
-              disabled={
-                key === KEYBOARD.backspace
-                  ? (disableBackspace || disableKeyboard)
-                  : disableKeyboard
-              }
+            <KeyLayout
+              disableBackspace={disableBackspace}
+              disableKeyboard={disableKeyboard}
               key={key}
               onPress={handlePress}
               value={key}

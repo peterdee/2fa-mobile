@@ -15,14 +15,16 @@ import {
 import styles from '../styles';
 
 interface KeyProps {
-  disabled: boolean;
+  disableBackspace: boolean;
+  disableKeyboard: boolean;
   onPress: (value: string) => void;
   value: string;
 }
 
 function Key(props: KeyProps): React.ReactElement {
   const {
-    disabled,
+    disableBackspace,
+    disableKeyboard,
     onPress,
     value,
   } = props;
@@ -31,21 +33,32 @@ function Key(props: KeyProps): React.ReactElement {
     <View style={styles.digitContainer}>
       { value !== KEYBOARD.empty && (
         <Pressable
-          disabled={disabled}
+          disabled={
+            value === KEYBOARD.backspace
+              ? disableBackspace
+              : disableKeyboard
+          }
           onPress={(): void => onPress(value)}
           style={[
             styles.keyboardKeyLayout,
           ]}
         >
           { value !== KEYBOARD.backspace && (
-            <Text style={styles.keyboardKeyText}>
+            <Text
+              style={{
+                ...styles.keyboardKeyText,
+                color: disableKeyboard
+                  ? COLORS.muted
+                  : COLORS.text,
+              }}
+            >
               { value }
             </Text>
           ) }
           { value === KEYBOARD.backspace && (
             <Ionicons
               color={
-                disabled
+                disableBackspace
                   ? COLORS.muted
                   : COLORS.text
               }
