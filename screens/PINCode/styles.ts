@@ -20,4 +20,22 @@ export default StyleSheet.create({
     justifyContent: 'center',
     width: SPACER * 3,
   },
+  keyboardLayout: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  keyboardRowLayout: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    width: '100%',
+  },
+  keyboardKeyLayout: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
 });

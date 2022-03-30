@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { View } from 'react-native';
 
 import cells from './cells';
-import Digit from './Digit';
+import Digit from './Key';
 
 function PINCodeLayout(props: PINCodeLayoutProps): React.ReactElement {
   return (
