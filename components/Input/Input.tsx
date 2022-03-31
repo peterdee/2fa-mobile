@@ -5,6 +5,7 @@ import styles from './styles';
 
 interface InputProps {
   handleChange: (value: string) => void;
+  maxLength?: number;
   placeholder: string;
   value: string;
 }
@@ -12,13 +13,14 @@ interface InputProps {
 function Input(props: InputProps): React.ReactElement {
   const {
     handleChange,
+    maxLength,
     placeholder,
     value,
   } = props;
 
   return (
     <TextInput
-      maxLength={32}
+      maxLength={maxLength}
       onChangeText={handleChange}
       placeholder={placeholder}
       style={styles.input}
@@ -26,5 +28,9 @@ function Input(props: InputProps): React.ReactElement {
     />
   );
 }
+
+Input.defaultProps = {
+  maxLength: undefined,
+};
 
 export default memo(Input);

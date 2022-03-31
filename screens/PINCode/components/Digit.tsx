@@ -19,7 +19,7 @@ function Digit(props: DigitProps): React.ReactElement {
   return (
     <View style={styles.digitContainer}>
       { pressable && (
-        <Pressable onPress={() => handlePress(value)}>
+        <Pressable onPress={(): void => handlePress(value)}>
           <Text>
             { value }
           </Text>
