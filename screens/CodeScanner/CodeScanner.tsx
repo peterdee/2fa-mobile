@@ -2,8 +2,10 @@ import React, { memo, useEffect, useState } from 'react';
 import { BarCodeScanner, BarCodeScannerResult } from 'expo-barcode-scanner';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { getValue, KEYS, storeValue } from '../../utilities/storage';
 import Loader from '../../components/Loader';
 import styles from './styles';
+import { TokenEntry } from '../../types/models';
 
 function CodeScanner(): React.ReactElement {
   const [havePermission, setHavePermission] = useState<boolean>(false);
@@ -27,10 +29,19 @@ function CodeScanner(): React.ReactElement {
     [],
   );
 
-  const handleScanned = ({ data }: BarCodeScannerResult): void => {
+  const handleScanned = async ({ data }: BarCodeScannerResult): Promise<void> => {
     console.log('scanned', data);
     setScanned(true);
     setToken(data);
+    const existingTokens = await getValue<TokenEntry[]>(KEYS.tokens);
+    const newEntry: TokenEntry = {
+      name: `${Date.now()}`,
+      token: data,
+    };
+    return storeValue<TokenEntry[]>(
+      KEYS.tokens,
+      existingTokens ? [...existingTokens, newEntry] : [newEntry],
+    );
   };
 
   return (
