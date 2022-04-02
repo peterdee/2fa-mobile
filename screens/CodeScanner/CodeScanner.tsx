@@ -9,12 +9,15 @@ function CodeScanner(): React.ReactElement {
   const [havePermission, setHavePermission] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [scanned, setScanned] = useState<boolean>(false);
+  const [token, setToken] = useState<string>('');
 
   useEffect(
     (): void => {
       async function getPermissions() {
-        const result = await BarCodeScanner.requestPermissionsAsync();
-        // TODO: check permissions
+        const { status } = await BarCodeScanner.requestPermissionsAsync();
+        if (status === 'granted') {
+          setHavePermission(true);
+        }
 
         setLoading(false);
       }
@@ -24,12 +27,21 @@ function CodeScanner(): React.ReactElement {
     [],
   );
 
-  const handleScanned = () => console.log('scanned');
+  const handleScanned = ({ data }: BarCodeScannerResult): void => {
+    console.log('scanned', data);
+    setScanned(true);
+    setToken(data);
+  };
 
   return (
     <View style={styles.container}>
       { loading && (
         <Loader />
+      ) }
+      { !loading && !havePermission && (
+        <Text>
+          Permission required
+        </Text>
       ) }
       { !loading && havePermission && !scanned && (
         <BarCodeScanner
@@ -37,9 +49,9 @@ function CodeScanner(): React.ReactElement {
           style={StyleSheet.absoluteFillObject}
         />
       ) }
-      { !loading && !havePermission && (
+      { !loading && havePermission && scanned && (
         <Text>
-          Permission required
+          { `Token value is ${token}` }
         </Text>
       ) }
     </View>
