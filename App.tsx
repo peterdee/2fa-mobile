@@ -6,7 +6,7 @@ import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 
-function App(): React.ReactElement {
+function App(): null | React.ReactElement {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
 
