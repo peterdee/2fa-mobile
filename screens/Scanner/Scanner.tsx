@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from 'react';
 import { BarCodeScanner, BarCodeScannerResult } from 'expo-barcode-scanner';
-import { Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import styles from './styles';
 
