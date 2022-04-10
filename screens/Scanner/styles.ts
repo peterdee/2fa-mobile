@@ -6,9 +6,4 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  title: {
-    color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
 });

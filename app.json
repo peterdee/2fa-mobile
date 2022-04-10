@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "cloud2fa-mobile",
-    "slug": "cloud2fa-mobile",
+    "name": "2FA Mobile",
+    "slug": "2fa-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "mobile2fa",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash.png",
