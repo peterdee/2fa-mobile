@@ -1,18 +1,12 @@
-import { StyleSheet } from 'react-native';
-
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
-import { RootTabScreenProps } from '../types';
-
-export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/TabOneScreen.tsx" />
-    </View>
-  );
-}
+import React, { memo, useState } from 'react';
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import { BarCodeScanner, BarCodeScannerResult } from 'expo-barcode-scanner';
+import totp from 'totp-generator';
 
 const styles = StyleSheet.create({
   container: {
@@ -21,6 +15,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
+    color: 'white',
     fontSize: 20,
     fontWeight: 'bold',
   },
@@ -30,3 +25,48 @@ const styles = StyleSheet.create({
     width: '80%',
   },
 });
+
+function TabOneScreen(): React.ReactElement {
+  const [code, setCode] = useState<string>('');
+  const [scanned, setScanned] = useState<boolean>(false);
+  const [scanning, setScanning] = useState<boolean>(false);
+
+  const handleScan = async (): Promise<void> => {
+    setScanning(true);
+    await BarCodeScanner.requestPermissionsAsync();
+  };
+  const handleScanned = (result: BarCodeScannerResult): void => {
+    console.log('scanned', JSON.stringify(result));
+    setCode(result.data);
+    setScanned(true);
+  };
+
+  return (
+    <View style={styles.container}>
+      { !scanning && !scanned && (
+        <>
+          <Text style={styles.title}>Tab One</Text>
+          <View style={styles.separator} />
+          <Pressable onPress={handleScan}>
+            <Text style={styles.title}>
+              Start scanning
+            </Text>
+          </Pressable>
+        </>
+      ) }
+      { scanning && !scanned && (
+        <BarCodeScanner
+          onBarCodeScanned={scanned ? undefined : handleScanned}
+          style={StyleSheet.absoluteFillObject}
+        />
+      ) }
+      { scanned && (
+        <Text style={styles.title}>
+          { `Code: ${totp(code)}` }
+        </Text>
+      ) }
+    </View>
+  );
+}
+
+export default memo(TabOneScreen);
