@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import Loader from '../../components/Loader';
 import styles from './styles';
 
-function Scanner(): React.ReactElement {
+function CodeScanner(): React.ReactElement {
   const [havePermission, setHavePermission] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [scanned, setScanned] = useState<boolean>(false);
@@ -15,6 +15,8 @@ function Scanner(): React.ReactElement {
       async function getPermissions() {
         const result = await BarCodeScanner.requestPermissionsAsync();
         // TODO: check permissions
+
+        setLoading(false);
       }
 
       getPermissions();
@@ -44,4 +46,4 @@ function Scanner(): React.ReactElement {
   );
 }
 
-export default memo(Scanner);
+export default memo(CodeScanner);

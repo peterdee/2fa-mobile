@@ -13,7 +13,7 @@ export default StyleSheet.create({
     width: '100%',
   },
   title: {
-    color: 'white',
+    color: 'black',
     fontSize: 20,
     fontWeight: 'bold',
   },
