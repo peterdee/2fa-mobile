@@ -1,6 +1,10 @@
 import { StyleSheet } from 'react-native';
 
-import { SPACER } from '../../constants';
+import {
+  COLORS,
+  SPACER,
+  SPACER_HALF,
+} from '../../constants';
 
 export default StyleSheet.create({
   container: {
@@ -9,7 +13,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    color: 'white',
+    color: COLORS.text,
     fontSize: 20,
     fontWeight: 'bold',
   },
@@ -26,16 +30,26 @@ export default StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
   },
+  // keyboard
   keyboardRowLayout: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
+    marginVertical: SPACER,
     width: '100%',
   },
   keyboardKeyLayout: {
     alignItems: 'center',
+    backgroundColor: COLORS.mutedLight,
+    borderRadius: SPACER + SPACER_HALF,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
+    height: SPACER * 3,
+    width: SPACER * 3,
+  },
+  keyboardKeyText: {
+    color: COLORS.text,
+    fontSize: SPACER + (SPACER_HALF / 2),
   },
 });

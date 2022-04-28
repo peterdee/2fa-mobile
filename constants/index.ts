@@ -1,6 +1,8 @@
 export const COLORS = {
   accent: 'blue',
-  text: '#181818',
+  muted: '#A0A0A0',
+  mutedLight: '#EAEAEA',
+  text: '#080808',
 };
 
 export const KEYBOARD = {

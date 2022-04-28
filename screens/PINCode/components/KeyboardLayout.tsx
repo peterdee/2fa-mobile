@@ -5,7 +5,7 @@ import Key from './Key';
 import { KEYBOARD } from '../../../constants';
 import styles from '../styles';
 
-interface KeyboardProps {
+interface KeyboardLayoutProps {
   disableBackspace: boolean;
   disableKeyboard: boolean;
   handlePress: (value: string) => void;
@@ -18,7 +18,7 @@ const rows: string[][] = [
   [KEYBOARD.empty, '0', KEYBOARD.backspace],
 ];
 
-function Keyboard(props: KeyboardProps): React.ReactElement {
+function KeyboardLayout(props: KeyboardLayoutProps): React.ReactElement {
   const {
     disableBackspace,
     disableKeyboard,
@@ -28,7 +28,10 @@ function Keyboard(props: KeyboardProps): React.ReactElement {
   return (
     <View style={styles.keyboardLayout}>
       { rows.map((row: string[]): React.ReactElement => (
-        <View style={styles.keyboardRowLayout}>
+        <View
+          key={row[0]}
+          style={styles.keyboardRowLayout}
+        >
           { row.map((key: string): React.ReactElement => (
             <Key
               disabled={
@@ -47,4 +50,4 @@ function Keyboard(props: KeyboardProps): React.ReactElement {
   );
 }
 
-export default memo(Keyboard);
+export default memo(KeyboardLayout);
