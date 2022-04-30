@@ -5,6 +5,7 @@ import KeyboardLayout from './KeyboardLayout';
 import Loader from '../../../components/Loader';
 import PINBlockLayout from './PINBlockLayout';
 import styles from '../styles';
+import WideButton from '../../../components/WideButton';
 
 interface PINCodeLayoutProps {
   disableBackspace: boolean;
@@ -31,10 +32,17 @@ function PINCodeLayout(props: PINCodeLayoutProps): React.ReactElement {
         <Loader />
       ) }
       { !loading && (
-        <View>
-          <Text style={styles.title}>
-            { `${hasPIN ? 'Has PIN' : 'Set up PIN Code'}` }
-          </Text>
+        <View style={styles.content}>
+          { !hasPIN && (
+            <Text style={styles.title}>
+              Please enter a PIN code that will be used to access the application
+            </Text>
+          ) }
+          { hasPIN && (
+            <Text style={styles.title}>
+              Please enter a PIN code
+            </Text>
+          ) }
           <PINBlockLayout
             PIN={PIN}
             showDigits={!hasPIN}
@@ -44,6 +52,16 @@ function PINCodeLayout(props: PINCodeLayoutProps): React.ReactElement {
             disableKeyboard={disableKeyboard}
             handlePress={handlePress}
           />
+          { !hasPIN && (
+            <View style={styles.controls}>
+              <WideButton
+                buttonStyle={styles.setPINButton}
+                disabled={PIN.length < 4}
+                onPress={(): void => console.log('pressed')}
+                text="Save"
+              />
+            </View>
+          ) }
         </View>
       ) }
     </View>

@@ -12,7 +12,7 @@ import PINCodeLayout from './components/PINCodeLayout';
 function PINCode(): React.ReactElement {
   const [disableBackspace, setDisableBackspace] = useState<boolean>(true);
   const [disableKeyboard, setDisableKeyboard] = useState<boolean>(false);
-  const [hasPIN, setHasPIN] = useState<boolean>(true); // TODO: set to false
+  const [hasPIN, setHasPIN] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [PIN, setPIN] = useState<string>('');
 

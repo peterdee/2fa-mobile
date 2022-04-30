@@ -22,11 +22,11 @@ function PINBlockLayout(props: PINBlockLayoutProps): React.ReactElement {
       { entries.map((item: string): React.ReactElement => (
         <React.Fragment key={item}>
           { showDigits && (
-            <Text
-              style={styles.PINBlockText}
-            >
-              { PIN[Number(item)] }
-            </Text>
+            <View style={styles.PINBlockTextEntry}>
+              <Text style={styles.PINBlockText}>
+                { PIN[Number(item)] }
+              </Text>
+            </View>
           ) }
           { !showDigits && (
             <View

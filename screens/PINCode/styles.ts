@@ -12,6 +12,19 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  content: {
+    display: 'flex',
+    height: '100%',
+    justifyContent: 'space-between',
+    paddingVertical: SPACER * 4,
+    width: '100%',
+  },
+  controls: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: '100%',
+  },
   title: {
     color: COLORS.text,
     fontSize: 20,
@@ -66,8 +79,24 @@ export default StyleSheet.create({
     marginHorizontal: SPACER_HALF,
     width: SPACER_HALF * 3,
   },
+  PINBlockTextEntry: {
+    alignItems: 'center',
+    borderRadius: SPACER + SPACER_HALF,
+    display: 'flex',
+    flexDirection: 'row',
+    height: SPACER * 2,
+    justifyContent: 'center',
+    marginVertical: SPACER * 2,
+    marginHorizontal: SPACER_HALF,
+    width: SPACER * 2,
+  },
   PINBlockText: {
     color: COLORS.accent,
-    fontSize: SPACER + SPACER_HALF / 2,
+    fontSize: SPACER + SPACER_HALF,
+    fontWeight: 'bold',
+  },
+  // set PIN button
+  setPINButton: {
+    backgroundColor: COLORS.positive,
   },
 });
