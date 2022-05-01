@@ -2,7 +2,7 @@ export const COLORS = {
   accent: '#2244FF',
   muted: '#A0A0A0',
   mutedLight: '#EAEAEA',
-  positive: '#25FF37',
+  positive: '#259F37',
   text: '#080808',
   textInverted: '#FFFFFF',
 };

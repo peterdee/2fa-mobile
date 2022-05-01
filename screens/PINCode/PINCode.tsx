@@ -5,11 +5,16 @@ import React, {
   useState,
 } from 'react';
 
-import { getValue, KEYS } from '../../utilities/storage';
+import {
+  getValue,
+  KEYS,
+  storeValue,
+} from '../../utilities/storage';
 import { KEYBOARD } from '../../constants';
 import PINCodeLayout from './components/PINCodeLayout';
+import { RootStackScreenProps } from '../../types';
 
-function PINCode(): React.ReactElement {
+function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactElement {
   const [disableBackspace, setDisableBackspace] = useState<boolean>(true);
   const [disableKeyboard, setDisableKeyboard] = useState<boolean>(false);
   const [hasPIN, setHasPIN] = useState<boolean>(false);
@@ -52,11 +57,22 @@ function PINCode(): React.ReactElement {
     [PIN],
   );
 
+  const handleSetPIN = useCallback(
+    async (): Promise<void> => {
+      await storeValue<number>(KEYS.pin, Number(PIN));
+
+      // TODO: show a notification that PIN is set
+      return navigation.replace('Root');
+    },
+    [PIN],
+  );
+
   return (
     <PINCodeLayout
       disableBackspace={disableBackspace}
       disableKeyboard={disableKeyboard}
       handlePress={handlePress}
+      handleSetPIN={handleSetPIN}
       hasPIN={hasPIN}
       loading={loading}
       PIN={PIN}

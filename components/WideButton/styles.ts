@@ -15,7 +15,6 @@ export default StyleSheet.create({
   },
   text: {
     color: COLORS.textInverted,
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: SPACER,
   },
 });

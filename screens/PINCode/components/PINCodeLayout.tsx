@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import { Text, View } from 'react-native';
 
+import { COLORS } from '../../../constants';
 import KeyboardLayout from './KeyboardLayout';
 import Loader from '../../../components/Loader';
 import PINBlockLayout from './PINBlockLayout';
@@ -11,6 +12,7 @@ interface PINCodeLayoutProps {
   disableBackspace: boolean;
   disableKeyboard: boolean;
   handlePress: (value: string) => void;
+  handleSetPIN: () => Promise<void>;
   hasPIN: boolean;
   loading: boolean;
   PIN: string;
@@ -21,6 +23,7 @@ function PINCodeLayout(props: PINCodeLayoutProps): React.ReactElement {
     disableBackspace,
     disableKeyboard,
     handlePress,
+    handleSetPIN,
     hasPIN,
     loading,
     PIN,
@@ -55,10 +58,20 @@ function PINCodeLayout(props: PINCodeLayoutProps): React.ReactElement {
           { !hasPIN && (
             <View style={styles.controls}>
               <WideButton
-                buttonStyle={styles.setPINButton}
+                buttonStyle={{
+                  ...styles.setPINButton,
+                  backgroundColor: PIN.length < 4
+                    ? COLORS.muted
+                    : COLORS.positive,
+                }}
                 disabled={PIN.length < 4}
-                onPress={(): void => console.log('pressed')}
-                text="Save"
+                onPress={handleSetPIN}
+                text="SET PIN"
+                textStyle={{
+                  color: PIN.length < 4
+                    ? COLORS.mutedLight
+                    : COLORS.textInverted,
+                }}
               />
             </View>
           ) }

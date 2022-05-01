@@ -15,8 +15,8 @@ export default StyleSheet.create({
   content: {
     display: 'flex',
     height: '100%',
-    justifyContent: 'space-between',
-    paddingVertical: SPACER * 4,
+    justifyContent: 'flex-end',
+    paddingVertical: SPACER * 2,
     width: '100%',
   },
   controls: {
@@ -97,6 +97,6 @@ export default StyleSheet.create({
   },
   // set PIN button
   setPINButton: {
-    backgroundColor: COLORS.positive,
+    marginTop: SPACER * 4,
   },
 });
