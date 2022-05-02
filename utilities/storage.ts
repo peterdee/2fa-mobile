@@ -6,6 +6,7 @@ interface StoreItem<T> {
 
 export const KEYS = {
   pin: 'pin',
+  pinRequired: 'pinRequired',
   tokens: 'tokens',
 } as const;
 

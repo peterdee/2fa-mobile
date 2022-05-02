@@ -13,6 +13,7 @@ interface PINCodeLayoutProps {
   disableKeyboard: boolean;
   handlePress: (value: string) => void;
   handleSetPIN: () => Promise<void>;
+  handleSkipPIN: () => Promise<void>;
   hasPIN: boolean;
   loading: boolean;
   PIN: string;
@@ -24,6 +25,7 @@ function PINCodeLayout(props: PINCodeLayoutProps): React.ReactElement {
     disableKeyboard,
     handlePress,
     handleSetPIN,
+    handleSkipPIN,
     hasPIN,
     loading,
     PIN,
@@ -56,24 +58,35 @@ function PINCodeLayout(props: PINCodeLayoutProps): React.ReactElement {
             handlePress={handlePress}
           />
           { !hasPIN && (
-            <View style={styles.controls}>
-              <WideButton
-                buttonStyle={{
-                  ...styles.setPINButton,
-                  backgroundColor: PIN.length < 4
-                    ? COLORS.muted
-                    : COLORS.positive,
-                }}
-                disabled={PIN.length < 4}
-                onPress={handleSetPIN}
-                text="SET PIN"
-                textStyle={{
-                  color: PIN.length < 4
-                    ? COLORS.mutedLight
-                    : COLORS.textInverted,
-                }}
-              />
-            </View>
+            <>
+              <View style={styles.controls}>
+                <WideButton
+                  buttonStyle={{
+                    ...styles.setPINButton,
+                    backgroundColor: PIN.length < 4
+                      ? COLORS.muted
+                      : COLORS.positive,
+                  }}
+                  disabled={PIN.length < 4}
+                  onPress={handleSetPIN}
+                  text="SET PIN"
+                  textStyle={{
+                    color: PIN.length < 4
+                      ? COLORS.mutedLight
+                      : COLORS.textInverted,
+                  }}
+                />
+              </View>
+              <View style={styles.controls}>
+                <WideButton
+                  buttonStyle={{
+                    backgroundColor: COLORS.negative,
+                  }}
+                  onPress={handleSkipPIN}
+                  text="SKIP"
+                />
+              </View>
+            </>
           ) }
         </View>
       ) }

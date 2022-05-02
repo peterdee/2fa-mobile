@@ -10,8 +10,9 @@ import {
   KEYS,
   storeValue,
 } from '../../utilities/storage';
-import { KEYBOARD } from '../../constants';
+import { KEYBOARD, PIN_REQUIRED } from '../../constants';
 import PINCodeLayout from './components/PINCodeLayout';
+import { PINRequired } from '../../types/models';
 import { RootStackScreenProps } from '../../types';
 
 function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactElement {
@@ -59,7 +60,13 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
 
   const handleSetPIN = useCallback(
     async (): Promise<void> => {
-      await storeValue<number>(KEYS.pin, Number(PIN));
+      await Promise.all([
+        storeValue<number>(KEYS.pin, Number(PIN)),
+        storeValue<PINRequired>(
+          KEYS.pinRequired,
+          PIN_REQUIRED.isRequired,
+        ),
+      ]);
 
       // TODO: show a notification that PIN is set
       return navigation.replace('Root');
@@ -67,12 +74,23 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
     [PIN],
   );
 
+  const handleSkipPIN = async (): Promise<void> => {
+    await storeValue<PINRequired>(
+      KEYS.pinRequired,
+      PIN_REQUIRED.isNotRequired,
+    );
+
+    // TODO: show a notification that PIN can be set later
+    return navigation.replace('Root');
+  };
+
   return (
     <PINCodeLayout
       disableBackspace={disableBackspace}
       disableKeyboard={disableKeyboard}
       handlePress={handlePress}
       handleSetPIN={handleSetPIN}
+      handleSkipPIN={handleSkipPIN}
       hasPIN={hasPIN}
       loading={loading}
       PIN={PIN}
