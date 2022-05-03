@@ -97,6 +97,7 @@ export default StyleSheet.create({
   },
   // set PIN button
   setPINButton: {
+    marginBottom: SPACER,
     marginTop: SPACER * 4,
   },
 });
