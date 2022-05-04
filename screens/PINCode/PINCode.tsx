@@ -24,13 +24,20 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
 
   useEffect(
     (): void => {
-      async function checkPin() {
-        const pinValue = await getValue<number>(KEYS.pin);
+      async function checkPin(): Promise<void> {
+        const [pinRequired, pinValue] = await Promise.all([
+          getValue<string>(KEYS.pinRequired),
+          getValue<number>(KEYS.pin),
+        ]);
+        // redirect to the List tab if PIN is not required
+        if (pinRequired && pinRequired === PIN_REQUIRED.isNotRequired) {
+          return navigation.replace('Root');
+        }
         if (pinValue) {
           setHasPIN(true);
           setPIN(`${pinValue}`);
         }
-        setLoading(false);
+        return setLoading(false);
       }
 
       checkPin();

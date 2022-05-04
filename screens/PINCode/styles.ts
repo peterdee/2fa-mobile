@@ -27,8 +27,10 @@ export default StyleSheet.create({
   },
   title: {
     color: COLORS.text,
-    fontSize: 20,
+    fontSize: SPACER,
     fontWeight: 'bold',
+    marginHorizontal: SPACER,
+    textAlign: 'center',
   },
   digitContainer: {
     alignItems: 'center',
