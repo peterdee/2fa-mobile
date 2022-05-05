@@ -33,6 +33,10 @@ function PINCodeLayout(props: PINCodeLayoutProps): React.ReactElement {
     PINError,
   } = props;
 
+  const PINText = !hasPIN
+    ? 'Please enter a PIN code that will be used to access the application'
+    : 'Please enter your PIN code';
+
   return (
     <View style={styles.container}>
       { loading && (
@@ -40,24 +44,17 @@ function PINCodeLayout(props: PINCodeLayoutProps): React.ReactElement {
       ) }
       { !loading && (
         <View style={styles.content}>
-          { !hasPIN && (
-            <Text style={styles.title}>
-              Please enter a PIN code that will be used to access the application
-            </Text>
-          ) }
-          { hasPIN && (
-            <Text style={styles.title}>
-              Please enter a PIN code
-            </Text>
-          ) }
+          <Text style={styles.title}>
+            { PINText }
+          </Text>
           <PINBlockLayout
             PIN={PIN}
             showDigits={!hasPIN}
           />
           { hasPIN && (
-            <View>
+            <View style={styles.PINError}>
               { !!PINError && (
-                <Text>
+                <Text style={styles.PINErrorText}>
                   { PINError }
                 </Text>
               ) }

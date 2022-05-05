@@ -69,7 +69,7 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
         setDisableBackspace(true);
         setDisableKeyboard(false);
         setInput('');
-        return setPINError('Entered PIN code is invalid');
+        return setPINError('Entered PIN code is invalid!');
       }
       return setInput(newPIN);
     },

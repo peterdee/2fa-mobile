@@ -39,13 +39,14 @@ export default StyleSheet.create({
     justifyContent: 'center',
     width: SPACER * 3,
   },
+  // keyboard
   keyboardLayout: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
+    marginBottom: SPACER,
     width: '100%',
   },
-  // keyboard
   keyboardRowLayout: {
     display: 'flex',
     flexDirection: 'row',
@@ -96,6 +97,18 @@ export default StyleSheet.create({
     color: COLORS.accent,
     fontSize: SPACER + SPACER_HALF,
     fontWeight: 'bold',
+  },
+  PINError: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    height: SPACER * 2,
+    justifyContent: 'center',
+    marginBottom: SPACER,
+  },
+  PINErrorText: {
+    color: COLORS.negative,
+    fontSize: SPACER,
   },
   // set PIN button
   setPINButton: {
