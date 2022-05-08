@@ -24,6 +24,7 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
   const [loading, setLoading] = useState<boolean>(true);
   const [PIN, setPIN] = useState<string>('');
   const [PINError, setPINError] = useState<string>('');
+  const [showResetPINModal, setShowResetPINModal] = useState<boolean>(false);
   const [showPINSetModal, setShowPINSetModal] = useState<boolean>(false);
   const [showSkipPINModal, setShowSkipPINModal] = useState<boolean>(false);
 
@@ -49,6 +50,8 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
     },
     [],
   );
+
+  const handleCancelReset = (): void => setShowResetPINModal(false);
 
   const handleCloseSetPINModal = (): void => navigation.replace('Root');
 
@@ -81,6 +84,20 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
     [input, PIN],
   );
 
+  const handleReset = async (): Promise<void> => {
+    await Promise.all(
+      Object.keys(KEYS).map(
+        (key: string): Promise<void> => deleteValue(key as keyof typeof KEYS),
+      ),
+    );
+    setHasPIN(false);
+    setInput('');
+    setPIN('');
+    return setShowResetPINModal(false);
+  };
+
+  const handleResetPIN = (): void => setShowResetPINModal(true);
+
   const handleSetPIN = useCallback(
     async (): Promise<void> => {
       await Promise.all([
@@ -110,7 +127,10 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
       disableBackspace={disableBackspace}
       disableKeyboard={disableKeyboard}
       handleCloseSetPINModal={handleCloseSetPINModal}
+      handleCancelReset={handleCancelReset}
       handlePress={handlePress}
+      handleReset={handleReset}
+      handleResetPIN={handleResetPIN}
       handleSetPIN={handleSetPIN}
       handleSkipPIN={handleSkipPIN}
       hasPIN={hasPIN}
@@ -118,6 +138,7 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
       PIN={input}
       PINError={PINError}
       showPINSetModal={showPINSetModal}
+      showResetPINModal={showResetPINModal}
       showSkipPINModal={showSkipPINModal}
     />
   );

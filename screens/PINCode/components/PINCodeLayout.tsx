@@ -1,11 +1,12 @@
 import React, { memo } from 'react';
 import { Text, View } from 'react-native';
 
-import { COLORS } from '../../../constants';
+import { COLORS, SPACER } from '../../../constants';
 import KeyboardLayout from './KeyboardLayout';
 import Loader from '../../../components/Loader';
 import PINBlockLayout from './PINBlockLayout';
 import PINSetModal from './PINSetModal';
+import ResetPINModal from './ResetPINModal';
 import SkipPINModal from './SkipPINModal';
 import styles from '../styles';
 import WideButton from '../../../components/WideButton';
@@ -13,8 +14,11 @@ import WideButton from '../../../components/WideButton';
 interface PINCodeLayoutProps {
   disableBackspace: boolean;
   disableKeyboard: boolean;
+  handleCancelReset: () => void;
   handleCloseSetPINModal: () => void;
   handlePress: (value: string) => void;
+  handleReset: () => Promise<void>;
+  handleResetPIN: () => void;
   handleSetPIN: () => Promise<void>;
   handleSkipPIN: () => Promise<void>;
   hasPIN: boolean;
@@ -22,6 +26,7 @@ interface PINCodeLayoutProps {
   PIN: string;
   PINError: string;
   showPINSetModal: boolean;
+  showResetPINModal: boolean;
   showSkipPINModal: boolean;
 }
 
@@ -29,8 +34,11 @@ function PINCodeLayout(props: PINCodeLayoutProps): React.ReactElement {
   const {
     disableBackspace,
     disableKeyboard,
+    handleCancelReset,
     handleCloseSetPINModal,
     handlePress,
+    handleReset,
+    handleResetPIN,
     handleSetPIN,
     handleSkipPIN,
     hasPIN,
@@ -38,6 +46,7 @@ function PINCodeLayout(props: PINCodeLayoutProps): React.ReactElement {
     PIN,
     PINError,
     showPINSetModal,
+    showResetPINModal,
     showSkipPINModal,
   } = props;
 
@@ -56,6 +65,11 @@ function PINCodeLayout(props: PINCodeLayoutProps): React.ReactElement {
             handleClose={handleCloseSetPINModal}
             PIN={PIN}
             showPINSetModal={showPINSetModal}
+          />
+          <ResetPINModal
+            handleCancel={handleCancelReset}
+            handleReset={handleReset}
+            showResetPINModal={showResetPINModal}
           />
           <SkipPINModal
             handleClose={handleCloseSetPINModal}
@@ -82,6 +96,18 @@ function PINCodeLayout(props: PINCodeLayoutProps): React.ReactElement {
             disableKeyboard={disableKeyboard}
             handlePress={handlePress}
           />
+          { hasPIN && (
+            <View style={styles.controls}>
+              <WideButton
+                buttonStyle={{
+                  backgroundColor: COLORS.negative,
+                  marginTop: SPACER,
+                }}
+                onPress={handleResetPIN}
+                text="Reset PIN"
+              />
+            </View>
+          ) }
           { !hasPIN && (
             <>
               <View style={styles.controls}>
