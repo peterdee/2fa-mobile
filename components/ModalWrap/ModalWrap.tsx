@@ -16,7 +16,7 @@ function ModalWrap(props: ModalWrapProps): React.ReactElement {
 
   return (
     <Modal
-      animationType="slide"
+      animationType="fade"
       transparent
       visible={isVisible}
     >

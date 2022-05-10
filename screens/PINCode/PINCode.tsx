@@ -6,6 +6,7 @@ import React, {
 } from 'react';
 
 import {
+  deleteValue,
   getValue,
   KEYS,
   storeValue,
@@ -23,11 +24,12 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
   const [loading, setLoading] = useState<boolean>(true);
   const [PIN, setPIN] = useState<string>('');
   const [PINError, setPINError] = useState<string>('');
-  const [showPINSetModal, setShowPINSetModal] = useState<boolean>(true);
+  const [showPINSetModal, setShowPINSetModal] = useState<boolean>(false);
 
   useEffect(
     (): void => {
       async function checkPin(): Promise<void> {
+        await deleteValue(KEYS.pinRequired);
         const [pinRequired, pinValue] = await Promise.all([
           getValue<string>(KEYS.pinRequired),
           getValue<number>(KEYS.pin),
@@ -36,7 +38,7 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
         if (pinRequired && pinRequired === PIN_REQUIRED.isNotRequired) {
           return navigation.replace('Root');
         }
-        if (pinValue) {
+        if (pinValue && pinRequired === PIN_REQUIRED.isRequired) {
           setHasPIN(true);
           setPIN(`${pinValue}`);
         }
@@ -48,8 +50,10 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
     [],
   );
 
+  const handleCloseSetPINModal = (): void => navigation.replace('Root');
+
   const handlePress = useCallback(
-    (value: string): void => {
+    async (value: string): Promise<void> => {
       setDisableBackspace(false);
       setPINError('');
 
@@ -62,7 +66,7 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
         return setInput(newPIN);
       }
       const newPIN = `${input}${value}`;
-      if (newPIN.length === 4) {
+      if (newPIN.length === 4 && hasPIN) {
         setDisableKeyboard(true);
         if (Number(PIN) === Number(newPIN)) {
           return navigation.replace('Root');
@@ -80,15 +84,14 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
   const handleSetPIN = useCallback(
     async (): Promise<void> => {
       await Promise.all([
-        storeValue<number>(KEYS.pin, Number(PIN)),
+        storeValue<number>(KEYS.pin, Number(input)),
         storeValue<PINRequired>(
           KEYS.pinRequired,
           PIN_REQUIRED.isRequired,
         ),
       ]);
 
-      // TODO: show a notification that PIN is set
-      return navigation.replace('Root');
+      return setShowPINSetModal(true);
     },
     [input],
   );
@@ -107,6 +110,7 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
     <PINCodeLayout
       disableBackspace={disableBackspace}
       disableKeyboard={disableKeyboard}
+      handleCloseSetPINModal={handleCloseSetPINModal}
       handlePress={handlePress}
       handleSetPIN={handleSetPIN}
       handleSkipPIN={handleSkipPIN}

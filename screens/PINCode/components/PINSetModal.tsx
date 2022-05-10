@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { Text } from 'react-native';
 
 import ModalWrap from '../../../components/ModalWrap';
+import styles from '../styles';
 import WideButton from '../../../components/WideButton';
 
 interface PINSetModalProps {
@@ -19,8 +20,11 @@ function PINSetModal(props: PINSetModalProps): React.ReactElement {
 
   return (
     <ModalWrap isVisible={showPINSetModal}>
-      <Text>
-        { `Your PIN code ${PIN} is saved!` }
+      <Text style={styles.PINModalPINText}>
+        { PIN }
+      </Text>
+      <Text style={styles.PINModalText}>
+        Your PIN code is saved!
       </Text>
       <WideButton
         onPress={handleClose}

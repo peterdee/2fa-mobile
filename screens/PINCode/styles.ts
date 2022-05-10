@@ -115,4 +115,16 @@ export default StyleSheet.create({
     marginBottom: SPACER,
     marginTop: SPACER * 4,
   },
+  // modal
+  PINModalPINText: {
+    color: COLORS.accent,
+    fontSize: SPACER + SPACER_HALF,
+    fontWeight: 'bold',
+    letterSpacing: SPACER / 2,
+  },
+  PINModalText: {
+    color: COLORS.textInverted,
+    fontSize: SPACER + SPACER_HALF / 2,
+    marginVertical: SPACER * 2,
+  },
 });

@@ -8,7 +8,6 @@ export default StyleSheet.create({
     backgroundColor: COLORS.text,
     flex: 1,
     justifyContent: 'center',
-    opacity: 0.9,
     width: '100%',
   },
 });

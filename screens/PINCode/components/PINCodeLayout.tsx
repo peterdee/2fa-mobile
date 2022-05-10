@@ -12,6 +12,7 @@ import PINSetModal from './PINSetModal';
 interface PINCodeLayoutProps {
   disableBackspace: boolean;
   disableKeyboard: boolean;
+  handleCloseSetPINModal: () => void;
   handlePress: (value: string) => void;
   handleSetPIN: () => Promise<void>;
   handleSkipPIN: () => Promise<void>;
@@ -26,6 +27,7 @@ function PINCodeLayout(props: PINCodeLayoutProps): React.ReactElement {
   const {
     disableBackspace,
     disableKeyboard,
+    handleCloseSetPINModal,
     handlePress,
     handleSetPIN,
     handleSkipPIN,
@@ -48,7 +50,7 @@ function PINCodeLayout(props: PINCodeLayoutProps): React.ReactElement {
       { !loading && (
         <View style={styles.content}>
           <PINSetModal
-            handleClose={() => console.log('close')}
+            handleClose={handleCloseSetPINModal}
             PIN={PIN}
             showPINSetModal={showPINSetModal}
           />
