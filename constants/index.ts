@@ -1,3 +1,8 @@
+export const AUTH_TYPES = {
+  hotp: 'hotp',
+  totp: 'totp',
+};
+
 export const COLORS = {
   accent: '#2244FF',
   muted: '#A0A0A0',
