@@ -9,14 +9,14 @@ import { BarCodeScanner, BarCodeScannerResult } from 'expo-barcode-scanner';
 import CodeScannerLayout from './components/CodeScannerLayout';
 import { getValue, KEYS, storeValue } from '../../utilities/storage';
 import { RootStackScreenProps } from '../../types/navigation';
-import { TokenEntry } from '../../types/models';
+import { SecretEntry } from '../../types/models';
 
 function CodeScanner({ navigation }: RootStackScreenProps<'Root'>): React.ReactElement {
   const [havePermission, setHavePermission] = useState<boolean>(false);
+  const [keyURI, setKeyURI] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
   const [scanned, setScanned] = useState<boolean>(false);
-  const [showSaveTokenModal, setShowSaveTokenModal] = useState<boolean>(false);
-  const [token, setToken] = useState<string>('');
+  const [showSaveSecretModal, setShowSaveSecretModal] = useState<boolean>(false);
 
   useEffect(
     (): void => {
@@ -36,46 +36,46 @@ function CodeScanner({ navigation }: RootStackScreenProps<'Root'>): React.ReactE
 
   const handleCancel = (): void => {
     setScanned(false);
-    setShowSaveTokenModal(false);
-    return setToken('');
+    setShowSaveSecretModal(false);
+    return setKeyURI('');
   };
 
-  const handleSaveToken = useCallback(
+  const handleSaveSecret = useCallback(
     async (): Promise<void> => {
-      const existingTokens = await getValue<TokenEntry[]>(KEYS.tokens);
-      const newEntry: TokenEntry = {
+      const existingSecrets = await getValue<SecretEntry[]>(KEYS.secrets);
+      const newEntry: SecretEntry = {
         name: `${Date.now()}`,
-        token,
+        secret: 'TODO: save an actual secret',
       };
-      await storeValue<TokenEntry[]>(
-        KEYS.tokens,
-        existingTokens ? [...existingTokens, newEntry] : [newEntry],
+      await storeValue<SecretEntry[]>(
+        KEYS.secrets,
+        existingSecrets ? [...existingSecrets, newEntry] : [newEntry],
       );
 
       setScanned(false);
-      setShowSaveTokenModal(false);
-      setToken('');
+      setShowSaveSecretModal(false);
+      setKeyURI('');
       return navigation.push('Root');
     },
-    [token],
+    [keyURI],
   );
 
   const handleScanned = async ({ data }: BarCodeScannerResult): Promise<void> => {
     setScanned(true);
-    setToken(data);
-    return setShowSaveTokenModal(true);
+    setKeyURI(data);
+    return setShowSaveSecretModal(true);
   };
 
   return (
     <CodeScannerLayout
       handleCancel={handleCancel}
-      handleSaveToken={handleSaveToken}
+      handleSaveSecret={handleSaveSecret}
       handleScanned={handleScanned}
       havePermission={havePermission}
+      keyURI={keyURI}
       loading={loading}
       scanned={scanned}
-      showSaveTokenModal={showSaveTokenModal}
-      token={token}
+      showSaveSecretModal={showSaveSecretModal}
     />
   );
 }

@@ -1,19 +1,18 @@
 import React, { memo, useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 
+import { SecretEntry } from '../../../types/models';
 import styles from '../styles';
-import { TokenEntry } from '../../../types/models';
-// import generateOTP from '../../../utilities/otp';
 
 interface ListItemProps {
-  tokenEntry: TokenEntry;
+  secretEntry: SecretEntry;
 }
 
 const PERIOD = 30;
 
 function ListItem(props: ListItemProps): React.ReactElement {
   const {
-    tokenEntry,
+    secretEntry,
   } = props;
 
   const [timeLeft, setTimeLeft] = useState<number>(PERIOD);
@@ -33,10 +32,10 @@ function ListItem(props: ListItemProps): React.ReactElement {
     <View style={styles.listItemContainer}>
       <View style={styles.listItemLeft}>
         <Text style={styles.listItemName}>
-          { tokenEntry.name }
+          { secretEntry.name }
         </Text>
         <Text style={styles.listItemOTP}>
-          { tokenEntry.token }
+          { secretEntry.secret }
         </Text>
       </View>
       <Text>

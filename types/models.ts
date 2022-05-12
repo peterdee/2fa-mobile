@@ -13,7 +13,7 @@ export interface KeyURIData {
 
 export type PINRequired = typeof PIN_REQUIRED[keyof typeof PIN_REQUIRED];
 
-export interface TokenEntry {
+export interface SecretEntry {
   name: string;
-  token: string;
+  secret: string;
 }

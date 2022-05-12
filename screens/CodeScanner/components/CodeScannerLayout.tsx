@@ -3,30 +3,30 @@ import { BarCodeScanner, BarCodeScannerResult } from 'expo-barcode-scanner';
 import { StyleSheet, Text, View } from 'react-native';
 
 import Loader from '../../../components/Loader';
-import SaveTokenModal from './SaveTokenModal';
+import SaveSecretModal from './SaveSecretModal';
 import styles from '../styles';
 
 interface CodeScannerLayoutProps {
   handleCancel: () => void;
-  handleSaveToken: () => Promise<void>;
+  handleSaveSecret: () => Promise<void>;
   handleScanned: (value: BarCodeScannerResult) => void;
   havePermission: boolean;
+  keyURI: string;
   loading: boolean;
   scanned: boolean;
-  showSaveTokenModal: boolean;
-  token: string;
+  showSaveSecretModal: boolean;
 }
 
 function CodeScannerLayout(props: CodeScannerLayoutProps): React.ReactElement {
   const {
     handleCancel,
-    handleSaveToken,
+    handleSaveSecret,
     handleScanned,
     havePermission,
+    keyURI,
     loading,
     scanned,
-    showSaveTokenModal,
-    token,
+    showSaveSecretModal,
   } = props;
 
   return (
@@ -45,12 +45,12 @@ function CodeScannerLayout(props: CodeScannerLayoutProps): React.ReactElement {
           style={StyleSheet.absoluteFillObject}
         />
       ) }
-      { !loading && scanned && token && (
-        <SaveTokenModal
+      { !loading && scanned && keyURI && (
+        <SaveSecretModal
           handleCancel={handleCancel}
-          handleSaveToken={handleSaveToken}
-          showSaveTokenModal={showSaveTokenModal}
-          token={token}
+          handleSaveSecret={handleSaveSecret}
+          keyURI={keyURI}
+          showSaveSecretModal={showSaveSecretModal}
         />
       ) }
     </View>

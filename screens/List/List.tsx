@@ -4,24 +4,24 @@ import { Text, View } from 'react-native';
 import { getValue, KEYS } from '../../utilities/storage';
 import ListItem from './components/ListItem';
 import Loader from '../../components/Loader';
+import { SecretEntry } from '../../types/models';
 import styles from './styles';
-import { TokenEntry } from '../../types/models';
 
 function List(): React.ReactElement {
-  const [list, setList] = useState<TokenEntry[]>([]);
+  const [list, setList] = useState<SecretEntry[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(
     (): void => {
-      async function getTokens(): Promise<void> {
-        const entries = await getValue<TokenEntry[]>(KEYS.tokens);
+      async function getSecrets(): Promise<void> {
+        const entries = await getValue<SecretEntry[]>(KEYS.secrets);
         if (entries) {
           setList(entries);
         }
         setLoading(false);
       }
 
-      getTokens();
+      getSecrets();
     },
     [],
   );
@@ -31,10 +31,10 @@ function List(): React.ReactElement {
       { loading && (
         <Loader />
       ) }
-      { !loading && list.length > 0 && list.map((item: TokenEntry): React.ReactElement => (
+      { !loading && list.length > 0 && list.map((item: SecretEntry): React.ReactElement => (
         <ListItem
           key={item.name}
-          tokenEntry={item}
+          secretEntry={item}
         />
       )) }
       { !loading && list.length === 0 && (

@@ -2,40 +2,40 @@ import React, { memo } from 'react';
 import { Text } from 'react-native';
 
 import { COLORS, SPACER } from '../../../constants';
-import { generateToken } from '../../../utilities/otp';
+import { parseKeyURI } from '../../../utilities/otp';
 import ModalWrap from '../../../components/ModalWrap';
 import styles from '../styles';
 import WideButton from '../../../components/WideButton';
 
-interface SaveTokenModalProps {
+interface SaveSecretModalProps {
   handleCancel: () => void;
-  handleSaveToken: () => Promise<void>;
-  showSaveTokenModal: boolean;
-  token: string;
+  handleSaveSecret: () => Promise<void>;
+  keyURI: string;
+  showSaveSecretModal: boolean;
 }
 
-function SaveTokenModal(props: SaveTokenModalProps): React.ReactElement {
+function SaveSecretModal(props: SaveSecretModalProps): React.ReactElement {
   const {
     handleCancel,
-    handleSaveToken,
-    showSaveTokenModal,
-    token,
+    handleSaveSecret,
+    keyURI,
+    showSaveSecretModal,
   } = props;
 
   return (
-    <ModalWrap isVisible={showSaveTokenModal}>
+    <ModalWrap isVisible={showSaveSecretModal}>
       <Text style={styles.modalText}>
-        { `Token: ${token}` }
+        { `Key URI: ${keyURI}` }
       </Text>
       <Text style={styles.modalText}>
-        { `Secret: ${generateToken(token.split('secret=')[1].split('&')[0])}` }
+        { `Secret: ${parseKeyURI(keyURI)?.secret}` }
       </Text>
       <WideButton
         buttonStyle={{
           backgroundColor: COLORS.negative,
           marginTop: SPACER,
         }}
-        onPress={handleSaveToken}
+        onPress={handleSaveSecret}
         text="Save"
       />
       <WideButton
@@ -49,4 +49,4 @@ function SaveTokenModal(props: SaveTokenModalProps): React.ReactElement {
   );
 }
 
-export default memo(SaveTokenModal);
+export default memo(SaveSecretModal);
