@@ -12,7 +12,6 @@ import ModalWrap from '../../../components/ModalWrap';
 import styles from '../styles';
 import { KeyURIData, SecretEntry } from '../../../types/models';
 import WideButton from '../../../components/WideButton';
-import Loader from '../../../components/Loader';
 
 interface SaveSecretModalProps {
   handleCancel: () => void;
@@ -62,7 +61,18 @@ function SaveSecretModal(props: SaveSecretModalProps): React.ReactElement {
     <ModalWrap isVisible={showSaveSecretModal}>
       <>
         { !parsed && (
-          <Loader />
+          <>
+            <Text style={styles.modalText}>
+              QR code is invalid!
+            </Text>
+            <WideButton
+              buttonStyle={{
+                marginTop: SPACER * 2,
+              }}
+              onPress={handleCancel}
+              text="OK"
+            />
+          </>
         ) }
         { parsed && (
           <>
