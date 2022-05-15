@@ -5,9 +5,10 @@ import { COLORS } from '../../../constants';
 import KeyboardLayout from './KeyboardLayout';
 import Loader from '../../../components/Loader';
 import PINBlockLayout from './PINBlockLayout';
+import PINSetModal from './PINSetModal';
+import SkipPINModal from './SkipPINModal';
 import styles from '../styles';
 import WideButton from '../../../components/WideButton';
-import PINSetModal from './PINSetModal';
 
 interface PINCodeLayoutProps {
   disableBackspace: boolean;
@@ -21,6 +22,7 @@ interface PINCodeLayoutProps {
   PIN: string;
   PINError: string;
   showPINSetModal: boolean;
+  showSkipPINModal: boolean;
 }
 
 function PINCodeLayout(props: PINCodeLayoutProps): React.ReactElement {
@@ -36,6 +38,7 @@ function PINCodeLayout(props: PINCodeLayoutProps): React.ReactElement {
     PIN,
     PINError,
     showPINSetModal,
+    showSkipPINModal,
   } = props;
 
   const PINText = !hasPIN
@@ -53,6 +56,10 @@ function PINCodeLayout(props: PINCodeLayoutProps): React.ReactElement {
             handleClose={handleCloseSetPINModal}
             PIN={PIN}
             showPINSetModal={showPINSetModal}
+          />
+          <SkipPINModal
+            handleClose={handleCloseSetPINModal}
+            showSkipPINModal={showSkipPINModal}
           />
           <Text style={styles.title}>
             { PINText }

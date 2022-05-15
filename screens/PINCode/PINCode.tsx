@@ -25,11 +25,11 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
   const [PIN, setPIN] = useState<string>('');
   const [PINError, setPINError] = useState<string>('');
   const [showPINSetModal, setShowPINSetModal] = useState<boolean>(false);
+  const [showSkipPINModal, setShowSkipPINModal] = useState<boolean>(false);
 
   useEffect(
     (): void => {
       async function checkPin(): Promise<void> {
-        await deleteValue(KEYS.pinRequired);
         const [pinRequired, pinValue] = await Promise.all([
           getValue<string>(KEYS.pinRequired),
           getValue<number>(KEYS.pin),
@@ -102,8 +102,7 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
       PIN_REQUIRED.isNotRequired,
     );
 
-    // TODO: show a notification that PIN can be set later
-    return navigation.replace('Root');
+    return setShowSkipPINModal(true);
   };
 
   return (
@@ -119,6 +118,7 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
       PIN={input}
       PINError={PINError}
       showPINSetModal={showPINSetModal}
+      showSkipPINModal={showSkipPINModal}
     />
   );
 }
