@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
+import * as haptics from 'expo-haptics';
 
 import {
   deleteValue,
@@ -60,6 +61,7 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
       setDisableBackspace(false);
       setPINError('');
 
+      await haptics.impactAsync(haptics.ImpactFeedbackStyle.Medium);
       if (value === KEYBOARD.backspace && input.length > 0) {
         const newPIN = input.slice(0, input.length - 1);
         if (newPIN.length === 0) {
