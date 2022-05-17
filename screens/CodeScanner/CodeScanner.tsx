@@ -1,16 +1,20 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, {
+  memo,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { BarCodeScanner, BarCodeScannerResult } from 'expo-barcode-scanner';
-import { StyleSheet, Text, View } from 'react-native';
 
+import CodeScannerLayout from './components/CodeScannerLayout';
 import { getValue, KEYS, storeValue } from '../../utilities/storage';
-import Loader from '../../components/Loader';
-import styles from './styles';
 import { TokenEntry } from '../../types/models';
 
 function CodeScanner(): React.ReactElement {
   const [havePermission, setHavePermission] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [scanned, setScanned] = useState<boolean>(false);
+  const [showSaveTokenModal, setShowSaveTokenModal] = useState<boolean>(false);
   const [token, setToken] = useState<string>('');
 
   useEffect(
@@ -29,43 +33,48 @@ function CodeScanner(): React.ReactElement {
     [],
   );
 
+  const handleCancel = (): void => {
+    setScanned(false);
+    setShowSaveTokenModal(false);
+    return setToken('');
+  };
+
+  const handleSaveToken = useCallback(
+    async (): Promise<void> => {
+      const existingTokens = await getValue<TokenEntry[]>(KEYS.tokens);
+      const newEntry: TokenEntry = {
+        name: `${Date.now()}`,
+        token,
+      };
+      await storeValue<TokenEntry[]>(
+        KEYS.tokens,
+        existingTokens ? [...existingTokens, newEntry] : [newEntry],
+      );
+
+      setScanned(false);
+      setShowSaveTokenModal(false);
+      return setToken('');
+    },
+    [token],
+  );
+
   const handleScanned = async ({ data }: BarCodeScannerResult): Promise<void> => {
-    console.log('scanned', data);
     setScanned(true);
     setToken(data);
-    const existingTokens = await getValue<TokenEntry[]>(KEYS.tokens);
-    const newEntry: TokenEntry = {
-      name: `${Date.now()}`,
-      token: data,
-    };
-    return storeValue<TokenEntry[]>(
-      KEYS.tokens,
-      existingTokens ? [...existingTokens, newEntry] : [newEntry],
-    );
+    return setShowSaveTokenModal(true);
   };
 
   return (
-    <View style={styles.container}>
-      { loading && (
-        <Loader />
-      ) }
-      { !loading && !havePermission && (
-        <Text>
-          Permission required
-        </Text>
-      ) }
-      { !loading && havePermission && !scanned && (
-        <BarCodeScanner
-          onBarCodeScanned={scanned ? undefined : handleScanned}
-          style={StyleSheet.absoluteFillObject}
-        />
-      ) }
-      { !loading && havePermission && scanned && (
-        <Text>
-          { `Token value is ${token}` }
-        </Text>
-      ) }
-    </View>
+    <CodeScannerLayout
+      handleCancel={handleCancel}
+      handleSaveToken={handleSaveToken}
+      handleScanned={handleScanned}
+      havePermission={havePermission}
+      loading={loading}
+      scanned={scanned}
+      showSaveTokenModal={showSaveTokenModal}
+      token={token}
+    />
   );
 }
 

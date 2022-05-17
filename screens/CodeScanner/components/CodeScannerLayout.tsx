@@ -4,9 +4,12 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import Loader from '../../../components/Loader';
 import SaveTokenModal from './SaveTokenModal';
+import styles from '../styles';
 
 interface CodeScannerLayoutProps {
-  handleScanned: (value: BarCodeScannerResult) => Promise<void>;
+  handleCancel: () => void;
+  handleSaveToken: () => Promise<void>;
+  handleScanned: (value: BarCodeScannerResult) => void;
   havePermission: boolean;
   loading: boolean;
   scanned: boolean;
@@ -16,6 +19,8 @@ interface CodeScannerLayoutProps {
 
 function CodeScannerLayout(props: CodeScannerLayoutProps): React.ReactElement {
   const {
+    handleCancel,
+    handleSaveToken,
     handleScanned,
     havePermission,
     loading,
@@ -24,18 +29,19 @@ function CodeScannerLayout(props: CodeScannerLayoutProps): React.ReactElement {
     token,
   } = props;
 
+  console.log(loading, havePermission, scanned, token);
   return (
-    <View>
+    <View style={styles.container}>
       { loading && (
         <Loader />
       ) }
       { !loading && !havePermission && (
-        <Text>
+        <Text style={{ color: 'black' }}>
           Please provide an access to camera in order for the scanner to work!
         </Text>
       ) }
       { !loading && havePermission && (
-        <View>
+        <View style={styles.container}>
           { !scanned && (
             <BarCodeScanner
               onBarCodeScanned={scanned ? undefined : handleScanned}
@@ -44,8 +50,8 @@ function CodeScannerLayout(props: CodeScannerLayoutProps): React.ReactElement {
           ) }
           { scanned && token && (
             <SaveTokenModal
-              handleCancel={() => console.log('cancel')}
-              handleSaveToken={async () => console.log('save')}
+              handleCancel={handleCancel}
+              handleSaveToken={handleSaveToken}
               showSaveTokenModal={showSaveTokenModal}
               token={token}
             />
