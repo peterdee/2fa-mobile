@@ -32,7 +32,10 @@ function ListItem(props: ListItemProps): React.ReactElement {
     <View style={styles.listItemContainer}>
       <View style={styles.listItemLeft}>
         <Text style={styles.listItemName}>
-          { secretEntry.name }
+          { secretEntry.issuer}
+        </Text>
+        <Text style={styles.listItemName}>
+          { secretEntry?.accountName}
         </Text>
         <Text style={styles.listItemOTP}>
           { secretEntry.secret }

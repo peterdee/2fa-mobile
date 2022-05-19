@@ -4,11 +4,12 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import Loader from '../../../components/Loader';
 import SaveSecretModal from './SaveSecretModal';
+import { SecretEntry } from '../../../types/models';
 import styles from '../styles';
 
 interface CodeScannerLayoutProps {
   handleCancel: () => void;
-  handleSaveSecret: () => Promise<void>;
+  handleSaveSecret: (entry: SecretEntry) => Promise<void>;
   handleScanned: (value: BarCodeScannerResult) => void;
   havePermission: boolean;
   keyURI: string;

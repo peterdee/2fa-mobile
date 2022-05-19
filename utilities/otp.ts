@@ -1,33 +1,26 @@
 import totp from 'totp-generator';
+import { URL } from 'react-native-url-polyfill';
 
 import { AUTH_TYPES } from '../constants';
-import { KeyURIData } from '../types/models';
+import { KeyURIData, SecretEntry } from '../types/models';
 
 export function parseKeyURI(keyURI: string): null | KeyURIData {
   try {
     const url = new URL(keyURI);
-    if (!(url.protocol && url.protocol.includes('otpauth'))) {
+    if (!(url.protocol && url.protocol.includes('otpauth') && url.host)) {
       return null;
     }
-
     const secret = url.searchParams.get('secret');
     if (!secret) {
       return null;
     }
 
-    const [authType, details] = url.pathname
-      .split('//')[1]
-      .split('/') as [keyof typeof AUTH_TYPES, string];
-    if (!authType) {
-      return null;
-    }
-
     const data: KeyURIData = {
-      authType,
+      authType: url.host as keyof typeof AUTH_TYPES,
       secret,
     };
 
-    const [issuer, accountName] = details.split(':');
+    const [issuer, accountName] = url.pathname.split('/')[1].split(':');
     if (issuer) data.issuer = issuer;
     if (accountName) data.accountName = accountName;
 
@@ -46,10 +39,10 @@ export function parseKeyURI(keyURI: string): null | KeyURIData {
   }
 }
 
-export function generateToken(secret: string): null | number {
-  if (!secret) {
+export function generateToken(entry: KeyURIData | SecretEntry): null | number {
+  if (!(entry && entry.secret)) {
     return null;
   }
 
-  return totp(secret);
+  return totp(entry.secret, { ...entry });
 }

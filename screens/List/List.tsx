@@ -33,7 +33,7 @@ function List(): React.ReactElement {
       ) }
       { !loading && list.length > 0 && list.map((item: SecretEntry): React.ReactElement => (
         <ListItem
-          key={item.name}
+          key={item.id}
           secretEntry={item}
         />
       )) }

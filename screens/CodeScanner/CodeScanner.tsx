@@ -41,15 +41,11 @@ function CodeScanner({ navigation }: RootStackScreenProps<'Root'>): React.ReactE
   };
 
   const handleSaveSecret = useCallback(
-    async (): Promise<void> => {
+    async (entry: SecretEntry): Promise<void> => {
       const existingSecrets = await getValue<SecretEntry[]>(KEYS.secrets);
-      const newEntry: SecretEntry = {
-        name: `${Date.now()}`,
-        secret: 'TODO: save an actual secret',
-      };
       await storeValue<SecretEntry[]>(
         KEYS.secrets,
-        existingSecrets ? [...existingSecrets, newEntry] : [newEntry],
+        existingSecrets ? [...existingSecrets, entry] : [entry],
       );
 
       setScanned(false);
