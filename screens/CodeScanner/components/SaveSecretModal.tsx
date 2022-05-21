@@ -3,7 +3,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import * as Crypto from 'expo-crypto';
+import { CryptoDigestAlgorithm, digestStringAsync } from 'expo-crypto';
 import { Text } from 'react-native';
 
 import { COLORS, SPACER } from '../../../constants';
@@ -46,9 +46,10 @@ function SaveSecretModal(props: SaveSecretModalProps): React.ReactElement {
       return null;
     }
 
-    const id = await Crypto.digestStringAsync(
-      Crypto.CryptoDigestAlgorithm.SHA256,
-      parsed.secret,
+    console.log('@@@@@@@@@@@@@@@@@@@@@@', parsed.secret);
+    const id = await digestStringAsync(
+      CryptoDigestAlgorithm.SHA512,
+      'test asd',
     );
     const entry: SecretEntry = {
       id,

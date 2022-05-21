@@ -3,6 +3,8 @@ import totp from 'totp-generator';
 import { AUTH_TYPES } from '../constants';
 import { KeyURIData, SecretEntry } from '../types/models';
 
+type TOTPOptions = Pick<KeyURIData, 'algorithm' | 'digits' | 'period'>;
+
 export function parseKeyURI(keyURI: string): null | KeyURIData {
   try {
     const url = new URL(keyURI);
@@ -24,7 +26,17 @@ export function parseKeyURI(keyURI: string): null | KeyURIData {
     if (accountName) data.accountName = accountName;
 
     const algorithm = url.searchParams.get('algorithm');
-    if (algorithm) data.algorithm = algorithm;
+    if (algorithm) {
+      // fix for the totp-generator
+      // TODO: create an issue and provide a PR to the totp-generator
+      const uppercased = algorithm.toUpperCase();
+      if (algorithm.includes('-')) {
+        data.algorithm = uppercased;
+      } else {
+        const [, version] = uppercased.split('SHA');
+        data.algorithm = `SHA-${version}`;
+      }
+    }
 
     const digits = url.searchParams.get('digits');
     if (digits) data.digits = Number(digits);
@@ -43,5 +55,10 @@ export function generateToken(entry: KeyURIData | SecretEntry): null | number {
     return null;
   }
 
-  return totp(entry.secret, { ...entry });
+  const options: TOTPOptions = {};
+  if (entry.algorithm) options.algorithm = entry.algorithm;
+  if (entry.digits) options.digits = entry.digits;
+  if (entry.period)options.period = entry.period;
+
+  return totp(entry.secret, options);
 }
