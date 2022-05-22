@@ -12,7 +12,6 @@ import ModalWrap from '../../../components/ModalWrap';
 import styles from '../styles';
 import { KeyURIData, SecretEntry } from '../../../types/models';
 import WideButton from '../../../components/WideButton';
-import Loader from '../../../components/Loader';
 
 interface SaveSecretModalProps {
   handleCancel: () => void;
