@@ -63,7 +63,7 @@ function SaveSecretModal(props: SaveSecretModalProps): React.ReactElement {
         { !parsed && (
           <>
             <Text style={styles.modalText}>
-              QR code is invalid!
+              Scanned QR is invalid!
             </Text>
             <WideButton
               buttonStyle={{
