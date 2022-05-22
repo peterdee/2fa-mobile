@@ -1,5 +1,4 @@
 import totp from 'totp-generator';
-import { URL } from 'react-native-url-polyfill';
 
 import { AUTH_TYPES } from '../constants';
 import { KeyURIData, SecretEntry } from '../types/models';

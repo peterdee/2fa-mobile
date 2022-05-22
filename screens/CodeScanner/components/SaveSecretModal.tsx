@@ -62,7 +62,18 @@ function SaveSecretModal(props: SaveSecretModalProps): React.ReactElement {
     <ModalWrap isVisible={showSaveSecretModal}>
       <>
         { !parsed && (
-          <Loader />
+          <>
+            <Text style={styles.modalText}>
+              Scanned QR is invalid!
+            </Text>
+            <WideButton
+              buttonStyle={{
+                marginTop: SPACER * 2,
+              }}
+              onPress={handleCancel}
+              text="OK"
+            />
+          </>
         ) }
         { parsed && (
           <>
