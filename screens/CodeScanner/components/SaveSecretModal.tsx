@@ -1,22 +1,18 @@
-import React, {
-  memo,
-  useEffect,
-  useState,
-} from 'react';
-import { CryptoDigestAlgorithm, digestStringAsync } from 'expo-crypto';
+import React, { memo } from 'react';
 import { Text } from 'react-native';
 
 import { COLORS, SPACER } from '../../../constants';
-import { generateToken, parseKeyURI } from '../../../utilities/otp';
+import { generateToken } from '../../../utilities/otp';
+import { KeyURIData } from '../../../types/models';
 import ModalWrap from '../../../components/ModalWrap';
 import styles from '../styles';
-import { KeyURIData, SecretEntry } from '../../../types/models';
 import WideButton from '../../../components/WideButton';
 
 interface SaveSecretModalProps {
   handleCancel: () => void;
-  handleSaveSecret: (entry: SecretEntry) => Promise<void>;
-  keyURI: string;
+  handleSaveSecret: (entry: KeyURIData) => Promise<void>;
+  keyURIData: KeyURIData | null;
+  scanError: boolean;
   showSaveSecretModal: boolean;
 }
 
@@ -24,47 +20,28 @@ function SaveSecretModal(props: SaveSecretModalProps): React.ReactElement {
   const {
     handleCancel,
     handleSaveSecret,
-    keyURI,
+    keyURIData,
+    scanError,
     showSaveSecretModal,
   } = props;
 
-  const [parsed, setParsed] = useState<KeyURIData>();
-
-  // TODO: move parsing logic to the parent component
-  useEffect(
-    (): void => {
-      const values = parseKeyURI(keyURI);
-      if (values) {
-        setParsed(values);
-      }
-    },
-    [keyURI],
-  );
-
-  const handleSave = async (): Promise<null | void> => {
-    if (!parsed) {
-      return null;
-    }
-
-    console.log('@@@@@@@@@@@@@@@@@@@@@@', parsed.secret);
-    const id = await digestStringAsync(
-      CryptoDigestAlgorithm.SHA512,
-      'test asd',
-    );
-    const entry: SecretEntry = {
-      id,
-      ...parsed,
-    };
-    return handleSaveSecret(entry);
-  };
+  const handleSave = () => handleSaveSecret(keyURIData as KeyURIData);
 
   return (
     <ModalWrap isVisible={showSaveSecretModal}>
       <>
-        { !parsed && (
+        { scanError && (
           <>
             <Text style={styles.modalText}>
               Scanned QR is invalid!
+            </Text>
+            <Text
+              style={{
+                ...styles.modalText,
+                marginTop: SPACER,
+              }}
+            >
+              Please scan a valid QR!
             </Text>
             <WideButton
               buttonStyle={{
@@ -75,16 +52,16 @@ function SaveSecretModal(props: SaveSecretModalProps): React.ReactElement {
             />
           </>
         ) }
-        { parsed && (
+        { !scanError && keyURIData && (
           <>
             <Text style={styles.modalText}>
-              { `Service: ${parsed.issuer}` }
+              { `Service: ${keyURIData.issuer}` }
             </Text>
             <Text style={styles.modalText}>
-              { `Account: ${parsed.accountName}` }
+              { `Account: ${keyURIData.accountName}` }
             </Text>
             <Text style={styles.modalText}>
-              { `Token: ${generateToken(parsed)}` }
+              { `Token: ${generateToken(keyURIData)}` }
             </Text>
             <WideButton
               buttonStyle={{

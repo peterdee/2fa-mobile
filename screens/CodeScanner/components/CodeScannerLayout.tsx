@@ -2,18 +2,20 @@ import React, { memo } from 'react';
 import { BarCodeScanner, BarCodeScannerResult } from 'expo-barcode-scanner';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { COLORS } from '../../../constants';
+import { KeyURIData } from '../../../types/models';
 import Loader from '../../../components/Loader';
 import SaveSecretModal from './SaveSecretModal';
-import { SecretEntry } from '../../../types/models';
 import styles from '../styles';
 
 interface CodeScannerLayoutProps {
   handleCancel: () => void;
-  handleSaveSecret: (entry: SecretEntry) => Promise<void>;
+  handleSaveSecret: (entry: KeyURIData) => Promise<void>;
   handleScanned: (value: BarCodeScannerResult) => void;
   havePermission: boolean;
-  keyURI: string;
+  keyURIData: KeyURIData | null;
   loading: boolean;
+  scanError: boolean;
   scanned: boolean;
   showSaveSecretModal: boolean;
 }
@@ -24,8 +26,9 @@ function CodeScannerLayout(props: CodeScannerLayoutProps): React.ReactElement {
     handleSaveSecret,
     handleScanned,
     havePermission,
-    keyURI,
+    keyURIData,
     loading,
+    scanError,
     scanned,
     showSaveSecretModal,
   } = props;
@@ -36,7 +39,7 @@ function CodeScannerLayout(props: CodeScannerLayoutProps): React.ReactElement {
         <Loader />
       ) }
       { !loading && !havePermission && (
-        <Text style={{ color: 'black' }}>
+        <Text style={{ color: COLORS.text }}>
           Please provide an access to camera in order for the scanner to work!
         </Text>
       ) }
@@ -46,11 +49,12 @@ function CodeScannerLayout(props: CodeScannerLayoutProps): React.ReactElement {
           style={StyleSheet.absoluteFillObject}
         />
       ) }
-      { !loading && scanned && keyURI && (
+      { !loading && scanned && (
         <SaveSecretModal
           handleCancel={handleCancel}
           handleSaveSecret={handleSaveSecret}
-          keyURI={keyURI}
+          keyURIData={keyURIData}
+          scanError={scanError}
           showSaveSecretModal={showSaveSecretModal}
         />
       ) }

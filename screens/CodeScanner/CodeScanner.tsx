@@ -5,16 +5,19 @@ import React, {
   useState,
 } from 'react';
 import { BarCodeScanner, BarCodeScannerResult } from 'expo-barcode-scanner';
+import * as Crypto from 'expo-crypto';
 
 import CodeScannerLayout from './components/CodeScannerLayout';
 import { getValue, KEYS, storeValue } from '../../utilities/storage';
 import { RootStackScreenProps } from '../../types/navigation';
-import { SecretEntry } from '../../types/models';
+import { KeyURIData, SecretEntry } from '../../types/models';
+import { parseKeyURI } from '../../utilities/otp';
 
 function CodeScanner({ navigation }: RootStackScreenProps<'Root'>): React.ReactElement {
   const [havePermission, setHavePermission] = useState<boolean>(false);
-  const [keyURI, setKeyURI] = useState<string>('');
+  const [keyURIData, setKeyURIData] = useState<KeyURIData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [scanError, setScanError] = useState<boolean>(false);
   const [scanned, setScanned] = useState<boolean>(false);
   const [showSaveSecretModal, setShowSaveSecretModal] = useState<boolean>(false);
 
@@ -37,20 +40,31 @@ function CodeScanner({ navigation }: RootStackScreenProps<'Root'>): React.ReactE
   const handleCancel = (): void => {
     setScanned(false);
     setShowSaveSecretModal(false);
-    return setKeyURI('');
+    return setKeyURIData(null);
   };
 
   const handleSaveSecret = useCallback(
-    async (entry: SecretEntry): Promise<void> => {
-      const existingSecrets = await getValue<SecretEntry[]>(KEYS.secrets);
+    async (entry: KeyURIData): Promise<void> => {
+      const [id, existingSecrets] = await Promise.all([
+        Crypto.digestStringAsync(
+          Crypto.CryptoDigestAlgorithm.SHA512,
+          entry.secret,
+        ),
+        getValue<SecretEntry[]>(KEYS.secrets),
+      ]);
+
+      const newEntry: SecretEntry = {
+        ...entry,
+        id,
+      };
       await storeValue<SecretEntry[]>(
         KEYS.secrets,
-        existingSecrets ? [...existingSecrets, entry] : [entry],
+        existingSecrets ? [...existingSecrets, newEntry] : [newEntry],
       );
 
       setScanned(false);
       setShowSaveSecretModal(false);
-      setKeyURI('');
+      setKeyURIData(null);
       return navigation.push('Root');
     },
     [keyURI],
@@ -58,7 +72,9 @@ function CodeScanner({ navigation }: RootStackScreenProps<'Root'>): React.ReactE
 
   const handleScanned = async ({ data }: BarCodeScannerResult): Promise<void> => {
     setScanned(true);
-    setKeyURI(data);
+
+    const parsed = parseKeyURI(data);
+    setKeyURIData(parsed);
     return setShowSaveSecretModal(true);
   };
 
@@ -68,8 +84,9 @@ function CodeScanner({ navigation }: RootStackScreenProps<'Root'>): React.ReactE
       handleSaveSecret={handleSaveSecret}
       handleScanned={handleScanned}
       havePermission={havePermission}
-      keyURI={keyURI}
+      keyURIData={keyURIData}
       loading={loading}
+      scanError={scanError}
       scanned={scanned}
       showSaveSecretModal={showSaveSecretModal}
     />

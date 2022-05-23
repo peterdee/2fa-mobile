@@ -1,6 +1,7 @@
 import React, { memo, useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 
+import { generateToken } from '../../../utilities/otp';
 import { SecretEntry } from '../../../types/models';
 import styles from '../styles';
 
@@ -38,7 +39,7 @@ function ListItem(props: ListItemProps): React.ReactElement {
           { secretEntry?.accountName}
         </Text>
         <Text style={styles.listItemOTP}>
-          { secretEntry.secret }
+          { generateToken(secretEntry) }
         </Text>
       </View>
       <Text>
