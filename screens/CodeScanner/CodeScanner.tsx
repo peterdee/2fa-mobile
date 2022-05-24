@@ -17,7 +17,6 @@ function CodeScanner({ navigation }: RootStackScreenProps<'Root'>): React.ReactE
   const [havePermission, setHavePermission] = useState<boolean>(false);
   const [keyURIData, setKeyURIData] = useState<KeyURIData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [scanError, setScanError] = useState<boolean>(false);
   const [scanned, setScanned] = useState<boolean>(false);
   const [showSaveSecretModal, setShowSaveSecretModal] = useState<boolean>(false);
 
@@ -43,18 +42,31 @@ function CodeScanner({ navigation }: RootStackScreenProps<'Root'>): React.ReactE
     return setKeyURIData(null);
   };
 
+  const handleInput = (
+    key: keyof KeyURIData,
+    value: string,
+  ): void => setKeyURIData((state: KeyURIData | null): KeyURIData | null => {
+    if (!state) {
+      return state;
+    }
+    return {
+      ...state,
+      [key]: value,
+    };
+  });
+
   const handleSaveSecret = useCallback(
-    async (entry: KeyURIData): Promise<void> => {
+    async (): Promise<void> => {
       const [id, existingSecrets] = await Promise.all([
         Crypto.digestStringAsync(
-          Crypto.CryptoDigestAlgorithm.SHA512,
-          entry.secret,
+          Crypto.CryptoDigestAlgorithm.SHA256,
+          `${keyURIData?.secret}${Date.now()}` as string,
         ),
         getValue<SecretEntry[]>(KEYS.secrets),
       ]);
 
       const newEntry: SecretEntry = {
-        ...entry,
+        ...keyURIData as KeyURIData,
         id,
       };
       await storeValue<SecretEntry[]>(
@@ -67,7 +79,7 @@ function CodeScanner({ navigation }: RootStackScreenProps<'Root'>): React.ReactE
       setKeyURIData(null);
       return navigation.push('Root');
     },
-    [keyURI],
+    [keyURIData],
   );
 
   const handleScanned = async ({ data }: BarCodeScannerResult): Promise<void> => {
@@ -81,12 +93,12 @@ function CodeScanner({ navigation }: RootStackScreenProps<'Root'>): React.ReactE
   return (
     <CodeScannerLayout
       handleCancel={handleCancel}
+      handleInput={handleInput}
       handleSaveSecret={handleSaveSecret}
       handleScanned={handleScanned}
       havePermission={havePermission}
       keyURIData={keyURIData}
       loading={loading}
-      scanError={scanError}
       scanned={scanned}
       showSaveSecretModal={showSaveSecretModal}
     />

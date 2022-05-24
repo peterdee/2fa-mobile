@@ -2,35 +2,34 @@ import React, { memo } from 'react';
 import { Text } from 'react-native';
 
 import { COLORS, SPACER } from '../../../constants';
-import { generateToken } from '../../../utilities/otp';
+import Input from '../../../components/Input';
 import { KeyURIData } from '../../../types/models';
 import ModalWrap from '../../../components/ModalWrap';
 import styles from '../styles';
+import Token from '../../../components/Token';
 import WideButton from '../../../components/WideButton';
 
 interface SaveSecretModalProps {
   handleCancel: () => void;
-  handleSaveSecret: (entry: KeyURIData) => Promise<void>;
+  handleInput: (key: keyof KeyURIData, value: string) => void;
+  handleSaveSecret: () => Promise<void>;
   keyURIData: KeyURIData | null;
-  scanError: boolean;
   showSaveSecretModal: boolean;
 }
 
 function SaveSecretModal(props: SaveSecretModalProps): React.ReactElement {
   const {
     handleCancel,
+    handleInput,
     handleSaveSecret,
     keyURIData,
-    scanError,
     showSaveSecretModal,
   } = props;
-
-  const handleSave = () => handleSaveSecret(keyURIData as KeyURIData);
 
   return (
     <ModalWrap isVisible={showSaveSecretModal}>
       <>
-        { scanError && (
+        { !keyURIData && (
           <>
             <Text style={styles.modalText}>
               Scanned QR is invalid!
@@ -52,23 +51,41 @@ function SaveSecretModal(props: SaveSecretModalProps): React.ReactElement {
             />
           </>
         ) }
-        { !scanError && keyURIData && (
+        { keyURIData && (
           <>
             <Text style={styles.modalText}>
-              { `Service: ${keyURIData.issuer}` }
+              Service
             </Text>
+            <Input
+              customStyles={{
+                color: COLORS.textInverted,
+              }}
+              handleChange={(value: string) => handleInput('issuer', value)}
+              value={keyURIData.issuer as string}
+            />
             <Text style={styles.modalText}>
-              { `Account: ${keyURIData.accountName}` }
+              Account
             </Text>
-            <Text style={styles.modalText}>
-              { `Token: ${generateToken(keyURIData)}` }
-            </Text>
+            <Input
+              customStyles={{
+                color: COLORS.textInverted,
+              }}
+              handleChange={(value: string) => handleInput('accountName', value)}
+              value={keyURIData.accountName as string}
+            />
+            <Token
+              secretEntry={keyURIData}
+              showDetails={false}
+              timeStyles={styles.timeText}
+              tokenStyles={styles.tokenText}
+              wrapStyles={styles.tokenWrap}
+            />
             <WideButton
               buttonStyle={{
                 backgroundColor: COLORS.negative,
                 marginTop: SPACER,
               }}
-              onPress={handleSave}
+              onPress={handleSaveSecret}
               text="Save"
             />
             <WideButton

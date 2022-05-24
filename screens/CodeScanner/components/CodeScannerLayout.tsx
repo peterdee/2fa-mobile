@@ -10,12 +10,12 @@ import styles from '../styles';
 
 interface CodeScannerLayoutProps {
   handleCancel: () => void;
-  handleSaveSecret: (entry: KeyURIData) => Promise<void>;
+  handleInput: (key: keyof KeyURIData, value: string) => void;
+  handleSaveSecret: () => Promise<void>;
   handleScanned: (value: BarCodeScannerResult) => void;
   havePermission: boolean;
   keyURIData: KeyURIData | null;
   loading: boolean;
-  scanError: boolean;
   scanned: boolean;
   showSaveSecretModal: boolean;
 }
@@ -23,12 +23,12 @@ interface CodeScannerLayoutProps {
 function CodeScannerLayout(props: CodeScannerLayoutProps): React.ReactElement {
   const {
     handleCancel,
+    handleInput,
     handleSaveSecret,
     handleScanned,
     havePermission,
     keyURIData,
     loading,
-    scanError,
     scanned,
     showSaveSecretModal,
   } = props;
@@ -52,9 +52,9 @@ function CodeScannerLayout(props: CodeScannerLayoutProps): React.ReactElement {
       { !loading && scanned && (
         <SaveSecretModal
           handleCancel={handleCancel}
+          handleInput={handleInput}
           handleSaveSecret={handleSaveSecret}
           keyURIData={keyURIData}
-          scanError={scanError}
           showSaveSecretModal={showSaveSecretModal}
         />
       ) }

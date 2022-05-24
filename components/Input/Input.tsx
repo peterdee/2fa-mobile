@@ -4,14 +4,16 @@ import { TextInput } from 'react-native';
 import styles from './styles';
 
 interface InputProps {
+  customStyles?: object;
   handleChange: (value: string) => void;
   maxLength?: number;
-  placeholder: string;
+  placeholder?: string;
   value: string;
 }
 
 function Input(props: InputProps): React.ReactElement {
   const {
+    customStyles,
     handleChange,
     maxLength,
     placeholder,
@@ -23,14 +25,19 @@ function Input(props: InputProps): React.ReactElement {
       maxLength={maxLength}
       onChangeText={handleChange}
       placeholder={placeholder}
-      style={styles.input}
+      style={{
+        ...styles.input,
+        ...customStyles,
+      }}
       value={value}
     />
   );
 }
 
 Input.defaultProps = {
+  customStyles: {},
   maxLength: undefined,
+  placeholder: '',
 };
 
 export default memo(Input);

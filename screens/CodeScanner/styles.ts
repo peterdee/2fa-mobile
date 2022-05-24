@@ -12,4 +12,13 @@ export default StyleSheet.create({
     color: COLORS.textInverted,
     fontSize: SPACER,
   },
+  timeText: {
+    color: COLORS.textInverted,
+  },
+  tokenText: {
+    color: COLORS.textInverted,
+  },
+  tokenWrap: {
+    width: '80%',
+  },
 });

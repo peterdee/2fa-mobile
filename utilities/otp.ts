@@ -5,6 +5,25 @@ import { KeyURIData, SecretEntry } from '../types/models';
 
 type TOTPOptions = Pick<KeyURIData, 'algorithm' | 'digits' | 'period'>;
 
+export function generateToken(entry: KeyURIData | SecretEntry): null | number {
+  if (!(entry && entry.secret)) {
+    return null;
+  }
+
+  const options: TOTPOptions = {};
+  if (entry.algorithm) options.algorithm = entry.algorithm;
+  if (entry.digits) options.digits = entry.digits;
+  if (entry.period)options.period = entry.period;
+
+  return totp(entry.secret, options);
+}
+
+// TODO: this should be calculated for each token separately
+export function getTimeLeft(): number {
+  const seconds = new Date().getSeconds();
+  return seconds > 30 ? 60 - seconds : 30 - seconds;
+}
+
 export function parseKeyURI(keyURI: string): null | KeyURIData {
   try {
     const url = new URL(keyURI);
@@ -28,7 +47,6 @@ export function parseKeyURI(keyURI: string): null | KeyURIData {
     const algorithm = url.searchParams.get('algorithm');
     if (algorithm) {
       // fix for the totp-generator
-      // TODO: create an issue and provide a PR to the totp-generator
       const uppercased = algorithm.toUpperCase();
       if (algorithm.includes('-')) {
         data.algorithm = uppercased;
@@ -48,17 +66,4 @@ export function parseKeyURI(keyURI: string): null | KeyURIData {
   } catch {
     return null;
   }
-}
-
-export function generateToken(entry: KeyURIData | SecretEntry): null | number {
-  if (!(entry && entry.secret)) {
-    return null;
-  }
-
-  const options: TOTPOptions = {};
-  if (entry.algorithm) options.algorithm = entry.algorithm;
-  if (entry.digits) options.digits = entry.digits;
-  if (entry.period)options.period = entry.period;
-
-  return totp(entry.secret, options);
 }

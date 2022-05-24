@@ -1,0 +1,31 @@
+import { StyleSheet } from 'react-native';
+
+import { COLORS, SPACER, SPACER_HALF } from '../../constants';
+
+export default StyleSheet.create({
+  wrap: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+  },
+  accountName: {
+    color: COLORS.muted,
+    fontSize: SPACER,
+    fontWeight: '200',
+  },
+  issuer: {
+    color: COLORS.text,
+    fontSize: SPACER + SPACER_HALF,
+    fontWeight: 'normal',
+  },
+  text: {
+    color: COLORS.text,
+    fontSize: SPACER * 3,
+    fontWeight: '200',
+  },
+  tokenRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+});

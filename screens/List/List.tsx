@@ -2,10 +2,10 @@ import React, { memo, useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 
 import { getValue, KEYS } from '../../utilities/storage';
-import ListItem from './components/ListItem';
 import Loader from '../../components/Loader';
 import { SecretEntry } from '../../types/models';
 import styles from './styles';
+import Token from '../../components/Token';
 
 function List(): React.ReactElement {
   const [list, setList] = useState<SecretEntry[]>([]);
@@ -15,7 +15,7 @@ function List(): React.ReactElement {
     (): void => {
       async function getSecrets(): Promise<void> {
         const entries = await getValue<SecretEntry[]>(KEYS.secrets);
-        if (entries) {
+        if (Array.isArray(entries) && entries.length > 0) {
           setList(entries);
         }
         setLoading(false);
@@ -32,15 +32,16 @@ function List(): React.ReactElement {
         <Loader />
       ) }
       { !loading && list.length > 0 && list.map((item: SecretEntry): React.ReactElement => (
-        <ListItem
-          key={item.id}
+        <Token
           secretEntry={item}
         />
       )) }
       { !loading && list.length === 0 && (
-        <Text style={styles.title}>
-          Nothing to display
-        </Text>
+        <View style={styles.nothingToDisplay}>
+          <Text style={styles.nothingToDisplayText}>
+            Nothing to display
+          </Text>
+        </View>
       ) }
     </View>
   );
