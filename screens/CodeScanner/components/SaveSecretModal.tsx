@@ -54,22 +54,18 @@ function SaveSecretModal(props: SaveSecretModalProps): React.ReactElement {
         { keyURIData && (
           <>
             <Text style={styles.modalText}>
-              Service
+              Service name
             </Text>
             <Input
-              customStyles={{
-                color: COLORS.textInverted,
-              }}
+              customStyles={styles.inputStyles}
               handleChange={(value: string) => handleInput('issuer', value)}
               value={keyURIData.issuer as string}
             />
             <Text style={styles.modalText}>
-              Account
+              Account name
             </Text>
             <Input
-              customStyles={{
-                color: COLORS.textInverted,
-              }}
+              customStyles={styles.inputStyles}
               handleChange={(value: string) => handleInput('accountName', value)}
               value={keyURIData.accountName as string}
             />
@@ -82,9 +78,11 @@ function SaveSecretModal(props: SaveSecretModalProps): React.ReactElement {
             />
             <WideButton
               buttonStyle={{
-                backgroundColor: COLORS.negative,
+                backgroundColor: COLORS.positive,
                 marginTop: SPACER,
               }}
+              disabled={!keyURIData.accountName || !keyURIData.issuer}
+              disabledButtonStyle={styles.disabledButtonStyle}
               onPress={handleSaveSecret}
               text="Save"
             />

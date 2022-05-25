@@ -9,8 +9,12 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   modalText: {
-    color: COLORS.textInverted,
+    color: COLORS.mutedLight,
     fontSize: SPACER,
+    fontWeight: '200',
+    marginTop: SPACER,
+    textAlign: 'left',
+    width: '80%',
   },
   timeText: {
     color: COLORS.textInverted,
@@ -19,6 +23,14 @@ export default StyleSheet.create({
     color: COLORS.textInverted,
   },
   tokenWrap: {
+    marginTop: SPACER,
     width: '80%',
+  },
+  inputStyles: {
+    color: COLORS.textInverted,
+    marginTop: SPACER,
+  },
+  disabledButtonStyle: {
+    backgroundColor: COLORS.muted,
   },
 });

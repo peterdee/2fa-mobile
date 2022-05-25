@@ -1,10 +1,13 @@
 import { StyleSheet } from 'react-native';
 
-import { COLORS } from '../../constants';
+import { COLORS, SPACER } from '../../constants';
 
 export default StyleSheet.create({
   input: {
     borderColor: COLORS.accent,
-    width: '100%',
+    borderWidth: 2,
+    fontSize: SPACER,
+    padding: SPACER,
+    width: '80%',
   },
 });
