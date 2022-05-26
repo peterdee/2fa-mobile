@@ -1,11 +1,8 @@
-<div style="display: flex; align-items: center; margin-bottom: 16px;">
-  <img
-    src="./assets/images/icon.png"
-    style="height: 64px; width: 64px;"
-  />
-  <span style="font-size: 32px; font-weight: 600; margin-left: 16px;">
-    2FA Mobile
-  </span>
-</div>
+## 2FA Mobile
+
+<img
+  src="./assets/images/icon.png"
+  style="height: 128px; margin-left: calc(50% - 64px); width: 128px;"
+/>
 
 This application is used to generate OTPs based on the scanned tokens

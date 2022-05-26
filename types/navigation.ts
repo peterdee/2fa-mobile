@@ -5,6 +5,12 @@ import {
 } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
+export interface BottomBarIconProps {
+  color?: string;
+  focused?: boolean;
+  size?: number;
+}
+
 export type RootTabParamList = {
   CodeScanner: undefined;
   List: undefined;

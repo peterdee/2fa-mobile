@@ -1,28 +1,44 @@
 import React from 'react';
-import { FontAwesome } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { FontAwesome, FontAwesome5, Ionicons } from '@expo/vector-icons';
+import { NavigationContainer } from '@react-navigation/native';
 import { Pressable } from 'react-native';
 
-import { COLORS } from '../constants';
-import ModalScreen from '../screens/ModalScreen';
-import NotFoundScreen from '../screens/NotFoundScreen';
-import PINCode from '../screens/PINCode';
-import List from '../screens/List';
-import CodeScanner from '../screens/CodeScanner';
 import {
+  BottomBarIconProps,
   RootStackParamList,
   RootTabParamList,
   RootTabScreenProps,
 } from '../types/navigation';
+import CodeScanner from '../screens/CodeScanner';
+import { COLORS, SPACER, SPACER_HALF } from '../constants';
 import LinkingConfiguration from './LinkingConfiguration';
+import List from '../screens/List';
+import ModalScreen from '../screens/ModalScreen';
+import NotFoundScreen from '../screens/NotFoundScreen';
+import PINCode from '../screens/PINCode';
 
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
-}): React.ReactElement {
-  return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
+function CodeScannerIcon({ color }: BottomBarIconProps): React.ReactElement {
+  return (
+    <Ionicons
+      color={color}
+      name="qr-code"
+      size={SPACER + SPACER_HALF + (SPACER_HALF / 2)}
+      style={{ marginBottom: -3 }}
+    />
+  );
+}
+
+function ListIcon({ color }: BottomBarIconProps): React.ReactElement {
+  return (
+    <FontAwesome5
+      color={color}
+      name="list-ul"
+      size={SPACER + SPACER_HALF + (SPACER_HALF / 2)}
+      style={{ marginBottom: -3 }}
+    />
+  );
 }
 
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
@@ -33,6 +49,7 @@ function BottomTabNavigator(): React.ReactElement {
       initialRouteName="List"
       screenOptions={{
         tabBarActiveTintColor: COLORS.accent,
+        tabBarShowLabel: false,
       }}
     >
       <BottomTab.Screen
@@ -40,7 +57,6 @@ function BottomTabNavigator(): React.ReactElement {
         component={List}
         options={({ navigation }: RootTabScreenProps<'List'>) => ({
           title: 'List',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Pressable
               onPress={() => navigation.navigate('Modal')}
@@ -56,6 +72,7 @@ function BottomTabNavigator(): React.ReactElement {
               />
             </Pressable>
           ),
+          tabBarIcon: ({ color }) => ListIcon({ color }),
         })}
       />
       <BottomTab.Screen
@@ -63,7 +80,7 @@ function BottomTabNavigator(): React.ReactElement {
         component={CodeScanner}
         options={{
           title: 'Code Scanner',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => CodeScannerIcon({ color }),
         }}
       />
     </BottomTab.Navigator>
