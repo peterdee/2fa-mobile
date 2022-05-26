@@ -5,6 +5,7 @@ export const AUTH_TYPES = {
 
 export const COLORS = {
   accent: '#2244FF',
+  background: '#FFFFFF',
   muted: '#A0A0A0',
   mutedLight: '#EAEAEA',
   negative: '#BF1725',

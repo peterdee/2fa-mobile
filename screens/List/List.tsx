@@ -31,12 +31,20 @@ function List(): React.ReactElement {
       { loading && (
         <Loader />
       ) }
-      { !loading && list.length > 0 && list.map((item: SecretEntry): React.ReactElement => (
-        <Token
-          key={item.id}
-          secretEntry={item}
-        />
-      )) }
+      { !loading && list.length > 0 && list.map(
+        (item: SecretEntry, index: number): React.ReactElement => (
+          <Token
+            key={item.id}
+            secretEntry={item}
+            wrapStyles={{
+              ...styles.tokenWrap,
+              borderBottomWidth: index === list.length - 1
+                ? 0
+                : 1,
+            }}
+          />
+        ),
+      ) }
       { !loading && list.length === 0 && (
         <View style={styles.nothingToDisplay}>
           <Text style={styles.nothingToDisplayText}>

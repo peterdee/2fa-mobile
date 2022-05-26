@@ -12,10 +12,11 @@ export default StyleSheet.create({
     color: COLORS.muted,
     fontSize: SPACER,
     fontWeight: '200',
+    marginTop: SPACER_HALF / 2,
   },
   issuer: {
     color: COLORS.text,
-    fontSize: SPACER + SPACER_HALF,
+    fontSize: SPACER + (SPACER_HALF / 2),
     fontWeight: 'normal',
   },
   text: {

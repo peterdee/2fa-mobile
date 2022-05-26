@@ -3,11 +3,14 @@ import {
   CompositeScreenProps,
   NavigatorScreenParams,
 } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import React from 'react';
 
 export interface BottomBarIconProps {
   color?: string;
   focused?: boolean;
+  name: React.ComponentProps<typeof Ionicons>['name'];
   size?: number;
 }
 

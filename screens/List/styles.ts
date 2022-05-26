@@ -4,7 +4,6 @@ import { COLORS, SPACER, SPACER_HALF } from '../../constants';
 
 export default StyleSheet.create({
   container: {
-    backgroundColor: 'yellow',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
@@ -19,5 +18,10 @@ export default StyleSheet.create({
     color: COLORS.textInverted,
     fontSize: SPACER + SPACER_HALF,
     fontWeight: '200',
+  },
+  tokenWrap: {
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.muted,
+    marginVertical: SPACER_HALF / 2,
   },
 });

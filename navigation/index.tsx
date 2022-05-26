@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { FontAwesome, FontAwesome5, Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { Pressable } from 'react-native';
 
@@ -19,25 +19,32 @@ import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import PINCode from '../screens/PINCode';
 
-function CodeScannerIcon({ color }: BottomBarIconProps): React.ReactElement {
+function BottomIcon({ color, name }: BottomBarIconProps): React.ReactElement {
   return (
     <Ionicons
       color={color}
-      name="qr-code"
+      name={name}
       size={SPACER + SPACER_HALF + (SPACER_HALF / 2)}
       style={{ marginBottom: -3 }}
     />
   );
 }
 
-function ListIcon({ color }: BottomBarIconProps): React.ReactElement {
+function HeaderMenu({ navigation }: RootTabScreenProps<'List'>): React.ReactElement {
   return (
-    <FontAwesome5
-      color={color}
-      name="list-ul"
-      size={SPACER + SPACER_HALF + (SPACER_HALF / 2)}
-      style={{ marginBottom: -3 }}
-    />
+    <Pressable
+      onPress={() => navigation.navigate('Modal')}
+      style={({ pressed }) => ({
+        opacity: pressed ? 0.5 : 1,
+      })}
+    >
+      <Ionicons
+        name="ellipsis-vertical"
+        size={24}
+        color={COLORS.text}
+        style={{ marginRight: SPACER }}
+      />
+    </Pressable>
   );
 }
 
@@ -53,34 +60,20 @@ function BottomTabNavigator(): React.ReactElement {
       }}
     >
       <BottomTab.Screen
-        name="List"
         component={List}
-        options={({ navigation }: RootTabScreenProps<'List'>) => ({
+        name="List"
+        options={(props: RootTabScreenProps<'List'>) => ({
+          headerRight: () => HeaderMenu(props),
+          tabBarIcon: ({ color }) => BottomIcon({ color, name: 'md-list' }),
           title: 'List',
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate('Modal')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}
-            >
-              <FontAwesome
-                name="info-circle"
-                size={24}
-                color={COLORS.text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
-          ),
-          tabBarIcon: ({ color }) => ListIcon({ color }),
         })}
       />
       <BottomTab.Screen
-        name="CodeScanner"
         component={CodeScanner}
+        name="CodeScanner"
         options={{
+          tabBarIcon: ({ color }) => BottomIcon({ color, name: 'qr-code' }),
           title: 'Code Scanner',
-          tabBarIcon: ({ color }) => CodeScannerIcon({ color }),
         }}
       />
     </BottomTab.Navigator>
