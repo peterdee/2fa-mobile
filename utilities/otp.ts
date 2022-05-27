@@ -5,7 +5,9 @@ import { KeyURIData, SecretEntry } from '../types/models';
 
 type TOTPOptions = Pick<KeyURIData, 'algorithm' | 'digits' | 'period'>;
 
-export function generateToken(entry: KeyURIData | SecretEntry): null | number {
+export async function generateToken(
+  entry: KeyURIData | SecretEntry,
+): Promise<null | number> {
   if (!(entry && entry.secret)) {
     return null;
   }
@@ -15,13 +17,24 @@ export function generateToken(entry: KeyURIData | SecretEntry): null | number {
   if (entry.digits) options.digits = entry.digits;
   if (entry.period)options.period = entry.period;
 
-  return totp(entry.secret, options);
+  const token = totp(entry.secret, options);
+
+  // prevent the issue with invalid token using recursive token generating
+  if (entry.digits && (`${token}`.length !== Number(entry.digits))) {
+    await new Promise((resolve: (value: unknown) => void): void => {
+      setTimeout(resolve, 500);
+    });
+    return generateToken(entry);
+  }
+
+  return token;
 }
 
-// TODO: this should be calculated for each token separately
-export function getTimeLeft(): number {
+export function getTimeLeft(period = 30): number {
   const seconds = new Date().getSeconds();
-  return seconds > 30 ? 60 - seconds : 30 - seconds;
+  const float = seconds / period;
+  const integer = Math.floor(float);
+  return (period - Math.round(period * (float - integer)));
 }
 
 export function parseKeyURI(keyURI: string): null | KeyURIData {

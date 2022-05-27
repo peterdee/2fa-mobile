@@ -33,16 +33,29 @@ function Token(props: TokenProps): React.ReactElement {
   } = props;
 
   const [timeLeft, setTimeLeft] = useState<number>(getTimeLeft());
-  const [token, setToken] = useState<number>(Number(generateToken(secretEntry)));
+  const [token, setToken] = useState<number>();
+
+  useEffect(
+    (): void => {
+      async function generateInitialToken() {
+        const tokenValue = await generateToken(secretEntry);
+        return setToken(Number(tokenValue));
+      }
+
+      generateInitialToken();
+    },
+    [],
+  );
 
   useEffect(
     (): (() => void) => {
       const interval = setInterval(
-        (): void => {
+        async (): Promise<void> => {
           const newTimeLeft = timeLeft - 1;
           if (newTimeLeft < 0) {
-            setToken(Number(generateToken(secretEntry)));
-            return setTimeLeft(getTimeLeft());
+            const tokenValue = await generateToken(secretEntry);
+            setToken(Number(tokenValue));
+            return setTimeLeft(getTimeLeft(secretEntry.period));
           }
           return setTimeLeft(newTimeLeft);
         },
