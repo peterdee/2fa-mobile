@@ -1,11 +1,8 @@
 import React, { memo, useEffect, useState } from 'react';
-import { ScrollView, Text, View } from 'react-native';
 
 import { getValue, KEYS } from '../../utilities/storage';
-import Loader from '../../components/Loader';
+import ListLayout from './components/ListLayout';
 import { SecretEntry } from '../../types/models';
-import styles from './styles';
-import Token from '../../components/Token';
 
 function List(): React.ReactElement {
   const [list, setList] = useState<SecretEntry[]>([]);
@@ -27,36 +24,10 @@ function List(): React.ReactElement {
   );
 
   return (
-    <View style={styles.container}>
-      { loading && (
-        <Loader />
-      ) }
-      { !loading && list.length > 0 && (
-        <ScrollView>
-          { list.map(
-            (item: SecretEntry, index: number): React.ReactElement => (
-              <Token
-                key={item.id}
-                secretEntry={item}
-                wrapStyles={{
-                  ...styles.tokenWrap,
-                  borderBottomWidth: index === list.length - 1
-                    ? 0
-                    : 1,
-                }}
-              />
-            ),
-          ) }
-        </ScrollView>
-      ) }
-      { !loading && list.length === 0 && (
-        <View style={styles.nothingToDisplay}>
-          <Text style={styles.nothingToDisplayText}>
-            Nothing to display
-          </Text>
-        </View>
-      ) }
-    </View>
+    <ListLayout
+      list={list}
+      loading={loading}
+    />
   );
 }
 

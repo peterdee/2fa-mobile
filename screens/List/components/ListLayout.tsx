@@ -1,8 +1,13 @@
 import React, { memo } from 'react';
-import { FlatList, View } from 'react-native';
+import {
+  FlatList,
+  ListRenderItemInfo,
+  Text,
+  View,
+} from 'react-native';
 
+import ListItem from './ListItem';
 import Loader from '../../../components/Loader';
-import Token from '../../../components/Token';
 import { SecretEntry } from '../../../types/models';
 import styles from '../styles';
 
@@ -17,21 +22,6 @@ function ListLayout(props: ListLayoutProps): React.ReactElement {
     loading,
   } = props;
 
-  const renderItem = (
-    { index, item }: { index: number, item: SecretEntry },
-  ): React.ReactElement => (
-    <Token
-      key={item.id}
-      secretEntry={item}
-      wrapStyles={{
-        ...styles.tokenWrap,
-        borderBottomWidth: index === list.length - 1
-          ? 0
-          : 1,
-      }}
-    />
-  );
-
   return (
     <View style={styles.container}>
       { loading && (
@@ -41,8 +31,23 @@ function ListLayout(props: ListLayoutProps): React.ReactElement {
         <FlatList
           data={list}
           keyExtractor={(item: SecretEntry): string => item.id}
-          renderItem={renderItem}
+          renderItem={
+            ({ item, index }: ListRenderItemInfo<SecretEntry>): React.ReactElement => (
+              <ListItem
+                index={index}
+                listLength={list.length}
+                secretEntry={item}
+              />
+            )
+          }
         />
+      ) }
+      { !loading && list.length === 0 && (
+        <View style={styles.nothingToDisplay}>
+          <Text style={styles.nothingToDisplayText}>
+            Nothing to display
+          </Text>
+        </View>
       ) }
     </View>
   );
