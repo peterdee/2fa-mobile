@@ -9,7 +9,7 @@ export default StyleSheet.create({
     justifyContent: 'flex-start',
   },
   accountName: {
-    color: COLORS.muted,
+    color: COLORS.mutedDark,
     fontSize: SPACER,
     fontWeight: '200',
     marginTop: SPACER_HALF / 2,

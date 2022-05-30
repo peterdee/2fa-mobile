@@ -3,8 +3,8 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-url-polyfill/auto';
 
-import useCachedResources from './hooks/useCachedResources';
 import Navigation from './navigation';
+import useCachedResources from './hooks/useCachedResources';
 
 function App(): null | React.ReactElement {
   const isLoadingComplete = useCachedResources();

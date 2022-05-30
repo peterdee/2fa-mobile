@@ -7,7 +7,7 @@ export default StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    padding: SPACER,
+    paddingHorizontal: SPACER,
   },
   nothingToDisplay: {
     flex: 1,
@@ -23,5 +23,6 @@ export default StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: COLORS.muted,
     marginVertical: SPACER_HALF / 2,
+    paddingHorizontal: SPACER,
   },
 });

@@ -7,6 +7,7 @@ export const COLORS = {
   accent: '#2244FF',
   background: '#FFFFFF',
   muted: '#A0A0A0',
+  mutedDark: '#686868',
   mutedLight: '#EAEAEA',
   negative: '#BF1725',
   positive: '#259F37',
