@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
+import 'react-native-gesture-handler';
 import 'react-native-url-polyfill/auto';
 
 import Navigation from './navigation';
