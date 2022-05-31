@@ -4,6 +4,7 @@ import { COLORS, SPACER, SPACER_HALF } from '../../constants';
 
 export default StyleSheet.create({
   container: {
+    backgroundColor: 'yellow',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
@@ -24,5 +25,17 @@ export default StyleSheet.create({
     borderBottomColor: COLORS.muted,
     marginVertical: SPACER_HALF / 2,
     paddingHorizontal: SPACER,
+  },
+  deleteButton: {
+    alignItems: 'center',
+    backgroundColor: 'pink',
+    display: 'flex',
+    flexDirection: 'row',
+    height: SPACER * 4,
+    justifyContent: 'center',
+    position: 'absolute',
+    right: 0,
+    top: SPACER + SPACER_HALF,
+    width: SPACER * 4,
   },
 });

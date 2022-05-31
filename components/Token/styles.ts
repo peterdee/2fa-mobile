@@ -4,6 +4,7 @@ import { COLORS, SPACER, SPACER_HALF } from '../../constants';
 
 export default StyleSheet.create({
   wrap: {
+    backgroundColor: 'lime',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
