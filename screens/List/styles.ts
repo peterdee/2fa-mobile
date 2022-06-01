@@ -35,7 +35,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     right: 0,
-    top: SPACER + SPACER_HALF,
+    top: SPACER_HALF,
     width: SPACER * 4,
   },
 });

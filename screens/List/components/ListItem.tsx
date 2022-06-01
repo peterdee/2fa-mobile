@@ -31,8 +31,8 @@ const DIRECTIONS = {
   right: 'right',
 };
 
-const DISPOSITION_THRESHOLD = SPACER * 2;
-const OFFSET = SPACER * 4;
+const DISPOSITION_THRESHOLD = SPACER * 3;
+const OFFSET = SPACER * 6;
 
 function ListItem(props: ListItemProps): React.ReactElement {
   const {
@@ -41,7 +41,9 @@ function ListItem(props: ListItemProps): React.ReactElement {
     secretEntry,
   } = props;
 
+  const direction = useSharedValue(DIRECTIONS.left);
   const previousEventTranslationX = useSharedValue(0);
+  const swipeLock = useSharedValue(false);
   const translateX = useSharedValue(0);
 
   const handleGesture = useAnimatedGestureHandler<PanGestureHandlerGestureEvent>({
@@ -50,44 +52,57 @@ function ListItem(props: ListItemProps): React.ReactElement {
       const eventTranslationX = event.translationX;
 
       // determine shift direction based on the previous event value
-      const direction = eventTranslationX < previousEventTranslationX.value
+      direction.value = eventTranslationX < previousEventTranslationX.value
         ? DIRECTIONS.left
         : DIRECTIONS.right;
 
       // update previous event value
       previousEventTranslationX.value = eventTranslationX;
 
-      console.log('moving', direction, eventTranslationX, translateX.value);
+      console.log('moving', direction.value, eventTranslationX, translateX.value);
 
       // handle swipe to the left
-      if (direction === DIRECTIONS.left
+      if (direction.value === DIRECTIONS.left
         && Math.abs(eventTranslationX) <= OFFSET
-        && Math.abs(translateX.value) <= OFFSET) {
+        && !swipeLock.value) {
         translateX.value = eventTranslationX;
       }
 
-      // handle swipe to the right
-      if (direction === DIRECTIONS.right
-        && translateX.value < 0) {
-        console.log('right');
-        // const rightShift = translateX.value + value;
-        // if (rightShift < 0) {
-        //   console.log('right...', rightShift);
-        //   translateX.value = rightShift;
-        // }
+      // handle swipe to the right when swipe is not locked
+      if (direction.value === DIRECTIONS.right
+        && eventTranslationX < 0
+        && !swipeLock.value) {
+        translateX.value = eventTranslationX;
       }
+
+      // TODO: handle swipe to the right when swipe is locked
     },
     onEnd: (event) => {
+      // set previous event value back to zero
       previousEventTranslationX.value = 0;
-      const value = event.translationX;
-      console.log('end event', value, translateX.value);
-      if (Math.abs(value) < DISPOSITION_THRESHOLD) {
-        console.log('return');
-        translateX.value = withTiming(0);
-      }
-      if (Math.abs(value) >= DISPOSITION_THRESHOLD) {
-        console.log('auto-roll');
-        translateX.value = withTiming(OFFSET * -1);
+
+      // horizontal axis shift value
+      const eventTranslationX = event.translationX;
+
+      console.log('end event', swipeLock.value, direction.value);
+
+      // swipe in any direction, not locked
+      if (!swipeLock.value) {
+        // not reaching the threshold to auto-roll
+        if ((direction.value === DIRECTIONS.right && eventTranslationX < 0)
+          || (direction.value === DIRECTIONS.left
+          && Math.abs(eventTranslationX) < DISPOSITION_THRESHOLD)) {
+          swipeLock.value = false;
+          translateX.value = withTiming(0);
+        }
+
+        // if threshold is reached
+        if ((direction.value === DIRECTIONS.right && eventTranslationX < 0)
+          || (direction.value === DIRECTIONS.left
+          && Math.abs(eventTranslationX) >= DISPOSITION_THRESHOLD)) {
+          swipeLock.value = true;
+          translateX.value = withTiming(OFFSET * -1);
+        }
       }
     },
   });
@@ -102,7 +117,11 @@ function ListItem(props: ListItemProps): React.ReactElement {
     <View>
       <Pressable
         onPress={() => console.log('pressed')}
-        style={styles.deleteButton}
+        style={{
+          ...styles.deleteButton,
+          height: OFFSET,
+          width: OFFSET,
+        }}
       >
         <Text>
           Delete
