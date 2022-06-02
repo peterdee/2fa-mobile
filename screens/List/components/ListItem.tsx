@@ -41,26 +41,51 @@ function ListItem(props: ListItemProps): React.ReactElement {
     secretEntry,
   } = props;
 
+  const previousEventTranslationX = useSharedValue(0);
   const translateX = useSharedValue(0);
 
   const handleGesture = useAnimatedGestureHandler<PanGestureHandlerGestureEvent>({
     onActive: (event) => {
-      const value = event.translationX;
-      const direction = value < translateX.value
+      // horizontal axis shift value
+      const eventTranslationX = event.translationX;
+
+      // determine shift direction based on the previous event value
+      const direction = eventTranslationX < previousEventTranslationX.value
         ? DIRECTIONS.left
         : DIRECTIONS.right;
-      if (direction === DIRECTIONS.left && Math.abs(event.translationX) <= OFFSET) {
-        console.log('moving left...');
-        translateX.value = event.translationX;
+
+      // update previous event value
+      previousEventTranslationX.value = eventTranslationX;
+
+      console.log('moving', direction, eventTranslationX, translateX.value);
+
+      // handle swipe to the left
+      if (direction === DIRECTIONS.left
+        && Math.abs(eventTranslationX) <= OFFSET
+        && Math.abs(translateX.value) <= OFFSET) {
+        translateX.value = eventTranslationX;
+      }
+
+      // handle swipe to the right
+      if (direction === DIRECTIONS.right
+        && translateX.value < 0) {
+        console.log('right');
+        // const rightShift = translateX.value + value;
+        // if (rightShift < 0) {
+        //   console.log('right...', rightShift);
+        //   translateX.value = rightShift;
+        // }
       }
     },
     onEnd: (event) => {
+      previousEventTranslationX.value = 0;
       const value = event.translationX;
+      console.log('end event', value, translateX.value);
       if (Math.abs(value) < DISPOSITION_THRESHOLD) {
         console.log('return');
         translateX.value = withTiming(0);
       }
-      if (Math.abs(value) >= DISPOSITION_THRESHOLD && Math.abs(value) < OFFSET) {
+      if (Math.abs(value) >= DISPOSITION_THRESHOLD) {
         console.log('auto-roll');
         translateX.value = withTiming(OFFSET * -1);
       }
