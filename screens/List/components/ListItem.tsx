@@ -59,13 +59,22 @@ function ListItem(props: ListItemProps): React.ReactElement {
       // update previous event value
       previousEventTranslationX.value = eventTranslationX;
 
-      console.log('moving', direction.value, eventTranslationX, translateX.value);
+      // TODO: fix the issue with item being able to move too far left after it has been locked
 
-      // handle swipe to the left
+      // handle swipe to the left when swipe is not locked
       if (direction.value === DIRECTIONS.left
         && Math.abs(eventTranslationX) <= OFFSET
         && !swipeLock.value) {
         translateX.value = eventTranslationX;
+      }
+
+      // handle swipe to the left when swipe is locked
+      if (direction.value === DIRECTIONS.left
+        && swipeLock.value
+        && eventTranslationX <= OFFSET
+        && eventTranslationX > 0) {
+        console.log('to the left', eventTranslationX);
+        translateX.value = eventTranslationX - OFFSET;
       }
 
       // handle swipe to the right when swipe is not locked
@@ -75,7 +84,13 @@ function ListItem(props: ListItemProps): React.ReactElement {
         translateX.value = eventTranslationX;
       }
 
-      // TODO: handle swipe to the right when swipe is locked
+      // handle swipe to the right when swipe is locked
+      if (direction.value === DIRECTIONS.right && swipeLock.value) {
+        const shiftValue = eventTranslationX - OFFSET;
+        if (shiftValue < 0) {
+          translateX.value = shiftValue;
+        }
+      }
     },
     onEnd: (event) => {
       // set previous event value back to zero
@@ -88,20 +103,37 @@ function ListItem(props: ListItemProps): React.ReactElement {
 
       // swipe in any direction, not locked
       if (!swipeLock.value) {
-        // not reaching the threshold to auto-roll
-        if ((direction.value === DIRECTIONS.right && eventTranslationX < 0)
+        if ((direction.value === DIRECTIONS.right
+          && eventTranslationX < 0)
           || (direction.value === DIRECTIONS.left
           && Math.abs(eventTranslationX) < DISPOSITION_THRESHOLD)) {
           swipeLock.value = false;
           translateX.value = withTiming(0);
         }
-
-        // if threshold is reached
-        if ((direction.value === DIRECTIONS.right && eventTranslationX < 0)
+        if ((direction.value === DIRECTIONS.right
+          && eventTranslationX < 0)
           || (direction.value === DIRECTIONS.left
           && Math.abs(eventTranslationX) >= DISPOSITION_THRESHOLD)) {
           swipeLock.value = true;
           translateX.value = withTiming(OFFSET * -1);
+        }
+      }
+
+      // if swipe is locked
+      if (swipeLock.value) {
+        if ((direction.value === DIRECTIONS.right
+          && eventTranslationX < DISPOSITION_THRESHOLD)
+          || (direction.value === DIRECTIONS.left
+          && OFFSET - eventTranslationX >= DISPOSITION_THRESHOLD)) {
+          swipeLock.value = true;
+          translateX.value = withTiming(OFFSET * -1);
+        }
+        if ((direction.value === DIRECTIONS.right
+          && eventTranslationX >= DISPOSITION_THRESHOLD)
+          || (direction.value === DIRECTIONS.left
+          && OFFSET - eventTranslationX < DISPOSITION_THRESHOLD)) {
+          swipeLock.value = false;
+          translateX.value = withTiming(0);
         }
       }
     },
