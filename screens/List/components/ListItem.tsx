@@ -16,9 +16,9 @@ import {
 } from 'react-native';
 
 import { SecretEntry } from '../../../types/models';
+import { SPACER } from '../../../constants';
 import styles from '../styles';
 import Token from '../../../components/Token';
-import { SPACER } from '../../../constants';
 
 interface ListItemProps {
   index: number;
@@ -56,17 +56,14 @@ function ListItem(props: ListItemProps): React.ReactElement {
         ? DIRECTIONS.left
         : DIRECTIONS.right;
 
-      // console.log(direction.value, eventTranslationX, swipeLock.value);
       // update previous event value
       previousEventTranslationX.value = eventTranslationX;
-
-      // TODO: fix the issue with item being able to move too far left after it has been locked
 
       // handle swipe to the left when swipe is not locked
       if (direction.value === DIRECTIONS.left
         && Math.abs(eventTranslationX) <= OFFSET
+        && eventTranslationX < 0
         && !swipeLock.value) {
-        // console.log('1');
         translateX.value = eventTranslationX;
       }
 
@@ -75,7 +72,6 @@ function ListItem(props: ListItemProps): React.ReactElement {
         && swipeLock.value
         && eventTranslationX <= OFFSET
         && eventTranslationX > 0) {
-        console.log('2');
         translateX.value = eventTranslationX - OFFSET;
       }
 
@@ -83,17 +79,14 @@ function ListItem(props: ListItemProps): React.ReactElement {
       if (direction.value === DIRECTIONS.right
         && eventTranslationX < 0
         && !swipeLock.value) {
-        // console.log('3');
         translateX.value = eventTranslationX;
       }
 
-      // TODO: fix swiping case (going beyond the offset)
       // handle swipe to the right when swipe is locked
       if (direction.value === DIRECTIONS.right
         && swipeLock.value) {
         const shiftValue = eventTranslationX - OFFSET;
-        if (shiftValue < 0) {
-          console.log('4', shiftValue, eventTranslationX);
+        if (shiftValue < 0 && Math.abs(shiftValue) <= OFFSET) {
           translateX.value = shiftValue;
         }
       }
@@ -104,8 +97,6 @@ function ListItem(props: ListItemProps): React.ReactElement {
 
       // horizontal axis shift value
       const eventTranslationX = event.translationX;
-
-      // console.log('end event', swipeLock.value, direction.value);
 
       // swipe in any direction, not locked
       if (!swipeLock.value) {
