@@ -29,7 +29,7 @@ function List(): React.ReactElement {
   );
 
   const handleDelete = useCallback(
-    (id: string): void => {
+    async (id: string): Promise<void> => {
       const [item] = list.filter((value: SecretEntry): boolean => value.id === id);
       return console.log('deleting', item.issuer, id);
     },

@@ -24,7 +24,7 @@ function PINSetModal(props: PINSetModalProps): React.ReactElement {
         { PIN }
       </Text>
       <Text style={styles.PINModalText}>
-        Your PIN code is saved!
+        Your PIN code has been saved!
       </Text>
       <WideButton
         onPress={handleClose}

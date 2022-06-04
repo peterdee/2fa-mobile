@@ -12,7 +12,7 @@ import { SecretEntry } from '../../../types/models';
 import styles from '../styles';
 
 interface ListLayoutProps {
-  handleDelete: (id: string) => void;
+  handleDelete: (id: string) => Promise<void>;
   list: SecretEntry[];
   loading: boolean;
 }

@@ -38,4 +38,9 @@ export default StyleSheet.create({
     top: SPACER_HALF,
     width: SPACER * 4,
   },
+  // delete entry modal
+  deleteEntryModalText: {
+    color: COLORS.textInverted,
+    fontSize: SPACER + SPACER_HALF / 2,
+  },
 });

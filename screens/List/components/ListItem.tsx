@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import Animated, {
   useAnimatedGestureHandler,
   useAnimatedStyle,
@@ -15,13 +15,14 @@ import {
   View,
 } from 'react-native';
 
+import DeleteEntryModal from './DeleteEntryModal';
 import { SecretEntry } from '../../../types/models';
 import { SPACER } from '../../../constants';
 import styles from '../styles';
 import Token from '../../../components/Token';
 
 interface ListItemProps {
-  handleDelete: (id: string) => void;
+  handleDelete: (id: string) => Promise<void>;
   index: number;
   listLength: number;
   secretEntry: SecretEntry;
@@ -43,10 +44,17 @@ function ListItem(props: ListItemProps): React.ReactElement {
     secretEntry,
   } = props;
 
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+
   const direction = useSharedValue(DIRECTIONS.left);
   const previousEventTranslationX = useSharedValue(0);
   const swipeLock = useSharedValue(false);
   const translateX = useSharedValue(0);
+
+  const handleDeleteEntry = (): Promise<void> => {
+    setShowDeleteModal(false);
+    return handleDelete(secretEntry.id);
+  };
 
   const handleGesture = useAnimatedGestureHandler<PanGestureHandlerGestureEvent>({
     onActive: (event) => {
@@ -152,8 +160,14 @@ function ListItem(props: ListItemProps): React.ReactElement {
 
   return (
     <View>
+      <DeleteEntryModal
+        handleClose={(): void => setShowDeleteModal(false)}
+        handleDelete={handleDeleteEntry}
+        secretEntry={secretEntry}
+        showDeleteEntryModal={showDeleteModal}
+      />
       <Pressable
-        onPress={() => handleDelete(secretEntry.id)}
+        onPress={(): void => setShowDeleteModal(true)}
         style={{
           ...styles.deleteButton,
           height: OFFSET,
