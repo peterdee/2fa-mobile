@@ -28,7 +28,7 @@ export default StyleSheet.create({
   },
   deleteButton: {
     alignItems: 'center',
-    backgroundColor: 'pink',
+    backgroundColor: COLORS.negative,
     display: 'flex',
     flexDirection: 'row',
     height: SPACER * 4,

@@ -21,6 +21,7 @@ import styles from '../styles';
 import Token from '../../../components/Token';
 
 interface ListItemProps {
+  handleDelete: (id: string) => void;
   index: number;
   listLength: number;
   secretEntry: SecretEntry;
@@ -36,6 +37,7 @@ const OFFSET = SPACER * 6;
 
 function ListItem(props: ListItemProps): React.ReactElement {
   const {
+    handleDelete,
     index,
     listLength,
     secretEntry,
@@ -49,7 +51,9 @@ function ListItem(props: ListItemProps): React.ReactElement {
   const handleGesture = useAnimatedGestureHandler<PanGestureHandlerGestureEvent>({
     onActive: (event) => {
       // horizontal axis shift value
-      const eventTranslationX = event.translationX;
+      const eventTranslationX = Math.abs(event.translationX) > OFFSET
+        ? translateX.value
+        : event.translationX;
 
       // determine shift direction based on the previous event value
       direction.value = eventTranslationX < previousEventTranslationX.value
@@ -78,6 +82,7 @@ function ListItem(props: ListItemProps): React.ReactElement {
       // handle swipe to the right when swipe is not locked
       if (direction.value === DIRECTIONS.right
         && eventTranslationX < 0
+        && Math.abs(eventTranslationX) <= OFFSET
         && !swipeLock.value) {
         translateX.value = eventTranslationX;
       }
@@ -97,6 +102,9 @@ function ListItem(props: ListItemProps): React.ReactElement {
 
       // horizontal axis shift value
       const eventTranslationX = event.translationX;
+
+      // TODO: fix the issue with returning
+      console.log(direction.value, swipeLock.value, eventTranslationX, translateX.value);
 
       // swipe in any direction, not locked
       if (!swipeLock.value) {
@@ -145,7 +153,7 @@ function ListItem(props: ListItemProps): React.ReactElement {
   return (
     <View>
       <Pressable
-        onPress={() => console.log('pressed')}
+        onPress={() => handleDelete(secretEntry.id)}
         style={{
           ...styles.deleteButton,
           height: OFFSET,

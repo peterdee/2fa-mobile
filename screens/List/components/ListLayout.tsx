@@ -12,12 +12,14 @@ import { SecretEntry } from '../../../types/models';
 import styles from '../styles';
 
 interface ListLayoutProps {
+  handleDelete: (id: string) => void;
   list: SecretEntry[];
   loading: boolean;
 }
 
 function ListLayout(props: ListLayoutProps): React.ReactElement {
   const {
+    handleDelete,
     list,
     loading,
   } = props;
@@ -34,6 +36,7 @@ function ListLayout(props: ListLayoutProps): React.ReactElement {
           renderItem={
             ({ item, index }: ListRenderItemInfo<SecretEntry>): React.ReactElement => (
               <ListItem
+                handleDelete={handleDelete}
                 index={index}
                 listLength={list.length}
                 secretEntry={item}

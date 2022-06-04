@@ -1,4 +1,9 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, {
+  memo,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 
 import { getValue, KEYS } from '../../utilities/storage';
 import ListLayout from './components/ListLayout';
@@ -23,8 +28,17 @@ function List(): React.ReactElement {
     [],
   );
 
+  const handleDelete = useCallback(
+    (id: string): void => {
+      const [item] = list.filter((value: SecretEntry): boolean => value.id === id);
+      return console.log('deleting', item.issuer, id);
+    },
+    [list],
+  );
+
   return (
     <ListLayout
+      handleDelete={handleDelete}
       list={list}
       loading={loading}
     />
