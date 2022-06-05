@@ -38,6 +38,21 @@ export default StyleSheet.create({
     top: SPACER_HALF,
     width: SPACER * 4,
   },
+  editButton: {
+    alignItems: 'center',
+    backgroundColor: COLORS.mutedDark,
+    display: 'flex',
+    flexDirection: 'row',
+    height: SPACER * 4,
+    justifyContent: 'center',
+    position: 'absolute',
+    right: SPACER * 6,
+    top: SPACER_HALF,
+    width: SPACER * 4,
+  },
+  itemControlText: {
+    color: COLORS.textInverted,
+  },
   // delete entry modal
   deleteEntryModalText: {
     color: COLORS.textInverted,

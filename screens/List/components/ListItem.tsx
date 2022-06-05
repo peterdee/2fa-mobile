@@ -16,6 +16,7 @@ import {
 } from 'react-native';
 
 import DeleteEntryModal from './DeleteEntryModal';
+import EditEntryModal from './EditEntryModal';
 import { SecretEntry } from '../../../types/models';
 import { SPACER } from '../../../constants';
 import styles from '../styles';
@@ -33,8 +34,8 @@ const DIRECTIONS = {
   right: 'right',
 };
 
-const DISPOSITION_THRESHOLD = SPACER * 3;
-const OFFSET = SPACER * 6;
+const DISPOSITION_THRESHOLD = SPACER * 6;
+const OFFSET = SPACER * 12;
 
 function ListItem(props: ListItemProps): React.ReactElement {
   const {
@@ -45,6 +46,7 @@ function ListItem(props: ListItemProps): React.ReactElement {
   } = props;
 
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const [showEditModal, setShowEditModal] = useState<boolean>(false);
 
   const direction = useSharedValue(DIRECTIONS.left);
   const previousEventTranslationX = useSharedValue(0);
@@ -166,15 +168,33 @@ function ListItem(props: ListItemProps): React.ReactElement {
         secretEntry={secretEntry}
         showDeleteEntryModal={showDeleteModal}
       />
+      <EditEntryModal
+        handleClose={(): void => setShowEditModal(false)}
+        handleEdit={async (): Promise<void> => console.log('save')}
+        secretEntry={secretEntry}
+        showEditEntryModal={showEditModal}
+      />
+      <Pressable
+        onPress={(): void => setShowEditModal(true)}
+        style={{
+          ...styles.editButton,
+          height: DISPOSITION_THRESHOLD,
+          width: DISPOSITION_THRESHOLD,
+        }}
+      >
+        <Text style={styles.itemControlText}>
+          Edit
+        </Text>
+      </Pressable>
       <Pressable
         onPress={(): void => setShowDeleteModal(true)}
         style={{
           ...styles.deleteButton,
-          height: OFFSET,
-          width: OFFSET,
+          height: DISPOSITION_THRESHOLD,
+          width: DISPOSITION_THRESHOLD,
         }}
       >
-        <Text>
+        <Text style={styles.itemControlText}>
           Delete
         </Text>
       </Pressable>
