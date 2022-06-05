@@ -58,4 +58,17 @@ export default StyleSheet.create({
     color: COLORS.textInverted,
     fontSize: SPACER + SPACER_HALF / 2,
   },
+  // edit entry modal
+  inputStyles: {
+    color: COLORS.textInverted,
+    marginTop: SPACER,
+  },
+  modalText: {
+    color: COLORS.mutedLight,
+    fontSize: SPACER,
+    fontWeight: '200',
+    marginTop: SPACER,
+    textAlign: 'left',
+    width: '80%',
+  },
 });

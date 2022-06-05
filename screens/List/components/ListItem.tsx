@@ -45,6 +45,8 @@ function ListItem(props: ListItemProps): React.ReactElement {
     secretEntry,
   } = props;
 
+  const [accountName, setAccountName] = useState<string>(secretEntry.accountName || '');
+  const [issuer, setIssuer] = useState<string>(secretEntry.issuer || '');
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
 
@@ -154,6 +156,15 @@ function ListItem(props: ListItemProps): React.ReactElement {
     },
   });
 
+  const handleInput = (name: string, value: string): void => {
+    if (name === 'accountName') {
+      setAccountName(value);
+    }
+    if (name === 'issuer') {
+      setIssuer(value);
+    }
+  };
+
   const itemStyle = useAnimatedStyle(() => ({
     transform: [{
       translateX: translateX.value,
@@ -169,8 +180,11 @@ function ListItem(props: ListItemProps): React.ReactElement {
         showDeleteEntryModal={showDeleteModal}
       />
       <EditEntryModal
+        accountName={accountName}
         handleClose={(): void => setShowEditModal(false)}
         handleEdit={async (): Promise<void> => console.log('save')}
+        handleInput={handleInput}
+        issuer={issuer}
         secretEntry={secretEntry}
         showEditEntryModal={showEditModal}
       />
