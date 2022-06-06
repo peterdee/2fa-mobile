@@ -1,4 +1,8 @@
-import React, { memo } from 'react';
+import React, {
+  memo,
+  useCallback,
+  useState,
+} from 'react';
 import { Text } from 'react-native';
 
 import { COLORS, SPACER } from '../../../constants';
@@ -9,25 +13,47 @@ import styles from '../styles';
 import WideButton from '../../../components/WideButton';
 
 interface EditEntryModalProps {
-  accountName: string;
   handleClose: () => void;
-  handleEdit: (id: string) => Promise<void>;
-  handleInput: (name: string, value: string) => void;
-  issuer: string;
+  handleSave: (updatedEntry: SecretEntry) => Promise<void>;
   secretEntry: SecretEntry;
   showEditEntryModal: boolean;
 }
 
 function EditEntryModal(props: EditEntryModalProps): React.ReactElement {
   const {
-    accountName,
     handleClose,
-    handleEdit,
-    handleInput,
-    issuer,
+    handleSave,
     secretEntry,
     showEditEntryModal,
   } = props;
+
+  const [accountName, setAccountName] = useState<string>(secretEntry.accountName || '');
+  const [issuer, setIssuer] = useState<string>(secretEntry.issuer || '');
+
+  const handleInput = (name: string, value: string): void => {
+    if (name === 'accountName') {
+      return setAccountName(value);
+    }
+    return setIssuer(value);
+  };
+
+  const saveForm = useCallback(
+    (): null | Promise<void> => {
+      if (!(accountName && issuer)) {
+        return null;
+      }
+
+      return handleSave({
+        ...secretEntry,
+        accountName,
+        issuer,
+      });
+    },
+    [
+      accountName,
+      issuer,
+    ],
+  );
 
   return (
     <ModalWrap isVisible={showEditEntryModal}>
@@ -36,7 +62,7 @@ function EditEntryModal(props: EditEntryModalProps): React.ReactElement {
       </Text>
       <Input
         customStyles={styles.inputStyles}
-        handleChange={(value: string) => handleInput('issuer', value)}
+        handleChange={(value: string): void => handleInput('issuer', value)}
         value={issuer}
       />
       <Text style={styles.modalText}>
@@ -44,15 +70,20 @@ function EditEntryModal(props: EditEntryModalProps): React.ReactElement {
       </Text>
       <Input
         customStyles={styles.inputStyles}
-        handleChange={(value: string) => handleInput('accountName', value)}
+        handleChange={(value: string): void => handleInput('accountName', value)}
         value={accountName}
       />
       <WideButton
         buttonStyle={{
           backgroundColor: COLORS.positive,
-          marginTop: SPACER,
+          marginTop: SPACER * 2,
         }}
-        onPress={() => handleEdit(secretEntry.id)}
+        disabled={!accountName || !issuer}
+        disabledButtonStyle={{
+          backgroundColor: COLORS.muted,
+          marginTop: SPACER * 2,
+        }}
+        onPress={saveForm}
         text="Save"
       />
       <WideButton

@@ -44,6 +44,8 @@ function List(): React.ReactElement {
   const handleDeleteEntry = useCallback(
     (id: string): Promise<void> => {
       const updatedList = list.filter((entry: SecretEntry): boolean => entry.id !== id);
+      setDeleteModalVisible(false);
+      setList(updatedList);
       return storeValue<SecretEntry[]>(KEYS.secrets, updatedList);
     },
     [list],
@@ -57,6 +59,8 @@ function List(): React.ReactElement {
         }
         return entry;
       });
+      setEditModalVisible(false);
+      setList(updatedList);
       return storeValue<SecretEntry[]>(KEYS.secrets, updatedList);
     },
     [list],

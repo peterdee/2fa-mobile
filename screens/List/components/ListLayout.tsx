@@ -6,11 +6,12 @@ import {
   View,
 } from 'react-native';
 
+import DeleteEntryModal from './DeleteEntryModal';
+import EditEntryModal from './EditEntryModal';
 import ListItem from './ListItem';
 import Loader from '../../../components/Loader';
 import { SecretEntry } from '../../../types/models';
 import styles from '../styles';
-import DeleteEntryModal from './DeleteEntryModal';
 
 interface ListLayoutProps {
   deleteEntry: SecretEntry | null;
@@ -41,6 +42,8 @@ function ListLayout(props: ListLayoutProps): React.ReactElement {
     showEditModal,
   } = props;
 
+  // TODO: fix FlatList appearance when there are few elements
+
   return (
     <View style={styles.container}>
       { loading && (
@@ -52,6 +55,14 @@ function ListLayout(props: ListLayoutProps): React.ReactElement {
           handleDelete={handleDeleteEntry}
           secretEntry={deleteEntry as SecretEntry}
           showDeleteEntryModal={deleteModalVisible}
+        />
+      ) }
+      { !loading && editModalVisible && (
+        <EditEntryModal
+          handleClose={(): void => handleCloseModal('edit')}
+          handleSave={handleEditEntry}
+          secretEntry={editEntry as SecretEntry}
+          showEditEntryModal={editModalVisible}
         />
       ) }
       { !loading && list.length > 0 && (
