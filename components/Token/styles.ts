@@ -4,10 +4,11 @@ import { COLORS, SPACER, SPACER_HALF } from '../../constants';
 
 export default StyleSheet.create({
   wrap: {
-    backgroundColor: 'lime',
+    backgroundColor: COLORS.background,
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'flex-start',
+    height: SPACER * 7,
+    justifyContent: 'space-between',
   },
   accountName: {
     color: COLORS.mutedDark,
@@ -16,9 +17,8 @@ export default StyleSheet.create({
     marginTop: SPACER_HALF / 2,
   },
   issuer: {
-    color: COLORS.text,
+    color: COLORS.accent,
     fontSize: SPACER + (SPACER_HALF / 2),
-    fontWeight: 'normal',
   },
   text: {
     color: COLORS.text,

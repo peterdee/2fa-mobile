@@ -34,11 +34,9 @@ function ListLayout(props: ListLayoutProps): React.ReactElement {
           data={list}
           keyExtractor={(item: SecretEntry): string => item.id}
           renderItem={
-            ({ item, index }: ListRenderItemInfo<SecretEntry>): React.ReactElement => (
+            ({ item }: ListRenderItemInfo<SecretEntry>): React.ReactElement => (
               <ListItem
                 handleDelete={handleDelete}
-                index={index}
-                listLength={list.length}
                 secretEntry={item}
               />
             )

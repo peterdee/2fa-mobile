@@ -5,27 +5,22 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {
   PanGestureHandler,
   PanGestureHandlerGestureEvent,
 } from 'react-native-gesture-handler';
-import {
-  Pressable,
-  Text,
-  View,
-} from 'react-native';
+import { Pressable, View } from 'react-native';
 
 import DeleteEntryModal from './DeleteEntryModal';
 import EditEntryModal from './EditEntryModal';
 import { SecretEntry } from '../../../types/models';
-import { SPACER } from '../../../constants';
+import { COLORS, SPACER } from '../../../constants';
 import styles from '../styles';
 import Token from '../../../components/Token';
 
 interface ListItemProps {
   handleDelete: (id: string) => Promise<void>;
-  index: number;
-  listLength: number;
   secretEntry: SecretEntry;
 }
 
@@ -34,14 +29,12 @@ const DIRECTIONS = {
   right: 'right',
 };
 
-const DISPOSITION_THRESHOLD = SPACER * 6;
-const OFFSET = SPACER * 12;
+const DISPOSITION_THRESHOLD = SPACER * 7;
+const OFFSET = SPACER * 14;
 
 function ListItem(props: ListItemProps): React.ReactElement {
   const {
     handleDelete,
-    index,
-    listLength,
     secretEntry,
   } = props;
 
@@ -158,9 +151,11 @@ function ListItem(props: ListItemProps): React.ReactElement {
           width: DISPOSITION_THRESHOLD,
         }}
       >
-        <Text style={styles.itemControlText}>
-          Edit
-        </Text>
+        <MaterialCommunityIcons
+          color={COLORS.textInverted}
+          name="comment-edit-outline"
+          size={SPACER * 2}
+        />
       </Pressable>
       <Pressable
         onPress={(): void => setShowDeleteModal(true)}
@@ -170,9 +165,11 @@ function ListItem(props: ListItemProps): React.ReactElement {
           width: DISPOSITION_THRESHOLD,
         }}
       >
-        <Text style={styles.itemControlText}>
-          Delete
-        </Text>
+        <MaterialCommunityIcons
+          color={COLORS.textInverted}
+          name="delete-outline"
+          size={SPACER * 2}
+        />
       </Pressable>
       <PanGestureHandler
         activeOffsetX={0}
@@ -183,12 +180,7 @@ function ListItem(props: ListItemProps): React.ReactElement {
           <Token
             key={secretEntry.id}
             secretEntry={secretEntry}
-            wrapStyles={{
-              ...styles.tokenWrap,
-              borderBottomWidth: index === listLength - 1
-                ? 0
-                : 1,
-            }}
+            wrapStyles={styles.tokenWrap}
           />
         </Animated.View>
       </PanGestureHandler>

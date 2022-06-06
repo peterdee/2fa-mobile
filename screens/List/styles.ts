@@ -4,7 +4,6 @@ import { COLORS, SPACER, SPACER_HALF } from '../../constants';
 
 export default StyleSheet.create({
   container: {
-    backgroundColor: 'yellow',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
@@ -21,8 +20,6 @@ export default StyleSheet.create({
     fontWeight: '200',
   },
   tokenWrap: {
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.muted,
     marginVertical: SPACER_HALF / 2,
     paddingHorizontal: SPACER,
   },
@@ -35,7 +32,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     right: 0,
-    top: SPACER_HALF,
+    top: SPACER_HALF / 2,
     width: SPACER * 4,
   },
   editButton: {
@@ -46,8 +43,8 @@ export default StyleSheet.create({
     height: SPACER * 4,
     justifyContent: 'center',
     position: 'absolute',
-    right: SPACER * 6,
-    top: SPACER_HALF,
+    right: SPACER * 7,
+    top: SPACER_HALF / 2,
     width: SPACER * 4,
   },
   itemControlText: {
