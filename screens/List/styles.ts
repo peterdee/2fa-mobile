@@ -51,9 +51,26 @@ export default StyleSheet.create({
     color: COLORS.textInverted,
   },
   // delete entry modal
+  deleteEntryModalAccountName: {
+    color: COLORS.muted,
+    fontSize: SPACER + SPACER_HALF / 2,
+    marginBottom: SPACER,
+    textAlign: 'center',
+    width: '80%',
+  },
+  deleteEntryModalIssuer: {
+    color: COLORS.textInverted,
+    fontSize: SPACER + SPACER_HALF,
+    marginBottom: SPACER,
+    textAlign: 'center',
+    width: '80%',
+  },
   deleteEntryModalText: {
     color: COLORS.textInverted,
     fontSize: SPACER + SPACER_HALF / 2,
+    marginBottom: SPACER,
+    textAlign: 'center',
+    width: '80%',
   },
   // edit entry modal
   inputStyles: {

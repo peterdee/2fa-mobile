@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 import Animated, {
   useAnimatedGestureHandler,
   useAnimatedStyle,
@@ -12,16 +12,15 @@ import {
 } from 'react-native-gesture-handler';
 import { Pressable, View } from 'react-native';
 
-import DeleteEntryModal from './DeleteEntryModal';
-import EditEntryModal from './EditEntryModal';
-import { SecretEntry } from '../../../types/models';
 import { COLORS, SPACER } from '../../../constants';
+import { SecretEntry } from '../../../types/models';
 import styles from '../styles';
 import Token from '../../../components/Token';
 
 interface ListItemProps {
-  handleDelete: (id: string) => Promise<void>;
   secretEntry: SecretEntry;
+  showDeleteModal: (id: string) => void;
+  showEditModal: (id: string) => void;
 }
 
 const DIRECTIONS = {
@@ -34,24 +33,15 @@ const OFFSET = SPACER * 14;
 
 function ListItem(props: ListItemProps): React.ReactElement {
   const {
-    handleDelete,
     secretEntry,
+    showDeleteModal,
+    showEditModal,
   } = props;
-
-  const [accountName, setAccountName] = useState<string>(secretEntry.accountName || '');
-  const [issuer, setIssuer] = useState<string>(secretEntry.issuer || '');
-  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
-  const [showEditModal, setShowEditModal] = useState<boolean>(false);
 
   const direction = useSharedValue(DIRECTIONS.left);
   const previousEventTranslationX = useSharedValue(0);
   const swipeLock = useSharedValue(false);
   const translateX = useSharedValue(0);
-
-  const handleDeleteEntry = (): Promise<void> => {
-    setShowDeleteModal(false);
-    return handleDelete(secretEntry.id);
-  };
 
   const handleGesture = useAnimatedGestureHandler<PanGestureHandlerGestureEvent>({
     onActive: (event): void => {
@@ -111,15 +101,6 @@ function ListItem(props: ListItemProps): React.ReactElement {
     },
   });
 
-  const handleInput = (name: string, value: string): void => {
-    if (name === 'accountName') {
-      setAccountName(value);
-    }
-    if (name === 'issuer') {
-      setIssuer(value);
-    }
-  };
-
   const itemStyle = useAnimatedStyle(() => ({
     transform: [{
       translateX: translateX.value,
@@ -128,23 +109,8 @@ function ListItem(props: ListItemProps): React.ReactElement {
 
   return (
     <View>
-      <DeleteEntryModal
-        handleClose={(): void => setShowDeleteModal(false)}
-        handleDelete={handleDeleteEntry}
-        secretEntry={secretEntry}
-        showDeleteEntryModal={showDeleteModal}
-      />
-      <EditEntryModal
-        accountName={accountName}
-        handleClose={(): void => setShowEditModal(false)}
-        handleEdit={async (): Promise<void> => console.log('save')}
-        handleInput={handleInput}
-        issuer={issuer}
-        secretEntry={secretEntry}
-        showEditEntryModal={showEditModal}
-      />
       <Pressable
-        onPress={(): void => setShowEditModal(true)}
+        onPress={(): void => showEditModal(secretEntry.id)}
         style={{
           ...styles.editButton,
           height: DISPOSITION_THRESHOLD,
@@ -158,7 +124,7 @@ function ListItem(props: ListItemProps): React.ReactElement {
         />
       </Pressable>
       <Pressable
-        onPress={(): void => setShowDeleteModal(true)}
+        onPress={(): void => showDeleteModal(secretEntry.id)}
         style={{
           ...styles.deleteButton,
           height: DISPOSITION_THRESHOLD,

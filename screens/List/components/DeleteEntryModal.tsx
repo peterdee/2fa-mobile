@@ -24,8 +24,17 @@ function DeleteEntryModal(props: DeleteEntryModalProps): React.ReactElement {
 
   return (
     <ModalWrap isVisible={showDeleteEntryModal}>
+      <Text style={styles.deleteEntryModalIssuer}>
+        { secretEntry.issuer }
+      </Text>
+      <Text style={styles.deleteEntryModalAccountName}>
+        { secretEntry.accountName }
+      </Text>
       <Text style={styles.deleteEntryModalText}>
-        Are you sure?
+        Are you sure you want to delete this entry?
+      </Text>
+      <Text style={styles.deleteEntryModalText}>
+        You will not be able to restore the data once it is deleted!
       </Text>
       <WideButton
         buttonStyle={{

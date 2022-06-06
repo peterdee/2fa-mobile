@@ -10,24 +10,49 @@ import ListItem from './ListItem';
 import Loader from '../../../components/Loader';
 import { SecretEntry } from '../../../types/models';
 import styles from '../styles';
+import DeleteEntryModal from './DeleteEntryModal';
 
 interface ListLayoutProps {
-  handleDelete: (id: string) => Promise<void>;
+  deleteEntry: SecretEntry | null;
+  deleteModalVisible: boolean;
+  editEntry: SecretEntry | null;
+  editModalVisible: boolean;
+  handleCloseModal: (type: string) => void;
+  handleDeleteEntry: (id: string) => Promise<void>;
+  handleEditEntry: (updatedEntry: SecretEntry) => Promise<void>;
   list: SecretEntry[];
   loading: boolean;
+  showDeleteModal: (id: string) => void;
+  showEditModal: (id: string) => void;
 }
 
 function ListLayout(props: ListLayoutProps): React.ReactElement {
   const {
-    handleDelete,
+    deleteEntry,
+    deleteModalVisible,
+    editEntry,
+    editModalVisible,
+    handleCloseModal,
+    handleDeleteEntry,
+    handleEditEntry,
     list,
     loading,
+    showDeleteModal,
+    showEditModal,
   } = props;
 
   return (
     <View style={styles.container}>
       { loading && (
         <Loader />
+      ) }
+      { !loading && deleteModalVisible && (
+        <DeleteEntryModal
+          handleClose={(): void => handleCloseModal('delete')}
+          handleDelete={handleDeleteEntry}
+          secretEntry={deleteEntry as SecretEntry}
+          showDeleteEntryModal={deleteModalVisible}
+        />
       ) }
       { !loading && list.length > 0 && (
         <FlatList
@@ -36,8 +61,9 @@ function ListLayout(props: ListLayoutProps): React.ReactElement {
           renderItem={
             ({ item }: ListRenderItemInfo<SecretEntry>): React.ReactElement => (
               <ListItem
-                handleDelete={handleDelete}
                 secretEntry={item}
+                showDeleteModal={showDeleteModal}
+                showEditModal={showEditModal}
               />
             )
           }
