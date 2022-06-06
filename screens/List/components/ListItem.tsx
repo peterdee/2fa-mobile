@@ -61,11 +61,9 @@ function ListItem(props: ListItemProps): React.ReactElement {
   };
 
   const handleGesture = useAnimatedGestureHandler<PanGestureHandlerGestureEvent>({
-    onActive: (event) => {
+    onActive: (event): void => {
       // horizontal axis shift value
-      const eventTranslationX = Math.abs(event.translationX) > OFFSET
-        ? translateX.value
-        : event.translationX;
+      const eventTranslationX = event.translationX;
 
       // determine shift direction based on the previous event value
       direction.value = eventTranslationX < previousEventTranslationX.value
@@ -75,80 +73,44 @@ function ListItem(props: ListItemProps): React.ReactElement {
       // update previous event value
       previousEventTranslationX.value = eventTranslationX;
 
-      // handle swipe to the left when swipe is not locked
-      if (direction.value === DIRECTIONS.left
-        && Math.abs(eventTranslationX) <= OFFSET
-        && eventTranslationX < 0
+      // swiping not locked
+      if (Math.abs(eventTranslationX) <= OFFSET
+        && eventTranslationX <= 0
         && !swipeLock.value) {
         translateX.value = eventTranslationX;
       }
 
-      // handle swipe to the left when swipe is locked
-      if (direction.value === DIRECTIONS.left
-        && swipeLock.value
+      // swiping locked
+      if (eventTranslationX >= 0
         && eventTranslationX <= OFFSET
-        && eventTranslationX > 0) {
+        && swipeLock.value) {
         translateX.value = eventTranslationX - OFFSET;
       }
-
-      // handle swipe to the right when swipe is not locked
-      if (direction.value === DIRECTIONS.right
-        && eventTranslationX < 0
-        && Math.abs(eventTranslationX) <= OFFSET
-        && !swipeLock.value) {
-        translateX.value = eventTranslationX;
-      }
-
-      // handle swipe to the right when swipe is locked
-      if (direction.value === DIRECTIONS.right
-        && swipeLock.value) {
-        const shiftValue = eventTranslationX - OFFSET;
-        if (shiftValue < 0 && Math.abs(shiftValue) <= OFFSET) {
-          translateX.value = shiftValue;
-        }
-      }
     },
-    onEnd: (event) => {
+    onEnd: (event): void => {
       // set previous event value back to zero
       previousEventTranslationX.value = 0;
 
       // horizontal axis shift value
       const eventTranslationX = event.translationX;
 
-      // TODO: fix the issue with returning
-      console.log(direction.value, swipeLock.value, eventTranslationX, translateX.value);
-
-      // swipe in any direction, not locked
+      // swiping not locked
       if (!swipeLock.value) {
-        if ((direction.value === DIRECTIONS.right
-          && eventTranslationX < 0)
-          || (direction.value === DIRECTIONS.left
-          && Math.abs(eventTranslationX) < DISPOSITION_THRESHOLD)) {
+        if (Math.abs(translateX.value) <= DISPOSITION_THRESHOLD) {
           swipeLock.value = false;
           translateX.value = withTiming(0);
-        }
-        if ((direction.value === DIRECTIONS.right
-          && eventTranslationX < 0)
-          || (direction.value === DIRECTIONS.left
-          && Math.abs(eventTranslationX) >= DISPOSITION_THRESHOLD)) {
+        } else {
           swipeLock.value = true;
           translateX.value = withTiming(OFFSET * -1);
         }
       }
 
-      // if swipe is locked
+      // swiping locked
       if (swipeLock.value) {
-        if ((direction.value === DIRECTIONS.right
-          && eventTranslationX < DISPOSITION_THRESHOLD)
-          || (direction.value === DIRECTIONS.left
-          && OFFSET - eventTranslationX >= DISPOSITION_THRESHOLD)) {
+        if (eventTranslationX <= DISPOSITION_THRESHOLD) {
           swipeLock.value = true;
           translateX.value = withTiming(OFFSET * -1);
-        }
-        if ((direction.value === DIRECTIONS.right
-          && eventTranslationX >= DISPOSITION_THRESHOLD)
-          || (direction.value === DIRECTIONS.left
-          && OFFSET - eventTranslationX < DISPOSITION_THRESHOLD)) {
+        } else {
           swipeLock.value = false;
           translateX.value = withTiming(0);
         }
