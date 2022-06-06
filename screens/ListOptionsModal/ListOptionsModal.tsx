@@ -1,30 +1,10 @@
 import React, { memo } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { Platform, Text, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-});
+import styles from './styles';
 
-function ModalScreen() {
+function ListOptionsModal() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Modal</Text>
@@ -36,4 +16,4 @@ function ModalScreen() {
   );
 }
 
-export default memo(ModalScreen);
+export default memo(ListOptionsModal);

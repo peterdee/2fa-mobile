@@ -5,7 +5,7 @@ import 'react-native-gesture-handler';
 import 'react-native-url-polyfill/auto';
 
 import Navigation from './navigation';
-import useCachedResources from './hooks/useCachedResources';
+import useCachedResources from './hooks/use-cached-resources';
 
 function App(): null | React.ReactElement {
   const isLoadingComplete = useCachedResources();

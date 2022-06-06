@@ -15,8 +15,8 @@ import CodeScanner from '../screens/CodeScanner';
 import { COLORS, SPACER, SPACER_HALF } from '../constants';
 import LinkingConfiguration from './LinkingConfiguration';
 import List from '../screens/List';
-import ModalScreen from '../screens/ModalScreen';
-import NotFoundScreen from '../screens/NotFoundScreen';
+import ListOptionsModal from '../screens/ListOptionsModal';
+import NotFound from '../screens/NotFound';
 import PINCode from '../screens/PINCode';
 
 function BottomIcon({ color, name }: BottomBarIconProps): React.ReactElement {
@@ -87,9 +87,9 @@ function Navigation(): React.ReactElement {
     <NavigationContainer linking={LinkingConfiguration}>
       <Stack.Navigator initialRouteName="PINCode">
         <Stack.Group screenOptions={{ presentation: 'modal' }}>
-          <Stack.Screen name="Modal" component={ModalScreen} />
+          <Stack.Screen name="Modal" component={ListOptionsModal} />
         </Stack.Group>
-        <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+        <Stack.Screen name="NotFound" component={NotFound} options={{ title: 'Oops!' }} />
         <Stack.Screen name="PINCode" component={PINCode} options={{ headerShown: false }} />
         <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       </Stack.Navigator>
