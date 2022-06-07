@@ -1,17 +1,69 @@
-import React, { memo } from 'react';
+import React, {
+  memo,
+  useEffect,
+  useState,
+} from 'react';
 import { Platform, Text, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 
+import ConfirmationModal from './components/ConfirmationModal';
+import {
+  deleteValue,
+  getValue,
+  KEYS,
+} from '../../utilities/storage';
+import { RootStackScreenProps } from '../../types/navigation';
+import { SecretEntry } from '../../types/models';
 import styles from './styles';
+import WideButton from '../../components/WideButton';
 
-function ListOptionsModal() {
+function ListOptionsModal({ navigation }: RootStackScreenProps<'Modal'>): React.ReactElement {
+  const [list, setList] = useState<SecretEntry[]>([]);
+  const [showConfirmationModal, setShowConfirmationModal] = useState<boolean>(false);
+
+  useEffect(
+    (): void => {
+      async function getList(): Promise<void> {
+        const items = await getValue<SecretEntry[]>(KEYS.secrets);
+        if (items) {
+          setList(items);
+        }
+      }
+      getList();
+    },
+    [],
+  );
+
+  const handleDelete = async (): Promise<void> => {
+    await deleteValue(KEYS.secrets);
+    return navigation.replace('Root');
+  };
+
+  const toggleModal = (): void => setShowConfirmationModal(
+    (state: boolean): boolean => !state,
+  );
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Modal</Text>
-      <View style={styles.separator} />
-
-      {/* Use a light status bar on iOS to account for the black space above the modal */}
+      <ConfirmationModal
+        handleClose={toggleModal}
+        handleDelete={handleDelete}
+        showModal={showConfirmationModal}
+      />
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
+      <Text style={styles.infoText}>
+        { `Stored items: ${list.length}` }
+      </Text>
+      <WideButton
+        buttonStyle={styles.deleteAllButton}
+        disabled={list.length === 0}
+        disabledButtonStyle={{
+          ...styles.deleteAllButton,
+          ...styles.deleteAllButtonDisabled,
+        }}
+        onPress={toggleModal}
+        text="Delete all items"
+      />
     </View>
   );
 }

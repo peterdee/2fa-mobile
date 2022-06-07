@@ -81,11 +81,9 @@ function ListLayout(props: ListLayoutProps): React.ReactElement {
         />
       ) }
       { !loading && list.length === 0 && (
-        <View style={styles.nothingToDisplay}>
-          <Text style={styles.nothingToDisplayText}>
-            Nothing to display
-          </Text>
-        </View>
+        <Text style={styles.nothingToDisplayText}>
+          No entries found!
+        </Text>
       ) }
     </View>
   );

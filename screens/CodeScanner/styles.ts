@@ -23,6 +23,7 @@ export default StyleSheet.create({
     color: COLORS.textInverted,
   },
   tokenWrap: {
+    backgroundColor: COLORS.text,
     marginTop: SPACER,
     width: '80%',
   },

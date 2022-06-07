@@ -1,5 +1,8 @@
 import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {
+  BottomTabNavigationOptions,
+  createBottomTabNavigator,
+} from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
@@ -62,9 +65,9 @@ function BottomTabNavigator(): React.ReactElement {
       <BottomTab.Screen
         component={List}
         name="List"
-        options={(props: RootTabScreenProps<'List'>) => ({
-          headerRight: () => HeaderMenu(props),
-          tabBarIcon: ({ color }) => BottomIcon({ color, name: 'md-list' }),
+        options={(props: RootTabScreenProps<'List'>): BottomTabNavigationOptions => ({
+          headerRight: (): React.ReactElement => HeaderMenu(props),
+          tabBarIcon: ({ color }): React.ReactElement => BottomIcon({ color, name: 'md-list' }),
           title: 'List',
         })}
       />
@@ -72,7 +75,7 @@ function BottomTabNavigator(): React.ReactElement {
         component={CodeScanner}
         name="CodeScanner"
         options={{
-          tabBarIcon: ({ color }) => BottomIcon({ color, name: 'qr-code' }),
+          tabBarIcon: ({ color }): React.ReactElement => BottomIcon({ color, name: 'qr-code' }),
           title: 'Code Scanner',
         }}
       />
@@ -87,11 +90,27 @@ function Navigation(): React.ReactElement {
     <NavigationContainer linking={LinkingConfiguration}>
       <Stack.Navigator initialRouteName="PINCode">
         <Stack.Group screenOptions={{ presentation: 'modal' }}>
-          <Stack.Screen name="Modal" component={ListOptionsModal} />
+          <Stack.Screen
+            component={ListOptionsModal}
+            name="Modal"
+            options={{ title: 'List Options' }}
+          />
         </Stack.Group>
-        <Stack.Screen name="NotFound" component={NotFound} options={{ title: 'Oops!' }} />
-        <Stack.Screen name="PINCode" component={PINCode} options={{ headerShown: false }} />
-        <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+        <Stack.Screen
+          component={NotFound}
+          name="NotFound"
+          options={{ title: 'Oops!' }}
+        />
+        <Stack.Screen
+          component={PINCode}
+          name="PINCode"
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          component={BottomTabNavigator}
+          name="Root"
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

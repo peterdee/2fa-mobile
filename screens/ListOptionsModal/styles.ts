@@ -1,21 +1,30 @@
 import { StyleSheet } from 'react-native';
 
-import { SPACER, SPACER_HALF } from '../../constants';
+import { COLORS, SPACER, SPACER_HALF } from '../../constants';
 
 export default StyleSheet.create({
+  confirmationModalText: {
+    color: COLORS.textInverted,
+    fontSize: SPACER + SPACER_HALF / 2,
+    marginBottom: SPACER,
+    textAlign: 'center',
+    width: '80%',
+  },
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     padding: SPACER,
   },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+  deleteAllButton: {
+    backgroundColor: COLORS.negative,
+    marginTop: SPACER * 2,
   },
-  title: {
-    fontSize: SPACER + SPACER_HALF,
-    fontWeight: 'bold',
+  deleteAllButtonDisabled: {
+    backgroundColor: COLORS.muted,
+  },
+  infoText: {
+    color: COLORS.text,
+    fontSize: SPACER + SPACER_HALF / 2,
   },
 });

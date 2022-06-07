@@ -9,15 +9,11 @@ export default StyleSheet.create({
     justifyContent: 'flex-start',
     paddingHorizontal: SPACER,
   },
-  nothingToDisplay: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   nothingToDisplayText: {
-    color: COLORS.textInverted,
+    color: COLORS.text,
     fontSize: SPACER + SPACER_HALF,
-    fontWeight: '200',
+    marginTop: SPACER * 3,
+    textAlign: 'center',
   },
   tokenWrap: {
     marginVertical: SPACER_HALF / 2,
