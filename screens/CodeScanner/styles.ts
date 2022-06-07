@@ -8,13 +8,17 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  contentRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '80%',
+  },
   modalText: {
     color: COLORS.mutedLight,
     fontSize: SPACER,
     fontWeight: '200',
     marginTop: SPACER,
-    textAlign: 'left',
-    width: '80%',
   },
   timeText: {
     color: COLORS.textInverted,

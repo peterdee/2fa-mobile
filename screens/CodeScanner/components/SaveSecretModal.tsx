@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 
 import { COLORS, SPACER } from '../../../constants';
 import Input from '../../../components/Input';
@@ -17,6 +17,8 @@ interface SaveSecretModalProps {
   showSaveSecretModal: boolean;
 }
 
+const INPUT_LENGTH = 32;
+
 function SaveSecretModal(props: SaveSecretModalProps): React.ReactElement {
   const {
     handleCancel,
@@ -25,6 +27,9 @@ function SaveSecretModal(props: SaveSecretModalProps): React.ReactElement {
     keyURIData,
     showSaveSecretModal,
   } = props;
+
+  const accountNameLeft = INPUT_LENGTH - (keyURIData?.accountName as string).length;
+  const issuerLeft = INPUT_LENGTH - (keyURIData?.issuer as string).length;
 
   return (
     <ModalWrap isVisible={showSaveSecretModal}>
@@ -53,20 +58,60 @@ function SaveSecretModal(props: SaveSecretModalProps): React.ReactElement {
         ) }
         { keyURIData && (
           <>
-            <Text style={styles.modalText}>
-              Service name
-            </Text>
+            <View style={styles.contentRow}>
+              <Text
+                style={{
+                  ...styles.modalText,
+                  color: issuerLeft === INPUT_LENGTH
+                    ? COLORS.negative
+                    : COLORS.textInverted,
+                }}
+              >
+                Service name
+              </Text>
+              <Text
+                style={{
+                  ...styles.modalText,
+                  color: issuerLeft < 10
+                    ? COLORS.negative
+                    : COLORS.textInverted,
+                }}
+              >
+                { issuerLeft }
+              </Text>
+            </View>
             <Input
               customStyles={styles.inputStyles}
               handleChange={(value: string) => handleInput('issuer', value)}
+              maxLength={INPUT_LENGTH}
               value={keyURIData.issuer as string}
             />
-            <Text style={styles.modalText}>
-              Account name
-            </Text>
+            <View style={styles.contentRow}>
+              <Text
+                style={{
+                  ...styles.modalText,
+                  color: accountNameLeft === INPUT_LENGTH
+                    ? COLORS.negative
+                    : COLORS.textInverted,
+                }}
+              >
+                Account name
+              </Text>
+              <Text
+                style={{
+                  ...styles.modalText,
+                  color: accountNameLeft < 10
+                    ? COLORS.negative
+                    : COLORS.textInverted,
+                }}
+              >
+                { accountNameLeft }
+              </Text>
+            </View>
             <Input
               customStyles={styles.inputStyles}
               handleChange={(value: string) => handleInput('accountName', value)}
+              maxLength={INPUT_LENGTH}
               value={keyURIData.accountName as string}
             />
             <Token

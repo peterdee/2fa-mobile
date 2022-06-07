@@ -11,6 +11,7 @@ import EditEntryModal from './EditEntryModal';
 import ListItem from './ListItem';
 import Loader from '../../../components/Loader';
 import { SecretEntry } from '../../../types/models';
+import { SPACER_HALF } from '../../../constants';
 import styles from '../styles';
 
 interface ListLayoutProps {
@@ -42,8 +43,6 @@ function ListLayout(props: ListLayoutProps): React.ReactElement {
     showEditModal,
   } = props;
 
-  // TODO: fix FlatList appearance when there are few elements
-
   return (
     <View style={styles.container}>
       { loading && (
@@ -69,6 +68,7 @@ function ListLayout(props: ListLayoutProps): React.ReactElement {
         <FlatList
           contentContainerStyle={{
             height: '100%',
+            marginVertical: SPACER_HALF,
           }}
           data={list}
           keyExtractor={(item: SecretEntry): string => item.id}
