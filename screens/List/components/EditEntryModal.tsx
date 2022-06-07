@@ -1,9 +1,10 @@
 import React, {
   memo,
   useCallback,
+  useMemo,
   useState,
 } from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 
 import { COLORS, SPACER } from '../../../constants';
 import Input from '../../../components/Input';
@@ -19,6 +20,8 @@ interface EditEntryModalProps {
   showEditEntryModal: boolean;
 }
 
+const INPUT_LENGTH = 32;
+
 function EditEntryModal(props: EditEntryModalProps): React.ReactElement {
   const {
     handleClose,
@@ -29,6 +32,16 @@ function EditEntryModal(props: EditEntryModalProps): React.ReactElement {
 
   const [accountName, setAccountName] = useState<string>(secretEntry.accountName || '');
   const [issuer, setIssuer] = useState<string>(secretEntry.issuer || '');
+
+  const accountNameLeft = useMemo(
+    (): number => INPUT_LENGTH - accountName.length,
+    [accountName],
+  );
+
+  const issuerLeft = useMemo(
+    (): number => INPUT_LENGTH - issuer.length,
+    [issuer],
+  );
 
   const handleInput = (name: string, value: string): void => {
     if (name === 'accountName') {
@@ -57,20 +70,60 @@ function EditEntryModal(props: EditEntryModalProps): React.ReactElement {
 
   return (
     <ModalWrap isVisible={showEditEntryModal}>
-      <Text style={styles.modalText}>
-        Service name
-      </Text>
+      <View style={styles.contentRow}>
+        <Text
+          style={{
+            ...styles.modalText,
+            color: issuerLeft === INPUT_LENGTH
+              ? COLORS.negative
+              : COLORS.textInverted,
+          }}
+        >
+          Service name
+        </Text>
+        <Text
+          style={{
+            ...styles.modalText,
+            color: issuerLeft < 10
+              ? COLORS.negative
+              : COLORS.textInverted,
+          }}
+        >
+          { issuerLeft }
+        </Text>
+      </View>
       <Input
         customStyles={styles.inputStyles}
         handleChange={(value: string): void => handleInput('issuer', value)}
+        maxLength={INPUT_LENGTH}
         value={issuer}
       />
-      <Text style={styles.modalText}>
-        Account name
-      </Text>
+      <View style={styles.contentRow}>
+        <Text
+          style={{
+            ...styles.modalText,
+            color: accountNameLeft === INPUT_LENGTH
+              ? COLORS.negative
+              : COLORS.textInverted,
+          }}
+        >
+          Account name
+        </Text>
+        <Text
+          style={{
+            ...styles.modalText,
+            color: accountNameLeft < 10
+              ? COLORS.negative
+              : COLORS.textInverted,
+          }}
+        >
+          { accountNameLeft }
+        </Text>
+      </View>
       <Input
         customStyles={styles.inputStyles}
         handleChange={(value: string): void => handleInput('accountName', value)}
+        maxLength={INPUT_LENGTH}
         value={accountName}
       />
       <WideButton

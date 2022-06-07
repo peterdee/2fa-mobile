@@ -67,6 +67,9 @@ function ListLayout(props: ListLayoutProps): React.ReactElement {
       ) }
       { !loading && list.length > 0 && (
         <FlatList
+          contentContainerStyle={{
+            height: '100%',
+          }}
           data={list}
           keyExtractor={(item: SecretEntry): string => item.id}
           renderItem={

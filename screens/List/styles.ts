@@ -69,6 +69,12 @@ export default StyleSheet.create({
     width: '80%',
   },
   // edit entry modal
+  contentRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '80%',
+  },
   inputStyles: {
     color: COLORS.textInverted,
     marginTop: SPACER,
@@ -78,7 +84,5 @@ export default StyleSheet.create({
     fontSize: SPACER,
     fontWeight: '200',
     marginTop: SPACER,
-    textAlign: 'left',
-    width: '80%',
   },
 });
