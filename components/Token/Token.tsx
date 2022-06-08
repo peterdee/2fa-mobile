@@ -91,6 +91,7 @@ function Token(props: TokenProps): React.ReactElement {
       { showDetails && (
         <>
           <Text
+            numberOfLines={1}
             style={{
               ...styles.issuer,
               ...issuerStyles,
@@ -99,6 +100,7 @@ function Token(props: TokenProps): React.ReactElement {
             { secretEntry.issuer }
           </Text>
           <Text
+            numberOfLines={1}
             style={{
               ...styles.accountName,
               ...accountNameStyles,
