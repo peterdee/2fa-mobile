@@ -52,7 +52,7 @@ function ListOptionsModal({ navigation }: RootStackScreenProps<'Modal'>): React.
       />
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
       <Text style={styles.infoText}>
-        { `Stored items: ${list.length}` }
+        { `Stored entries: ${list.length}` }
       </Text>
       <WideButton
         buttonStyle={styles.deleteAllButton}
@@ -62,7 +62,7 @@ function ListOptionsModal({ navigation }: RootStackScreenProps<'Modal'>): React.
           ...styles.deleteAllButtonDisabled,
         }}
         onPress={toggleModal}
-        text="Delete all items"
+        text="Delete all entries"
       />
     </View>
   );

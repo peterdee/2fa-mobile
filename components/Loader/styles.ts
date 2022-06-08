@@ -1,16 +1,12 @@
 import { StyleSheet } from 'react-native';
 
-import { COLORS } from '../../constants';
-
 export default StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    height: '100%',
     justifyContent: 'center',
-  },
-  text: {
-    color: COLORS.text,
-    fontSize: 20,
-    fontWeight: 'bold',
+    width: '100%',
   },
 });
