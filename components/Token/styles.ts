@@ -9,6 +9,7 @@ export default StyleSheet.create({
     flexDirection: 'column',
     height: SPACER * 7,
     justifyContent: 'space-between',
+    paddingTop: SPACER_HALF / 2,
   },
   accountName: {
     color: COLORS.mutedDark,
