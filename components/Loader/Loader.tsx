@@ -1,5 +1,12 @@
-import React, { memo } from 'react';
-import Animated, { Easing, useDerivedValue, useSharedValue, withTiming } from 'react-native-reanimated';
+import React, { memo, useEffect } from 'react';
+import Animated, {
+  cancelAnimation,
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from 'react-native-reanimated';
 import Svg, { Path } from 'react-native-svg';
 import { View } from 'react-native';
 
@@ -17,25 +24,34 @@ function Loader(props: LoaderProps): React.ReactElement {
     width,
   } = props;
 
-  const degrees = useSharedValue(50);
-  const rotate = useDerivedValue(() => withTiming(
-    degrees.value,
-    {
-      duration: 1000,
-      easing: Easing.linear,
-    },
-  ));
+  const rotation = useSharedValue(0);
+  const style = useAnimatedStyle(() => ({
+    transform: [{
+      rotateZ: `${rotation.value}deg`,
+    }],
+  }));
 
-  console.log('rotate', rotate.value);
+  useEffect(
+    (): (() => void) => {
+      rotation.value = withRepeat(
+        withTiming(
+          360,
+          {
+            duration: 2000,
+            easing: Easing.linear,
+          },
+        ),
+        -1,
+      );
+
+      return (): void => cancelAnimation(rotation);
+    },
+    [],
+  );
+
   return (
     <View style={styles.container}>
-      <Animated.View
-        style={{
-          transform: [{
-            rotateZ: `${rotate.value}deg`,
-          }],
-        }}
-      >
+      <Animated.View style={style}>
         <Svg
           fill="none"
           height={height}
