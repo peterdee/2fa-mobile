@@ -44,6 +44,11 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
           setHasPIN(true);
           setPIN(`${pinValue}`);
         }
+
+        // artificial delay to show the loader
+        await new Promise((resolve): void => {
+          setTimeout(resolve, 500);
+        });
         return setLoading(false);
       }
 

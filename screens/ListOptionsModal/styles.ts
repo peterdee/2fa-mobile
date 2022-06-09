@@ -23,7 +23,16 @@ export default StyleSheet.create({
   deleteAllButtonDisabled: {
     backgroundColor: COLORS.muted,
   },
-  infoText: {
+  // Switch row
+  switchRow: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: SPACER * 2,
+    width: '80%',
+  },
+  text: {
     color: COLORS.text,
     fontSize: SPACER + SPACER_HALF / 2,
   },

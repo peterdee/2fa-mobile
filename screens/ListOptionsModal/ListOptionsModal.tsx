@@ -15,10 +15,12 @@ import {
 import { RootStackScreenProps } from '../../types/navigation';
 import { SecretEntry } from '../../types/models';
 import styles from './styles';
+import Switch from '../../components/Switch';
 import WideButton from '../../components/WideButton';
 
 function ListOptionsModal({ navigation }: RootStackScreenProps<'Modal'>): React.ReactElement {
   const [list, setList] = useState<SecretEntry[]>([]);
+  const [PINStatus, setPINStatus] = useState<boolean>(false);
   const [showConfirmationModal, setShowConfirmationModal] = useState<boolean>(false);
 
   useEffect(
@@ -51,9 +53,15 @@ function ListOptionsModal({ navigation }: RootStackScreenProps<'Modal'>): React.
         showModal={showConfirmationModal}
       />
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
-      <Text style={styles.infoText}>
-        { `Stored entries: ${list.length}` }
-      </Text>
+      <View style={styles.switchRow}>
+        <Text style={styles.text}>
+          Require PIN
+        </Text>
+        <Switch
+          handleChange={() => setPINStatus((state) => !state)}
+          value={PINStatus}
+        />
+      </View>
       <WideButton
         buttonStyle={styles.deleteAllButton}
         disabled={list.length === 0}
@@ -62,7 +70,7 @@ function ListOptionsModal({ navigation }: RootStackScreenProps<'Modal'>): React.
           ...styles.deleteAllButtonDisabled,
         }}
         onPress={toggleModal}
-        text="Delete all entries"
+        text={`Delete all entries (${list.length})`}
       />
     </View>
   );

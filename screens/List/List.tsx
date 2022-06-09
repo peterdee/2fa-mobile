@@ -24,7 +24,7 @@ function List(): React.ReactElement {
         if (Array.isArray(entries) && entries.length > 0) {
           setList(entries);
         }
-        // setLoading(false);
+        setLoading(false);
       }
 
       getSecrets();
