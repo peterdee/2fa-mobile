@@ -1,9 +1,5 @@
 import React, { memo } from 'react';
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated';
+import Animated, { Easing, useDerivedValue, useSharedValue, withTiming } from 'react-native-reanimated';
 import Svg, { Path } from 'react-native-svg';
 import { View } from 'react-native';
 
@@ -21,39 +17,40 @@ function Loader(props: LoaderProps): React.ReactElement {
     width,
   } = props;
 
-  const rotateValue = new Animated.Value(0);
+  const degrees = useSharedValue(50);
+  const rotate = useDerivedValue(() => withTiming(
+    degrees.value,
+    {
+      duration: 1000,
+      easing: Easing.linear,
+    },
+  ));
 
-  const rotateData = rotateValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '360deg'],
-  });
-
-  // const viewStyle = useAnimatedStyle(() => ({
-  //   transform: [{
-  //     rotate: rotateData,
-  //   }],
-  // }));
-
+  console.log('rotate', rotate.value);
   return (
-    <Animated.View
-      style={[
-        styles.container,
-      ]}
-    >
-      <Svg
-        fill="none"
-        height={height}
-        width={width}
-        viewBox="0 0 512 512"
+    <View style={styles.container}>
+      <Animated.View
+        style={{
+          transform: [{
+            rotateZ: `${rotate.value}deg`,
+          }],
+        }}
       >
-        <Path
-          clipRule="evenodd"
-          d="M4.686 244.685c-6.248 6.248-6.248 16.379 0 22.627l239.999 239.999c6.248 6.249 16.379 6.249 22.627 0l239.999-239.999c6.249-6.248 6.249-16.379 0-22.627L267.312 4.686c-6.248-6.248-16.379-6.248-22.627 0L4.686 244.685Zm186.015-57.984a4 4 0 0 0-4 4V321.98a4 4 0 0 0 4 4H321.98a4 4 0 0 0 4-4V190.701a4 4 0 0 0-4-4H190.701Z"
-          fill="#2244FF"
-          fillRule="evenodd"
-        />
-      </Svg>
-    </Animated.View>
+        <Svg
+          fill="none"
+          height={height}
+          width={width}
+          viewBox="0 0 512 512"
+        >
+          <Path
+            clipRule="evenodd"
+            d="M4.686 244.685c-6.248 6.248-6.248 16.379 0 22.627l239.999 239.999c6.248 6.249 16.379 6.249 22.627 0l239.999-239.999c6.249-6.248 6.249-16.379 0-22.627L267.312 4.686c-6.248-6.248-16.379-6.248-22.627 0L4.686 244.685Zm186.015-57.984a4 4 0 0 0-4 4V321.98a4 4 0 0 0 4 4H321.98a4 4 0 0 0 4-4V190.701a4 4 0 0 0-4-4H190.701Z"
+            fill="#2244FF"
+            fillRule="evenodd"
+          />
+        </Svg>
+      </Animated.View>
+    </View>
   );
 }
 
