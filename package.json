@@ -2,6 +2,11 @@
   "name": "2fa-mobile",
   "version": "1.0.0",
   "private": true,
+  "description": "2FA Mobile is used to generate OTPs based on the scanned tokens",
+  "author": {
+    "name": "Peter Dyumin",
+    "url": "https://github.com/peterdee"
+  },
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "android": "expo start --android",
@@ -9,6 +14,16 @@
     "ios": "expo start --ios",
     "lint": "eslint",
     "start": "expo start"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=7.0.0"
+  },
+  "homepage": "https://github.com/peterdee/2fa-mobile",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/peterdee/2fa-mobile"
   },
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",
