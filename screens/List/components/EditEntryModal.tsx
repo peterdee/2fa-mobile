@@ -4,7 +4,7 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import { Text, View } from 'react-native';
+import { Platform, Text, View } from 'react-native';
 
 import { COLORS, SPACER } from '../../../constants';
 import Input from '../../../components/Input';
@@ -15,6 +15,7 @@ import WideButton from '../../../components/WideButton';
 
 interface EditEntryModalProps {
   handleClose: () => void;
+  handleDelete?: null | ((id: string) => void);
   handleSave: (updatedEntry: SecretEntry) => Promise<void>;
   secretEntry: SecretEntry;
   showEditEntryModal: boolean;
@@ -25,6 +26,7 @@ const INPUT_LENGTH = 32;
 function EditEntryModal(props: EditEntryModalProps): React.ReactElement {
   const {
     handleClose,
+    handleDelete,
     handleSave,
     secretEntry,
     showEditEntryModal,
@@ -139,6 +141,16 @@ function EditEntryModal(props: EditEntryModalProps): React.ReactElement {
         onPress={saveForm}
         text="Save"
       />
+      { Platform.OS === 'android' && handleDelete && (
+        <WideButton
+          buttonStyle={{
+            backgroundColor: COLORS.negative,
+            marginTop: SPACER * 2,
+          }}
+          onPress={(): void => handleDelete(secretEntry.id)}
+          text="Delete"
+        />
+      ) }
       <WideButton
         buttonStyle={{
           marginTop: SPACER * 2,
@@ -149,5 +161,9 @@ function EditEntryModal(props: EditEntryModalProps): React.ReactElement {
     </ModalWrap>
   );
 }
+
+EditEntryModal.defaultProps = {
+  handleDelete: null,
+};
 
 export default memo(EditEntryModal);

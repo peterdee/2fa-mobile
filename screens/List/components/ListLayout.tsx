@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import {
   FlatList,
   ListRenderItemInfo,
+  Platform,
   Text,
   View,
 } from 'react-native';
@@ -59,6 +60,7 @@ function ListLayout(props: ListLayoutProps): React.ReactElement {
       { !loading && editModalVisible && (
         <EditEntryModal
           handleClose={(): void => handleCloseModal('edit')}
+          handleDelete={showDeleteModal}
           handleSave={handleEditEntry}
           secretEntry={editEntry as SecretEntry}
           showEditEntryModal={editModalVisible}
@@ -66,10 +68,14 @@ function ListLayout(props: ListLayoutProps): React.ReactElement {
       ) }
       { !loading && list.length > 0 && (
         <FlatList
-          contentContainerStyle={{
-            height: '100%',
-            marginVertical: SPACER_HALF,
-          }}
+          contentContainerStyle={
+            Platform.OS === 'ios'
+              ? ({
+                height: '100%',
+                marginVertical: SPACER_HALF,
+              })
+              : null
+          }
           data={list}
           keyExtractor={(item: SecretEntry): string => item.id}
           renderItem={

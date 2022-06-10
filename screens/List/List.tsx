@@ -70,6 +70,7 @@ function List(): React.ReactElement {
     (id: string): void => {
       const [entry] = list.filter((item: SecretEntry): boolean => item.id === id);
       setDeleteModalVisible(true);
+      setEditModalVisible(false);
       return setDeleteEntry(entry);
     },
     [list],

@@ -113,6 +113,20 @@ function ListItem(props: ListItemProps): React.ReactElement {
     }],
   }));
 
+  // Anroid layout does not have animations
+  if (Platform.OS === 'android') {
+    return (
+      <Token
+        handleOpenMenu={(): void => showEditModal(secretEntry.id)}
+        key={secretEntry.id}
+        secretEntry={secretEntry}
+        showMenu
+        wrapStyles={styles.tokenWrap}
+      />
+    );
+  }
+
+  // iOS layout
   return (
     <>
       <Pressable

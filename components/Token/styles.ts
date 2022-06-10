@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 import { COLORS, SPACER, SPACER_HALF } from '../../constants';
 
@@ -7,7 +7,9 @@ export default StyleSheet.create({
     backgroundColor: COLORS.background,
     display: 'flex',
     flexDirection: 'column',
-    height: SPACER * 7,
+    height: Platform.OS === 'ios'
+      ? SPACER * 7
+      : SPACER * 8,
     justifyContent: 'space-between',
     paddingTop: SPACER_HALF / 2,
   },
@@ -16,6 +18,11 @@ export default StyleSheet.create({
     fontSize: SPACER,
     fontWeight: '200',
     marginTop: SPACER_HALF / 2,
+  },
+  detailsColumn: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
   },
   issuer: {
     color: COLORS.accent,
@@ -27,6 +34,7 @@ export default StyleSheet.create({
     fontWeight: '200',
   },
   tokenRow: {
+    alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',

@@ -4,18 +4,25 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import { Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import {
+  Pressable,
+  Text,
+  View,
+} from 'react-native';
 
-import { COLORS } from '../../constants';
+import { COLORS, SPACER, SPACER_HALF } from '../../constants';
 import { generateToken, getTimeLeft } from '../../utilities/otp';
 import { KeyURIData, SecretEntry } from '../../types/models';
 import styles from './styles';
 
 interface TokenProps {
   accountNameStyles?: object;
+  handleOpenMenu?: null | (() => void);
   issuerStyles?: object;
-  showDetails?: boolean;
   secretEntry: KeyURIData | SecretEntry;
+  showDetails?: boolean;
+  showMenu?: boolean;
   timeStyles?: object;
   tokenStyles?: object;
   wrapStyles?: object;
@@ -24,9 +31,11 @@ interface TokenProps {
 function Token(props: TokenProps): React.ReactElement {
   const {
     accountNameStyles,
+    handleOpenMenu,
     issuerStyles,
-    showDetails,
     secretEntry,
+    showDetails,
+    showMenu,
     timeStyles,
     tokenStyles,
     wrapStyles,
@@ -89,26 +98,37 @@ function Token(props: TokenProps): React.ReactElement {
       }}
     >
       { showDetails && (
-        <>
-          <Text
-            numberOfLines={1}
-            style={{
-              ...styles.issuer,
-              ...issuerStyles,
-            }}
-          >
-            { secretEntry.issuer }
-          </Text>
-          <Text
-            numberOfLines={1}
-            style={{
-              ...styles.accountName,
-              ...accountNameStyles,
-            }}
-          >
-            { secretEntry.accountName }
-          </Text>
-        </>
+        <View style={styles.tokenRow}>
+          <View style={styles.detailsColumn}>
+            <Text
+              numberOfLines={1}
+              style={{
+                ...styles.issuer,
+                ...issuerStyles,
+              }}
+            >
+              { secretEntry.issuer }
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={{
+                ...styles.accountName,
+                ...accountNameStyles,
+              }}
+            >
+              { secretEntry.accountName }
+            </Text>
+          </View>
+          { showMenu && handleOpenMenu && (
+            <Pressable onPress={handleOpenMenu}>
+              <Ionicons
+                color={COLORS.text}
+                name="ellipsis-vertical"
+                size={SPACER + SPACER_HALF}
+              />
+            </Pressable>
+          ) }
+        </View>
       ) }
       <View style={styles.tokenRow}>
         <Text
@@ -131,8 +151,10 @@ function Token(props: TokenProps): React.ReactElement {
 
 Token.defaultProps = {
   accountNameStyles: {},
+  handleOpenMenu: null,
   issuerStyles: {},
   showDetails: true,
+  showMenu: false,
   timeStyles: {},
   tokenStyles: {},
   wrapStyles: {},

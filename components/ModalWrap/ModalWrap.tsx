@@ -4,7 +4,7 @@ import { Modal, View } from 'react-native';
 import styles from './styles';
 
 interface ModalWrapProps {
-  children: React.ReactChild | React.ReactChild[];
+  children: React.ReactChild | React.ReactChild[] | any;
   isVisible: boolean;
 }
 
