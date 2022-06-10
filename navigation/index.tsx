@@ -36,7 +36,7 @@ function BottomIcon({ color, name }: BottomBarIconProps): React.ReactElement {
 function HeaderMenu({ navigation }: RootTabScreenProps<'List'>): React.ReactElement {
   return (
     <Pressable
-      onPress={() => navigation.navigate('Modal')}
+      onPress={(): void => navigation.navigate('Modal')}
       style={({ pressed }) => ({
         opacity: pressed ? 0.5 : 1,
       })}

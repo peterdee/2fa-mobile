@@ -25,8 +25,8 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
   const [loading, setLoading] = useState<boolean>(true);
   const [PIN, setPIN] = useState<string>('');
   const [PINError, setPINError] = useState<string>('');
-  const [showResetPINModal, setShowResetPINModal] = useState<boolean>(false);
   const [showPINSetModal, setShowPINSetModal] = useState<boolean>(false);
+  const [showResetPINModal, setShowResetPINModal] = useState<boolean>(false);
   const [showSkipPINModal, setShowSkipPINModal] = useState<boolean>(false);
 
   useEffect(
@@ -59,10 +59,11 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
 
   const handleCancelReset = (): void => setShowResetPINModal(false);
 
-  // TODO: PIN Set modal is shown despite it being closed
   const handleCloseSetPINModal = (): void => {
     setShowPINSetModal(false);
-    return navigation.replace('Root');
+
+    // this fixes the issue with PIN Set modal
+    setTimeout((): void => navigation.replace('Root'), 0);
   };
 
   const handlePress = useCallback(
