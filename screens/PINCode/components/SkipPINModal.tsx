@@ -19,7 +19,7 @@ function SkipPINModal(props: SkipPINModalProps): React.ReactElement {
   return (
     <ModalWrap isVisible={showSkipPINModal}>
       <Text style={styles.PINModalText}>
-        You can enable PIN code later
+        You can enable PIN code later in the Options menu!
       </Text>
       <WideButton
         onPress={handleClose}

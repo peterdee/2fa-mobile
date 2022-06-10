@@ -29,7 +29,6 @@ export default StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: SPACER * 2,
     width: '80%',
   },
   text: {

@@ -126,5 +126,7 @@ export default StyleSheet.create({
     color: COLORS.textInverted,
     fontSize: SPACER + SPACER_HALF / 2,
     marginVertical: SPACER * 2,
+    textAlign: 'center',
+    width: '80%',
   },
 });
