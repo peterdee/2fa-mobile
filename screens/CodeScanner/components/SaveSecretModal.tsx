@@ -28,8 +28,12 @@ function SaveSecretModal(props: SaveSecretModalProps): React.ReactElement {
     showSaveSecretModal,
   } = props;
 
-  const accountNameLeft = INPUT_LENGTH - (keyURIData?.accountName as string).length;
-  const issuerLeft = INPUT_LENGTH - (keyURIData?.issuer as string).length;
+  let accountNameLeft = INPUT_LENGTH;
+  let issuerLeft = INPUT_LENGTH;
+  if (keyURIData) {
+    accountNameLeft = INPUT_LENGTH - (keyURIData?.accountName as string).length;
+    issuerLeft = INPUT_LENGTH - (keyURIData?.issuer as string).length;
+  }
 
   return (
     <ModalWrap isVisible={showSaveSecretModal}>

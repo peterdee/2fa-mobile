@@ -77,7 +77,7 @@ function CodeScanner({ navigation }: RootStackScreenProps<'Root'>): React.ReactE
       setScanned(false);
       setShowSaveSecretModal(false);
       setKeyURIData(null);
-      return navigation.push('Root');
+      return navigation.replace('Root');
     },
     [keyURIData],
   );

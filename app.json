@@ -25,7 +25,8 @@
       "adaptiveIcon": {
         "backgroundColor": "#ffffff",
         "foregroundImage": "./assets/images/adaptive-icon.png"
-      }
+      },
+      "package": "com.mobile.otp"
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
