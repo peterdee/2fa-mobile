@@ -20,13 +20,17 @@ export default StyleSheet.create({
     marginTop: SPACER_HALF / 2,
   },
   detailsColumn: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
+    flex: 1,
   },
   issuer: {
     color: COLORS.accent,
     fontSize: SPACER + (SPACER_HALF / 2),
+  },
+  menuButton: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: SPACER + SPACER_HALF,
   },
   text: {
     color: COLORS.text,

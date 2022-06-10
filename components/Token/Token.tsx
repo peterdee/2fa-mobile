@@ -120,7 +120,10 @@ function Token(props: TokenProps): React.ReactElement {
             </Text>
           </View>
           { showMenu && handleOpenMenu && (
-            <Pressable onPress={handleOpenMenu}>
+            <Pressable
+              onPress={handleOpenMenu}
+              style={styles.menuButton}
+            >
               <Ionicons
                 color={COLORS.text}
                 name="ellipsis-vertical"
