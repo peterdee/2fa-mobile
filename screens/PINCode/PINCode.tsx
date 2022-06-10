@@ -59,7 +59,11 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
 
   const handleCancelReset = (): void => setShowResetPINModal(false);
 
-  const handleCloseSetPINModal = (): void => navigation.replace('Root');
+  // TODO: PIN Set modal is shown despite it being closed
+  const handleCloseSetPINModal = (): void => {
+    setShowPINSetModal(false);
+    return navigation.replace('Root');
+  };
 
   const handlePress = useCallback(
     async (value: string): Promise<void> => {

@@ -5,12 +5,14 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {
+  GestureEventPayload,
   PanGestureHandler,
+  PanGestureHandlerEventPayload,
   PanGestureHandlerGestureEvent,
 } from 'react-native-gesture-handler';
-import { Pressable, View } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Platform, Pressable } from 'react-native';
 
 import { COLORS, SPACER } from '../../../constants';
 import { SecretEntry } from '../../../types/models';
@@ -44,7 +46,9 @@ function ListItem(props: ListItemProps): React.ReactElement {
   const translateX = useSharedValue(0);
 
   const handleGesture = useAnimatedGestureHandler<PanGestureHandlerGestureEvent>({
-    onActive: (event): void => {
+    onActive: (
+      event: GestureEventPayload & PanGestureHandlerEventPayload,
+    ): void => {
       // horizontal axis shift value
       const eventTranslationX = event.translationX;
 
@@ -70,7 +74,9 @@ function ListItem(props: ListItemProps): React.ReactElement {
         translateX.value = eventTranslationX - OFFSET;
       }
     },
-    onEnd: (event): void => {
+    onEnd: (
+      event: GestureEventPayload & PanGestureHandlerEventPayload,
+    ): void => {
       // set previous event value back to zero
       previousEventTranslationX.value = 0;
 
@@ -108,7 +114,7 @@ function ListItem(props: ListItemProps): React.ReactElement {
   }));
 
   return (
-    <View>
+    <>
       <Pressable
         onPress={(): void => showEditModal(secretEntry.id)}
         style={{
@@ -150,7 +156,7 @@ function ListItem(props: ListItemProps): React.ReactElement {
           />
         </Animated.View>
       </PanGestureHandler>
-    </View>
+    </>
   );
 }
 

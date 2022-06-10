@@ -13,7 +13,7 @@ import {
   KEYS,
   storeValue,
 } from '../../utilities/storage';
-import { PIN_REQUIRED } from '../../constants';
+import { PIN_REQUIRED, SPACER } from '../../constants';
 import PINEnabledModal from './components/PINEnabledModal';
 import { RootStackScreenProps } from '../../types/navigation';
 import { SecretEntry } from '../../types/models';
@@ -47,6 +47,8 @@ function ListOptionsModal({ navigation }: RootStackScreenProps<'Modal'>): React.
     },
     [],
   );
+
+  const closeListOptionsModal = (): void => navigation.replace('Root');
 
   const handleDelete = async (): Promise<void> => {
     await deleteValue(KEYS.secrets);
@@ -103,6 +105,13 @@ function ListOptionsModal({ navigation }: RootStackScreenProps<'Modal'>): React.
         }}
         onPress={toggleModal}
         text={`Delete all entries (${list.length})`}
+      />
+      <WideButton
+        buttonStyle={{
+          marginTop: SPACER * 2,
+        }}
+        onPress={closeListOptionsModal}
+        text="Back"
       />
     </View>
   );
