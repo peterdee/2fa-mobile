@@ -5,7 +5,9 @@
   style="height: 128px; margin-left: calc(50% - 64px); width: 128px;"
 />
 
-2FA Mobile is used to generate [OTPs](https://datatracker.ietf.org/doc/html/rfc6238#page-9) based on the scanned tokens
+2FA Mobile is used to generate [OTPs](https://datatracker.ietf.org/doc/html/rfc6238#page-9) for 2FA-enabled resources
+
+QR codes for the testing can be generated with [2FA Generator](https://github.com/peterdee/2fa-generator)
 
 ### Required resources
 

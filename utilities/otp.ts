@@ -54,8 +54,8 @@ export function parseKeyURI(keyURI: string): null | KeyURIData {
     };
 
     const [issuer, accountName] = url.pathname.split('/')[1].split(':');
-    if (issuer) data.issuer = issuer;
-    if (accountName) data.accountName = accountName;
+    if (issuer) data.issuer = decodeURIComponent(issuer);
+    if (accountName) data.accountName = decodeURIComponent(accountName);
 
     const algorithm = url.searchParams.get('algorithm');
     if (algorithm) {
