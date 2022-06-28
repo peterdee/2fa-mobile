@@ -22,6 +22,12 @@ nvm use 16
 npm i
 ```
 
+### Environment variables & required files
+
+The `.env` file is **required**, see [.env.example](.env.example) for details
+
+The `backend-url.ts` file in the `constants` directory is also **required**, it can be automatically generated if the project is launched with `npm start`, or it can be manually created, see [backend-url.example.ts](constants/backend-url.example.ts) for details
+
 ### Launch
 
 Launch development server:
