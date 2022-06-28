@@ -26,6 +26,7 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
   const [PIN, setPIN] = useState<string>('');
   const [PINError, setPINError] = useState<string>('');
   const [showPINSetModal, setShowPINSetModal] = useState<boolean>(false);
+  const [showProfileModal, setShowProfileModal] = useState<boolean>(true);
   const [showResetPINModal, setShowResetPINModal] = useState<boolean>(false);
   const [showSkipPINModal, setShowSkipPINModal] = useState<boolean>(false);
 
@@ -150,6 +151,7 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
       PIN={input}
       PINError={PINError}
       showPINSetModal={showPINSetModal}
+      showProfileModal={showProfileModal}
       showResetPINModal={showResetPINModal}
       showSkipPINModal={showSkipPINModal}
     />

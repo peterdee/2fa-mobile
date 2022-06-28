@@ -24,6 +24,8 @@ const linking: LinkingOptions<RootStackParamList> = {
           },
         },
       },
+      SignIn: 'sign-in',
+      SignUp: 'sign-up',
     },
   },
 };
