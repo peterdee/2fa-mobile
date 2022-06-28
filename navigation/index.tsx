@@ -21,6 +21,9 @@ import List from '../screens/List';
 import ListOptionsModal from '../screens/ListOptionsModal';
 import NotFound from '../screens/NotFound';
 import PINCode from '../screens/PINCode';
+import Profile from '../screens/Profile';
+import SignIn from '../screens/SignIn';
+import SignUp from '../screens/SignUp';
 
 function BottomIcon({ color, name }: BottomBarIconProps): React.ReactElement {
   return (
@@ -79,6 +82,17 @@ function BottomTabNavigator(): React.ReactElement {
           title: 'Code Scanner',
         }}
       />
+      <BottomTab.Screen
+        component={Profile}
+        name="Profile"
+        options={{
+          tabBarIcon: ({ color }): React.ReactElement => BottomIcon({
+            color,
+            name: 'person-outline',
+          }),
+          title: 'Profile',
+        }}
+      />
     </BottomTab.Navigator>
   );
 }
@@ -109,6 +123,16 @@ function Navigation(): React.ReactElement {
         <Stack.Screen
           component={BottomTabNavigator}
           name="Root"
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          component={SignIn}
+          name="SignIn"
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          component={SignUp}
+          name="SignUp"
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

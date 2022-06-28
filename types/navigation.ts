@@ -17,6 +17,7 @@ export interface BottomBarIconProps {
 export type RootTabParamList = {
   CodeScanner: undefined;
   List: undefined;
+  Profile: undefined;
 };
 
 export type RootStackParamList = {
@@ -24,6 +25,8 @@ export type RootStackParamList = {
   NotFound: undefined;
   PINCode: undefined;
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
+  SignIn: undefined;
+  SignUp: undefined;
 };
 
 export type RootStackScreenProps<
