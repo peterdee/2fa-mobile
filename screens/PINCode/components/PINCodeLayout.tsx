@@ -6,6 +6,7 @@ import KeyboardLayout from './KeyboardLayout';
 import Loader from '../../../components/Loader';
 import PINBlockLayout from './PINBlockLayout';
 import PINSetModal from './PINSetModal';
+import ProfileModal from './ProfileModal';
 import ResetPINModal from './ResetPINModal';
 import SkipPINModal from './SkipPINModal';
 import styles from '../styles';
@@ -26,6 +27,7 @@ interface PINCodeLayoutProps {
   PIN: string;
   PINError: string;
   showPINSetModal: boolean;
+  showProfileModal: boolean;
   showResetPINModal: boolean;
   showSkipPINModal: boolean;
 }
@@ -46,6 +48,7 @@ function PINCodeLayout(props: PINCodeLayoutProps): React.ReactElement {
     PIN,
     PINError,
     showPINSetModal,
+    showProfileModal,
     showResetPINModal,
     showSkipPINModal,
   } = props;
@@ -65,6 +68,10 @@ function PINCodeLayout(props: PINCodeLayoutProps): React.ReactElement {
             handleClose={handleCloseSetPINModal}
             PIN={PIN}
             showPINSetModal={showPINSetModal}
+          />
+          <ProfileModal
+            handleClose={(action: string): void => console.log('close', action)}
+            showProfileModal={showProfileModal}
           />
           <ResetPINModal
             handleCancel={handleCancelReset}
