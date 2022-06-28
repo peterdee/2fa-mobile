@@ -14,3 +14,4 @@ web-build/
 .DS_Store
 .env
 .idea/
+constants/backend-url.ts

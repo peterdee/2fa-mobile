@@ -1,7 +1,11 @@
+import BACKEND_URL_STRING from './backend-url';
+
 export const AUTH_TYPES = {
   hotp: 'hotp',
   totp: 'totp',
 };
+
+export const BACKEND_URL = BACKEND_URL_STRING;
 
 export const COLORS = {
   accent: '#2244FF',
