@@ -4,12 +4,13 @@ import { Pressable, Text } from 'react-native';
 import styles from './styles';
 
 interface WideButtonProps {
-  buttonStyle?: object,
+  buttonStyle?: object;
   disabled?: boolean;
-  disabledButtonStyle?: object,
+  disabledButtonStyle?: object;
   onPress: () => void;
   text: string;
-  textStyle?: object,
+  textStyle?: object;
+  upperCase?: boolean;
 }
 
 function WideButton(props: WideButtonProps): React.ReactElement {
@@ -20,6 +21,7 @@ function WideButton(props: WideButtonProps): React.ReactElement {
     onPress,
     text,
     textStyle,
+    upperCase,
   } = props;
 
   const calculatedButtonStyle = useMemo(
@@ -47,7 +49,7 @@ function WideButton(props: WideButtonProps): React.ReactElement {
           ...textStyle,
         }}
       >
-        { text }
+        { upperCase ? text.toUpperCase() : text }
       </Text>
     </Pressable>
   );
@@ -58,6 +60,7 @@ WideButton.defaultProps = {
   disabled: false,
   disabledButtonStyle: {},
   textStyle: {},
+  upperCase: true,
 };
 
 export default memo(WideButton);
