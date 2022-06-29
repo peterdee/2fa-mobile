@@ -29,6 +29,12 @@ export const PIN_REQUIRED = {
   isNotRequired: 'isNotRequired',
 };
 
+export const PROFILE_MODAL_ACTIONS = {
+  signIn: 'signIn',
+  signUp: 'signUp',
+  skip: 'skip',
+};
+
 export const SPACER = 16;
 
 export const SPACER_HALF = SPACER / 2;

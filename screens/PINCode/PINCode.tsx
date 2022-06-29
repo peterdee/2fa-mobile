@@ -12,7 +12,11 @@ import {
   KEYS,
   storeValue,
 } from '../../utilities/storage';
-import { KEYBOARD, PIN_REQUIRED } from '../../constants';
+import {
+  KEYBOARD,
+  PIN_REQUIRED,
+  PROFILE_MODAL_ACTIONS,
+} from '../../constants';
 import PINCodeLayout from './components/PINCodeLayout';
 import { PINRequired } from '../../types/models';
 import { RootStackScreenProps } from '../../types/navigation';
@@ -59,6 +63,19 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
   );
 
   const handleCancelReset = (): void => setShowResetPINModal(false);
+
+  const handleCloseProfileModal = (
+    action: keyof typeof PROFILE_MODAL_ACTIONS,
+  ): void => {
+    setShowProfileModal(false);
+    if (action === PROFILE_MODAL_ACTIONS.signIn) {
+      return navigation.replace('SignIn');
+    }
+    if (action === PROFILE_MODAL_ACTIONS.signUp) {
+      return navigation.replace('SignUp');
+    }
+    return navigation.replace('Root');
+  };
 
   const handleCloseSetPINModal = (): void => {
     setShowPINSetModal(false);
@@ -139,6 +156,7 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
     <PINCodeLayout
       disableBackspace={disableBackspace}
       disableKeyboard={disableKeyboard}
+      handleCloseProfileModal={handleCloseProfileModal}
       handleCloseSetPINModal={handleCloseSetPINModal}
       handleCancelReset={handleCancelReset}
       handlePress={handlePress}
