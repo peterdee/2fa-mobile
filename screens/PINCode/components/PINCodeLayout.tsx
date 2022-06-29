@@ -1,7 +1,11 @@
 import React, { memo } from 'react';
 import { Text, View } from 'react-native';
 
-import { COLORS, SPACER } from '../../../constants';
+import {
+  COLORS,
+  PROFILE_MODAL_ACTIONS,
+  SPACER,
+} from '../../../constants';
 import KeyboardLayout from './KeyboardLayout';
 import Loader from '../../../components/Loader';
 import PINBlockLayout from './PINBlockLayout';
@@ -16,6 +20,7 @@ interface PINCodeLayoutProps {
   disableBackspace: boolean;
   disableKeyboard: boolean;
   handleCancelReset: () => void;
+  handleCloseProfileModal: (action: keyof typeof PROFILE_MODAL_ACTIONS) => void;
   handleCloseSetPINModal: () => void;
   handlePress: (value: string) => void;
   handleReset: () => Promise<void>;
@@ -37,6 +42,7 @@ function PINCodeLayout(props: PINCodeLayoutProps): React.ReactElement {
     disableBackspace,
     disableKeyboard,
     handleCancelReset,
+    handleCloseProfileModal,
     handleCloseSetPINModal,
     handlePress,
     handleReset,
@@ -70,7 +76,7 @@ function PINCodeLayout(props: PINCodeLayoutProps): React.ReactElement {
             showPINSetModal={showPINSetModal}
           />
           <ProfileModal
-            handleClose={(action: string): void => console.log('close', action)}
+            handleClose={handleCloseProfileModal}
             showProfileModal={showProfileModal}
           />
           <ResetPINModal

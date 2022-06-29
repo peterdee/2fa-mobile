@@ -5,9 +5,12 @@ interface StoreItem<T> {
 }
 
 export const KEYS = {
+  login: 'login',
   pin: 'pin',
   pinRequired: 'pinRequired',
   secrets: 'secrets',
+  token: 'token',
+  userId: 'userId',
 } as const;
 
 export async function deleteValue(key: keyof typeof KEYS): Promise<void> {
