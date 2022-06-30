@@ -7,6 +7,8 @@ export const AUTH_TYPES = {
 
 export const BACKEND_URL = BACKEND_URL_STRING;
 
+export const CLIENT_TYPE = 'mobile';
+
 export const COLORS = {
   accent: '#2244FF',
   background: '#FFFFFF',
@@ -17,6 +19,13 @@ export const COLORS = {
   positive: '#259F37',
   text: '#080808',
   textInverted: '#FFFFFF',
+};
+
+export const ERROR_MESSAGES = {
+  accessDenied: 'Access denied!',
+  generic: 'Oops! Something went wrong!',
+  invalidData: 'Provided data is invalid!',
+  missingData: 'Missing required data!',
 };
 
 export const KEYBOARD = {
@@ -33,6 +42,20 @@ export const PROFILE_MODAL_ACTIONS = {
   signIn: 'signIn',
   signUp: 'signUp',
   skip: 'skip',
+};
+
+export const RESPONSE_MESSAGES = {
+  internalServerError: 'INTERNAL_SERVER_ERROR',
+  invalidData: 'INVALID_DATA',
+  invalidToken: 'INVALID_TOKEN',
+  loginAlreadyInUse: 'LOGIN_ALREADY_IN_USE',
+  loginIsTooLong: 'LOGIN_IS_TOO_LONG',
+  missingData: 'MISSING_DATA',
+  missingToken: 'MISSING_TOKEN',
+  ok: 'OK',
+  oldPasswordIsInvalid: 'OLD_PASSWORD_IS_INVALID',
+  passwordIsTooShort: 'PASSWORD_IS_TOO_SHORT',
+  unauthorized: 'UNAUTHORIZED',
 };
 
 export const SPACER = 16;

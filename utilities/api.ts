@@ -1,4 +1,7 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, {
+  AxiosRequestConfig,
+  AxiosResponse,
+} from 'axios';
 
 import { BACKEND_URL } from '../constants';
 import { getValue, KEYS } from './storage';
@@ -8,6 +11,15 @@ interface RequestOptions {
   method: string;
   url: string;
   withToken?: boolean;
+}
+
+export interface ResponsePayload<T = null> {
+  data?: T;
+  datetime: number;
+  handling: number;
+  info: string;
+  request: string;
+  status: number;
 }
 
 const METHODS = {
@@ -36,11 +48,16 @@ export const ENDPOINTS = {
   },
 };
 
-export default async function request(options: RequestOptions): Promise<AxiosResponse<any>> {
+export default async function request<T = null>(
+  options: RequestOptions,
+): Promise<AxiosResponse<ResponsePayload<T>>> {
   const config: AxiosRequestConfig = {
     method: options.method,
     url: `${BACKEND_URL}${options.url}`,
   };
+
+  // TODO: create interceptors for 401 error
+
   if (options.data) {
     config.data = options.data;
   }
