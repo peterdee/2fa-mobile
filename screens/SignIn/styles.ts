@@ -9,9 +9,27 @@ export default StyleSheet.create({
     justifyContent: 'center',
     height: '100%',
   },
-  input: {
-    backgroundColor: COLORS.mutedLight,
+  formErrorContainer: {
+    alignItems: 'center',
+    display: 'flex',
+    height: SPACER + SPACER_HALF,
+    justifyContent: 'center',
     marginTop: SPACER,
+  },
+  formErrorText: {
+    color: COLORS.negative,
+    fontSize: SPACER,
+  },
+  input: {
+    marginTop: SPACER_HALF,
+  },
+  inputLabel: {
+    color: COLORS.text,
+    fontSize: SPACER,
+    fontWeight: '200',
+    marginTop: SPACER,
+    textAlign: 'left',
+    width: '80%',
   },
   title: {
     color: COLORS.accent,

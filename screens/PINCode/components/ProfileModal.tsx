@@ -43,7 +43,7 @@ function ProfileModal(props: ProfileModalProps): React.ReactElement {
         onPress={(): void => handleClose(
           PROFILE_MODAL_ACTIONS.signUp as keyof typeof PROFILE_MODAL_ACTIONS,
         )}
-        text="Create account"
+        text="Create a new account"
       />
       <WideButton
         buttonStyle={{
