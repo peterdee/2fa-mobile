@@ -1,6 +1,7 @@
 import React, {
   memo,
   useCallback,
+  useEffect,
   useState,
 } from 'react';
 import { AxiosError } from 'axios';
@@ -10,7 +11,11 @@ import {
   ERROR_MESSAGES,
   RESPONSE_MESSAGES,
 } from '../../constants';
-import { KEYS, storeValue } from '../../utilities/storage';
+import {
+  getValue,
+  KEYS,
+  storeValue,
+} from '../../utilities/storage';
 import request, {
   ENDPOINTS,
   ResponsePayload,
@@ -33,6 +38,23 @@ function SignIn(
   const [loading, setLoading] = useState<boolean>(false);
   const [login, setLogin] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+
+  useEffect(
+    (): void => {
+      async function getValues(): Promise<void> {
+        const [existingLogin, existingToken, existingUserId] = await Promise.all([
+          getValue<string>(KEYS.login),
+          getValue<string>(KEYS.token),
+          getValue<number>(KEYS.userId),
+        ]);
+        if (existingLogin && existingToken && existingUserId) {
+          navigation.replace('Root');
+        }
+      }
+      getValues();
+    },
+    [],
+  );
 
   const handleAction = (action: string): void => {
     if (action === 'cancel') {
