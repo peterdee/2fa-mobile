@@ -8,6 +8,7 @@ interface InputProps {
   handleChange: (value: string) => void;
   isPassword?: boolean;
   maxLength?: number;
+  multiline?: boolean;
   placeholder?: string;
   value: string;
 }
@@ -18,6 +19,7 @@ function Input(props: InputProps): React.ReactElement {
     handleChange,
     isPassword,
     maxLength,
+    multiline,
     placeholder,
     value,
   } = props;
@@ -25,6 +27,7 @@ function Input(props: InputProps): React.ReactElement {
   return (
     <TextInput
       maxLength={maxLength}
+      multiline={multiline}
       onChangeText={handleChange}
       placeholder={placeholder}
       style={{
@@ -41,6 +44,7 @@ Input.defaultProps = {
   customStyles: {},
   isPassword: false,
   maxLength: undefined,
+  multiline: false,
   placeholder: '',
 };
 

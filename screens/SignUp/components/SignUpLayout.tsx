@@ -75,15 +75,16 @@ function SignUpLayout(props: SignUpLayoutProps): React.ReactElement {
             value={password}
           />
           <Text style={styles.inputLabel}>
-            Recovery question
+            Profile recovery question
           </Text>
           <Input
-            customStyles={styles.input}
+            customStyles={styles.textArea}
             handleChange={(value: string): void => handleInput('recoveryQuestion', value)}
+            multiline
             value={recoveryQuestion}
           />
           <Text style={styles.inputLabel}>
-            Recovery answer
+            Profile recovery answer
           </Text>
           <Input
             customStyles={styles.input}

@@ -16,6 +16,7 @@ import {
   KEYS,
   storeValue,
 } from '../../utilities/storage';
+import isAlphanumeric from '../../utilities/alphanumeric';
 import request, {
   ENDPOINTS,
   ResponsePayload,
@@ -30,6 +31,9 @@ interface SignUpResponseData {
     login: string;
   };
 }
+
+const LOGIN_MAX_LENGTH = 16;
+const PASSWORD_MIN_LENGTH = 8;
 
 function SignUp(
   { navigation }: RootStackScreenProps<'SignUp'>,
@@ -84,14 +88,41 @@ function SignUp(
 
   const handleSubmit = useCallback(
     async (): Promise<void> => {
+      if (!(login && password && recoveryAnswer && recoveryQuestion)) {
+        return setFormError(ERROR_MESSAGES.pleaseProvideTheData);
+      }
+
+      if (password.includes(' ')) {
+        return setFormError(ERROR_MESSAGES.passwordContainsSpaces);
+      }
+
+      const trimmedLogin = login.trim();
+      const trimmedPassword = password.trim();
+      const trimmedRecoveryAnswer = recoveryAnswer.trim();
+      const trimmedRecoveryQuestion = recoveryQuestion.trim();
+      if (!(trimmedLogin && trimmedPassword
+        && trimmedRecoveryAnswer && trimmedRecoveryQuestion)) {
+        return setFormError(ERROR_MESSAGES.pleaseProvideTheData);
+      }
+
+      if (trimmedLogin.length > LOGIN_MAX_LENGTH) {
+        return setFormError(ERROR_MESSAGES.loginIsTooLong);
+      }
+      if (!isAlphanumeric(login)) {
+        return setFormError(ERROR_MESSAGES.loginShouldBeAlphanumeric);
+      }
+      if (trimmedPassword.length < PASSWORD_MIN_LENGTH) {
+        return setFormError(ERROR_MESSAGES.passwordIsTooShort);
+      }
+
       setLoading(true);
 
-      // artificial delay to show the loader
-      await new Promise((resolve): void => {
-        setTimeout(resolve, 500);
-      });
-
       try {
+        // artificial delay to show the loader
+        await new Promise((resolve): void => {
+          setTimeout(resolve, 500);
+        });
+
         const { data } = await request<SignUpResponseData>({
           ...ENDPOINTS.signUp,
           data: {
@@ -115,7 +146,7 @@ function SignUp(
         ]);
 
         setLoading(false);
-        return navigation.replace('Root');
+        // return navigation.replace('Root');
       } catch (error) {
         setLoading(false);
         const typedError = error as AxiosError<ResponsePayload>;
@@ -124,6 +155,9 @@ function SignUp(
           if (response.status === 400) {
             if (response.info === RESPONSE_MESSAGES.invalidData) {
               return setFormError(ERROR_MESSAGES.invalidData);
+            }
+            if (response.info === RESPONSE_MESSAGES.loginAlreadyInUse) {
+              return setFormError(ERROR_MESSAGES.loginIsAlreadyInUse);
             }
             if (response.info === RESPONSE_MESSAGES.missingData) {
               return setFormError(ERROR_MESSAGES.missingData);

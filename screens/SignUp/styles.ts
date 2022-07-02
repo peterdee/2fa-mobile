@@ -31,6 +31,12 @@ export default StyleSheet.create({
     textAlign: 'left',
     width: '80%',
   },
+  textArea: {
+    height: SPACER * 6,
+    marginTop: SPACER_HALF,
+    paddingBottom: SPACER,
+    paddingTop: SPACER,
+  },
   title: {
     color: COLORS.accent,
     fontSize: SPACER + SPACER_HALF,

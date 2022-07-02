@@ -25,8 +25,13 @@ export const ERROR_MESSAGES = {
   accessDenied: 'Access denied!',
   generic: 'Oops! Something went wrong!',
   invalidData: 'Provided data is invalid!',
+  loginIsAlreadyInUse: 'Login is already in use!',
+  loginIsTooLong: 'Login is too long!',
+  loginShouldBeAlphanumeric: 'Login should be alphanumeric!',
   missingData: 'Missing required data!',
   passwordContainsSpaces: 'Password contains spaces!',
+  passwordIsTooShort: 'Password is too short!',
+  pleaseProvideTheData: 'Please provide the data!',
 };
 
 export const KEYBOARD = {
