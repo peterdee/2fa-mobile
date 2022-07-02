@@ -25,7 +25,13 @@ export const ERROR_MESSAGES = {
   accessDenied: 'Access denied!',
   generic: 'Oops! Something went wrong!',
   invalidData: 'Provided data is invalid!',
+  loginIsAlreadyInUse: 'Login is already in use!',
+  loginIsTooLong: 'Login is too long!',
+  loginShouldBeAlphanumeric: 'Login should be alphanumeric!',
   missingData: 'Missing required data!',
+  passwordContainsSpaces: 'Password contains spaces!',
+  passwordIsTooShort: 'Password is too short!',
+  pleaseProvideTheData: 'Please provide the data!',
 };
 
 export const KEYBOARD = {
@@ -47,6 +53,7 @@ export const PROFILE_MODAL_ACTIONS = {
 export const RESPONSE_MESSAGES = {
   internalServerError: 'INTERNAL_SERVER_ERROR',
   invalidData: 'INVALID_DATA',
+  invalidLogin: 'INVALID_LOGIN',
   invalidToken: 'INVALID_TOKEN',
   loginAlreadyInUse: 'LOGIN_ALREADY_IN_USE',
   loginIsTooLong: 'LOGIN_IS_TOO_LONG',
@@ -54,6 +61,7 @@ export const RESPONSE_MESSAGES = {
   missingToken: 'MISSING_TOKEN',
   ok: 'OK',
   oldPasswordIsInvalid: 'OLD_PASSWORD_IS_INVALID',
+  passwordContainsSpaces: 'PASSWORD_CONTAINS_SPACES',
   passwordIsTooShort: 'PASSWORD_IS_TOO_SHORT',
   unauthorized: 'UNAUTHORIZED',
 };
