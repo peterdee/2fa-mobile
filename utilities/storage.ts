@@ -8,6 +8,7 @@ export const KEYS = {
   login: 'login',
   pin: 'pin',
   pinRequired: 'pinRequired',
+  profileModalShown: 'profileModalShown',
   secrets: 'secrets',
   token: 'token',
   userId: 'userId',
