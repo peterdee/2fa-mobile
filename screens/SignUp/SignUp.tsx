@@ -54,8 +54,7 @@ function SignUp(
           getValue<number>(KEYS.userId),
         ]);
         if (existingLogin && existingToken && existingUserId) {
-          // TODO: uncomment
-          // navigation.replace('Root');
+          navigation.replace('Root');
         }
       }
       getValues();
@@ -146,7 +145,7 @@ function SignUp(
         ]);
 
         setLoading(false);
-        // return navigation.replace('Root');
+        return navigation.replace('Root');
       } catch (error) {
         setLoading(false);
         const typedError = error as AxiosError<ResponsePayload>;
@@ -156,11 +155,23 @@ function SignUp(
             if (response.info === RESPONSE_MESSAGES.invalidData) {
               return setFormError(ERROR_MESSAGES.invalidData);
             }
+            if (response.info === RESPONSE_MESSAGES.invalidLogin) {
+              return setFormError(ERROR_MESSAGES.loginShouldBeAlphanumeric);
+            }
             if (response.info === RESPONSE_MESSAGES.loginAlreadyInUse) {
               return setFormError(ERROR_MESSAGES.loginIsAlreadyInUse);
             }
+            if (response.info === RESPONSE_MESSAGES.loginIsTooLong) {
+              return setFormError(ERROR_MESSAGES.loginIsTooLong);
+            }
             if (response.info === RESPONSE_MESSAGES.missingData) {
               return setFormError(ERROR_MESSAGES.missingData);
+            }
+            if (response.info === RESPONSE_MESSAGES.passwordContainsSpaces) {
+              return setFormError(ERROR_MESSAGES.passwordContainsSpaces);
+            }
+            if (response.info === RESPONSE_MESSAGES.passwordIsTooShort) {
+              return setFormError(ERROR_MESSAGES.passwordIsTooShort);
             }
           }
           if (response.status === 401) {

@@ -16,6 +16,7 @@ import {
   KEYBOARD,
   PIN_REQUIRED,
   PROFILE_MODAL_ACTIONS,
+  PROFILE_MODAL_STATE,
 } from '../../constants';
 import PINCodeLayout from './components/PINCodeLayout';
 import { PINRequired } from '../../types/models';
@@ -29,17 +30,19 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
   const [loading, setLoading] = useState<boolean>(true);
   const [PIN, setPIN] = useState<string>('');
   const [PINError, setPINError] = useState<string>('');
+  const [profileModalShown, setProfileModalShown] = useState<boolean>(true);
   const [showPINSetModal, setShowPINSetModal] = useState<boolean>(false);
-  const [showProfileModal, setShowProfileModal] = useState<boolean>(true);
+  const [showProfileModal, setShowProfileModal] = useState<boolean>(false);
   const [showResetPINModal, setShowResetPINModal] = useState<boolean>(false);
   const [showSkipPINModal, setShowSkipPINModal] = useState<boolean>(false);
 
   useEffect(
     (): void => {
       async function checkPin(): Promise<void> {
-        const [pinRequired, pinValue] = await Promise.all([
+        const [pinRequired, pinValue, profileModal] = await Promise.all([
           getValue<string>(KEYS.pinRequired),
           getValue<number>(KEYS.pin),
+          getValue<string>(KEYS.profileModalShown),
         ]);
         // redirect to the List tab if PIN is not required
         if (pinRequired && pinRequired === PIN_REQUIRED.isNotRequired) {
@@ -49,6 +52,11 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
           setHasPIN(true);
           setPIN(`${pinValue}`);
         }
+
+        // profile modal condition
+        setProfileModalShown(
+          !!(profileModal && profileModal === PROFILE_MODAL_STATE.shown),
+        );
 
         // artificial delay to show the loader
         await new Promise((resolve): void => {
@@ -64,9 +72,13 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
 
   const handleCancelReset = (): void => setShowResetPINModal(false);
 
-  const handleCloseProfileModal = (
+  const handleCloseProfileModal = async (
     action: keyof typeof PROFILE_MODAL_ACTIONS,
-  ): void => {
+  ): Promise<void> => {
+    await storeValue<string>(
+      KEYS.profileModalShown,
+      PROFILE_MODAL_STATE.shown,
+    );
     setShowProfileModal(false);
     if (action === PROFILE_MODAL_ACTIONS.signIn) {
       return navigation.replace('SignIn');
@@ -77,12 +89,20 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
     return navigation.replace('Root');
   };
 
-  const handleCloseSetPINModal = (): void => {
-    setShowPINSetModal(false);
+  const handleCloseSetPINModal = useCallback(
+    (): void => {
+      setShowPINSetModal(false);
+      setShowSkipPINModal(false);
 
-    // this fixes the issue with PIN Set modal
-    setTimeout((): void => navigation.replace('Root'), 0);
-  };
+      if (!profileModalShown) {
+        setShowProfileModal(true);
+      } else {
+        // this fixes the issue with PIN Set modal
+        setTimeout((): void => navigation.replace('Root'), 0);
+      }
+    },
+    [profileModalShown],
+  );
 
   const handlePress = useCallback(
     async (value: string): Promise<void> => {
@@ -102,6 +122,9 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
       if (newPIN.length === 4 && hasPIN) {
         setDisableKeyboard(true);
         if (Number(PIN) === Number(newPIN)) {
+          if (!profileModalShown) {
+            return setShowProfileModal(true);
+          }
           return navigation.replace('Root');
         }
         setDisableBackspace(true);
@@ -168,6 +191,7 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
       loading={loading}
       PIN={input}
       PINError={PINError}
+      profileModalShown={profileModalShown}
       showPINSetModal={showPINSetModal}
       showProfileModal={showProfileModal}
       showResetPINModal={showResetPINModal}
