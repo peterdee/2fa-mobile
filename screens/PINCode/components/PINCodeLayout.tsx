@@ -31,6 +31,7 @@ interface PINCodeLayoutProps {
   loading: boolean;
   PIN: string;
   PINError: string;
+  profileModalShown: boolean;
   showPINSetModal: boolean;
   showProfileModal: boolean;
   showResetPINModal: boolean;
@@ -53,6 +54,7 @@ function PINCodeLayout(props: PINCodeLayoutProps): React.ReactElement {
     loading,
     PIN,
     PINError,
+    profileModalShown,
     showPINSetModal,
     showProfileModal,
     showResetPINModal,
@@ -75,10 +77,12 @@ function PINCodeLayout(props: PINCodeLayoutProps): React.ReactElement {
             PIN={PIN}
             showPINSetModal={showPINSetModal}
           />
-          <ProfileModal
-            handleClose={handleCloseProfileModal}
-            showProfileModal={showProfileModal}
-          />
+          { !profileModalShown && (
+            <ProfileModal
+              handleClose={handleCloseProfileModal}
+              showProfileModal={showProfileModal}
+            />
+          ) }
           <ResetPINModal
             handleCancel={handleCancelReset}
             handleReset={handleReset}

@@ -50,6 +50,11 @@ export const PROFILE_MODAL_ACTIONS = {
   skip: 'skip',
 };
 
+export const PROFILE_MODAL_STATE = {
+  notShown: 'notShown',
+  shown: 'shown',
+};
+
 export const RESPONSE_MESSAGES = {
   internalServerError: 'INTERNAL_SERVER_ERROR',
   invalidData: 'INVALID_DATA',
