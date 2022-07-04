@@ -38,6 +38,10 @@ export const ENDPOINTS = {
     method: METHODS.delete,
     url: '/api/profile',
   },
+  logout: {
+    method: METHODS.get,
+    url: '/api/auth/logout',
+  },
   signIn: {
     method: METHODS.post,
     url: '/api/auth/sign-in',
