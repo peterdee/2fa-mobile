@@ -1,14 +1,15 @@
 import React, { memo } from 'react';
 import { Text, View } from 'react-native';
 
+import { COLORS, SPACER } from '../../../constants';
 import Loader from '../../../components/Loader';
 import LogoutModal from './LogoutModal';
-import WideButton from '../../../components/WideButton';
 import { RootStackParamList } from '../../../types/navigation';
 import styles from '../styles';
+import WideButton from '../../../components/WideButton';
 
 interface ProfileLayoutProps {
-  handleLogout: (full?: boolean) => Promise<void>;
+  handleLogout: (full: boolean, preserveData: boolean) => Promise<void>;
   handleNavigation: (destination: keyof RootStackParamList) => void;
   isSignedIn: boolean;
   loading: boolean;
@@ -44,8 +45,12 @@ function ProfileLayout(props: ProfileLayoutProps): React.ReactElement {
             { login }
           </Text>
           <WideButton
+            buttonStyle={{
+              backgroundColor: COLORS.negative,
+              marginTop: SPACER * 2,
+            }}
             onPress={toggleLogoutModal}
-            text="Logout"
+            text="Log out"
           />
         </>
       ) }
