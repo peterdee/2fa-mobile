@@ -61,6 +61,9 @@ function ProfileLayout(props: ProfileLayoutProps): React.ReactElement {
             text="Sign in"
           />
           <WideButton
+            buttonStyle={{
+              marginTop: SPACER * 2,
+            }}
             onPress={(): void => handleNavigation('SignUp')}
             text="Sign up"
           />

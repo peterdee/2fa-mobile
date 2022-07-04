@@ -14,5 +14,9 @@ export interface KeyURIData {
 export type PINRequired = typeof PIN_REQUIRED[keyof typeof PIN_REQUIRED];
 
 export interface SecretEntry extends KeyURIData {
+  addedAt: number;
   id: string;
+  isSynchronized: boolean;
+  synchronizedAt: number;
+  userId: number | null;
 }

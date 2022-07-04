@@ -7,6 +7,7 @@ import React, {
 
 import { deleteValue, getValue, KEYS } from '../../utilities/storage';
 import ProfileLayout from './components/ProfileLayout';
+import request, { ENDPOINTS } from '../../utilities/api';
 import {
   RootStackParamList,
   RootStackScreenProps,
@@ -47,7 +48,7 @@ function Profile({ navigation }: RootStackScreenProps<'Root'>): React.ReactEleme
     [],
   );
 
-  const handleLogout = async (full?: boolean) => {
+  const handleLogout = async (full: boolean, preserveData: boolean) => {
     setLoading(true);
     setShowLogoutModal(false);
 
@@ -56,8 +57,12 @@ function Profile({ navigation }: RootStackScreenProps<'Root'>): React.ReactEleme
       setTimeout(resolve, 500);
     });
 
+    // TODO: handle error response (if token is invalid)
     if (full) {
-      // TODO: send a request for a full logout
+      await request({
+        ...ENDPOINTS.logout,
+        withToken: true,
+      });
     }
 
     await Promise.all([
@@ -65,6 +70,10 @@ function Profile({ navigation }: RootStackScreenProps<'Root'>): React.ReactEleme
       deleteValue(KEYS.token),
       deleteValue(KEYS.userId),
     ]);
+
+    if (!preserveData) {
+      // TODO: delete all of the synchronized entries that belong to that user
+    }
 
     setLogin('');
     setToken('');
