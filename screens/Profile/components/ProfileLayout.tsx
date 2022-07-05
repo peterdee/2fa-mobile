@@ -10,6 +10,7 @@ import LogoutModal from './LogoutModal';
 import { RootStackParamList } from '../../../types/navigation';
 import styles from '../styles';
 import WideButton from '../../../components/WideButton';
+import Switch from '../../../components/Switch';
 
 interface ProfileLayoutProps {
   handleChangePassword: () => Promise<void>;
@@ -69,12 +70,29 @@ function ProfileLayout(props: ProfileLayoutProps): React.ReactElement {
           <Text>
             { login }
           </Text>
+          <View style={styles.switchRow}>
+            <Text>
+              Require PIN
+            </Text>
+            <Switch
+              handleChange={(): void => console.log('PIN switch')}
+              value
+            />
+          </View>
           <WideButton
             buttonStyle={{
               marginTop: SPACER * 2,
             }}
             onPress={toggleChangePasswordModal}
             text="Change password"
+          />
+          <WideButton
+            buttonStyle={{
+              backgroundColor: COLORS.negative,
+              marginTop: SPACER * 2,
+            }}
+            onPress={(): void => console.log('delete all entries')}
+            text="Delete all entries ()"
           />
           <WideButton
             buttonStyle={{
