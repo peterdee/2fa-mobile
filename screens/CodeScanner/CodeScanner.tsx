@@ -68,6 +68,10 @@ function CodeScanner({ navigation }: RootStackScreenProps<'Root'>): React.ReactE
       const newEntry: SecretEntry = {
         ...keyURIData as KeyURIData,
         id,
+        isSynchronized: false,
+        scannedAt: Date.now(),
+        synchronizedAt: null,
+        userId: null,
       };
       await storeValue<SecretEntry[]>(
         KEYS.secrets,
