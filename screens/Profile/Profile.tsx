@@ -16,6 +16,8 @@ import {
 function Profile({ navigation }: RootStackScreenProps<'Root'>): React.ReactElement {
   const [loading, setLoading] = useState<boolean>(true);
   const [login, setLogin] = useState<string>('');
+  const [showChangePasswordModal, setShowChangePasswordModal] = useState<boolean>(false);
+  const [showDeleteProfileModal, setShowDeleteProfileModal] = useState<boolean>(false);
   const [showLogoutModal, setShowLogoutModal] = useState<boolean>(false);
   const [token, setToken] = useState<string>('');
   const [userId, setUserId] = useState<number | null>(null);
@@ -48,7 +50,18 @@ function Profile({ navigation }: RootStackScreenProps<'Root'>): React.ReactEleme
     [],
   );
 
-  const handleLogout = async (full: boolean, preserveData: boolean) => {
+  const handleChangePassword = async (): Promise<void> => {
+    console.log('change password');
+  };
+
+  const handleDeleteProfile = async (): Promise<void> => {
+    console.log('delete');
+  };
+
+  const handleLogout = async (
+    full: boolean,
+    preserveData: boolean,
+  ): Promise<void> => {
     setLoading(true);
     setShowLogoutModal(false);
 
@@ -86,18 +99,32 @@ function Profile({ navigation }: RootStackScreenProps<'Root'>): React.ReactEleme
     destination: keyof RootStackParamList,
   ): void => navigation.push(destination);
 
+  const toggleChangePasswordModal = (): void => setShowChangePasswordModal(
+    (state: boolean): boolean => !state,
+  );
+
+  const toggleDeleteProfileModal = (): void => setShowDeleteProfileModal(
+    (state: boolean): boolean => !state,
+  );
+
   const toggleLogoutModal = (): void => setShowLogoutModal(
     (state: boolean): boolean => !state,
   );
 
   return (
     <ProfileLayout
+      handleChangePassword={handleChangePassword}
+      handleDeleteProfile={handleDeleteProfile}
       handleLogout={handleLogout}
       handleNavigation={handleNavigation}
       isSignedIn={isSignedIn}
       loading={loading}
       login={login}
+      showChangePasswordModal={showChangePasswordModal}
+      showDeleteProfileModal={showDeleteProfileModal}
       showLogoutModal={showLogoutModal}
+      toggleChangePasswordModal={toggleChangePasswordModal}
+      toggleDeleteProfileModal={toggleDeleteProfileModal}
       toggleLogoutModal={toggleLogoutModal}
     />
   );

@@ -15,6 +15,8 @@ export default StyleSheet.create({
   modalText: {
     color: COLORS.textInverted,
     fontSize: SPACER + SPACER_HALF / 2,
+    textAlign: 'center',
+    width: '80%',
   },
   switchRow: {
     alignItems: 'center',
