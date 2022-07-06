@@ -13,7 +13,6 @@ import WideButton from '../../../components/WideButton';
 import Switch from '../../../components/Switch';
 
 interface ProfileLayoutProps {
-  handleChangePassword: () => Promise<void>;
   handleDeleteProfile: () => Promise<void>;
   handleLogout: (full: boolean, preserveData: boolean) => Promise<void>;
   handleNavigation: (destination: keyof RootStackParamList) => void;
@@ -30,7 +29,6 @@ interface ProfileLayoutProps {
 
 function ProfileLayout(props: ProfileLayoutProps): React.ReactElement {
   const {
-    handleChangePassword,
     handleDeleteProfile,
     handleLogout,
     handleNavigation,
@@ -53,7 +51,6 @@ function ProfileLayout(props: ProfileLayoutProps): React.ReactElement {
       { !loading && isSignedIn && (
         <>
           <ChangePasswordModal
-            handleChangePassword={handleChangePassword}
             handleClose={toggleChangePasswordModal}
             showModal={showChangePasswordModal}
           />

@@ -50,10 +50,6 @@ function Profile({ navigation }: RootStackScreenProps<'Root'>): React.ReactEleme
     [],
   );
 
-  const handleChangePassword = async (): Promise<void> => {
-    console.log('change password');
-  };
-
   const handleDeleteProfile = async (): Promise<void> => {
     console.log('delete');
   };
@@ -113,7 +109,6 @@ function Profile({ navigation }: RootStackScreenProps<'Root'>): React.ReactEleme
 
   return (
     <ProfileLayout
-      handleChangePassword={handleChangePassword}
       handleDeleteProfile={handleDeleteProfile}
       handleLogout={handleLogout}
       handleNavigation={handleNavigation}
