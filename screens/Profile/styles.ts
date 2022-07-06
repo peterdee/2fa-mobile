@@ -12,6 +12,22 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
+  formErrorContainer: {
+    alignItems: 'center',
+    display: 'flex',
+    height: SPACER + SPACER_HALF,
+    justifyContent: 'center',
+    marginTop: SPACER,
+  },
+  formErrorText: {
+    color: COLORS.negative,
+    fontSize: SPACER,
+  },
+  modalInput: {
+    color: COLORS.textInverted,
+    fontSize: SPACER,
+    marginTop: SPACER_HALF,
+  },
   modalText: {
     color: COLORS.textInverted,
     fontSize: SPACER + SPACER_HALF / 2,
