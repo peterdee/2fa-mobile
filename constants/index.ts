@@ -40,6 +40,10 @@ export const KEYBOARD = {
   empty: 'empty',
 };
 
+export const LOGIN_MAX_LENGTH = 16;
+
+export const PASSWORD_MIN_LENGTH = 8;
+
 export const PIN_REQUIRED = {
   isRequired: 'isRequired',
   isNotRequired: 'isNotRequired',

@@ -9,6 +9,8 @@ import { AxiosError } from 'axios';
 import {
   CLIENT_TYPE,
   ERROR_MESSAGES,
+  LOGIN_MAX_LENGTH,
+  PASSWORD_MIN_LENGTH,
   RESPONSE_MESSAGES,
 } from '../../constants';
 import {
@@ -31,9 +33,6 @@ interface SignUpResponseData {
     login: string;
   };
 }
-
-const LOGIN_MAX_LENGTH = 16;
-const PASSWORD_MIN_LENGTH = 8;
 
 function SignUp(
   { navigation }: RootStackScreenProps<'SignUp'>,
