@@ -10,6 +10,7 @@ import { Text, View } from 'react-native';
 import {
   COLORS,
   ERROR_MESSAGES,
+  PASSWORD_MIN_LENGTH,
   RESPONSE_MESSAGES,
   SPACER,
 } from '../../../constants';
@@ -32,8 +33,6 @@ interface ChangePasswordModalProps {
 interface ChangePasswordResponse {
   token: string;
 }
-
-const PASSWORD_MIN_LENGTH = 8;
 
 function ChangePasswordModal(props: ChangePasswordModalProps): React.ReactElement {
   const {
