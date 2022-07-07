@@ -31,7 +31,7 @@ const METHODS = {
 
 export const ENDPOINTS = {
   changePassword: {
-    method: METHODS.post,
+    method: METHODS.patch,
     url: '/api/password',
   },
   deleteProfile: {

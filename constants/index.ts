@@ -23,6 +23,7 @@ export const COLORS = {
 
 export const ERROR_MESSAGES = {
   accessDenied: 'Access denied!',
+  currentPasswordIsInvalid: 'Current password is invalid!',
   generic: 'Oops! Something went wrong!',
   invalidData: 'Provided data is invalid!',
   loginIsAlreadyInUse: 'Login is already in use!',

@@ -4,17 +4,23 @@ import React, {
   useMemo,
   useState,
 } from 'react';
+import { AxiosError } from 'axios';
 import { Text, View } from 'react-native';
 
 import {
   COLORS,
   ERROR_MESSAGES,
+  RESPONSE_MESSAGES,
   SPACER,
 } from '../../../constants';
 import Input from '../../../components/Input';
+import { KEYS, storeValue } from '../../../utilities/storage';
 import Loader from '../../../components/Loader';
 import ModalWrap from '../../../components/ModalWrap';
-import request, { ENDPOINTS } from '../../../utilities/api';
+import request, {
+  ENDPOINTS,
+  ResponsePayload,
+} from '../../../utilities/api';
 import styles from '../styles';
 import WideButton from '../../../components/WideButton';
 
@@ -49,7 +55,11 @@ function ChangePasswordModal(props: ChangePasswordModalProps): React.ReactElemen
 
   const disableForm = useMemo(
     (): boolean => !(
-      newPassword && newPassword.trim() && oldPassword && oldPassword.trim()
+      newPassword
+        && newPassword.trim()
+        && newPassword.trim().length >= PASSWORD_MIN_LENGTH
+        && oldPassword
+        && oldPassword.trim()
     ),
     [
       newPassword,
@@ -82,6 +92,11 @@ function ChangePasswordModal(props: ChangePasswordModalProps): React.ReactElemen
 
       setLoading(true);
 
+      // artificial delay to show the loader
+      await new Promise((resolve): void => {
+        setTimeout(resolve, 500);
+      });
+
       try {
         const { data: { data } = {} } = await request<ChangePasswordResponse>({
           ...ENDPOINTS.changePassword,
@@ -94,12 +109,38 @@ function ChangePasswordModal(props: ChangePasswordModalProps): React.ReactElemen
         if (!(data && data.token)) {
           return setFormError(ERROR_MESSAGES.generic);
         }
+
+        await storeValue<string>(KEYS.token, data.token);
+
         setLoading(false);
         setNewPassword('');
         setOldPassword('');
         return handleClose();
       } catch (error) {
-        return console.log(error);
+        setLoading(false);
+        const typedError = error as AxiosError<ResponsePayload>;
+        if (typedError.response && typedError.response.data) {
+          const response = typedError.response.data;
+          if (response.status === 400) {
+            if (response.info === RESPONSE_MESSAGES.missingData) {
+              return setFormError(ERROR_MESSAGES.missingData);
+            }
+            if (response.info === RESPONSE_MESSAGES.oldPasswordIsInvalid) {
+              return setFormError(ERROR_MESSAGES.currentPasswordIsInvalid);
+            }
+            if (response.info === RESPONSE_MESSAGES.passwordContainsSpaces) {
+              return setFormError(ERROR_MESSAGES.passwordContainsSpaces);
+            }
+            if (response.info === RESPONSE_MESSAGES.passwordIsTooShort) {
+              return setFormError(ERROR_MESSAGES.passwordIsTooShort);
+            }
+          }
+          if (response.status === 401) {
+            // TODO: log out the user, delete all of the synchronized entries
+            return setFormError(ERROR_MESSAGES.accessDenied);
+          }
+        }
+        return setFormError(ERROR_MESSAGES.generic);
       }
     },
     [
