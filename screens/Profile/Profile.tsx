@@ -93,7 +93,12 @@ function Profile({ navigation }: RootStackScreenProps<'Root'>): React.ReactEleme
 
   const handleNavigation = (
     destination: keyof RootStackParamList,
-  ): void => navigation.push(destination);
+  ): void => {
+    setShowChangePasswordModal(false);
+    setShowDeleteProfileModal(false);
+    setShowLogoutModal(false);
+    return navigation.push(destination);
+  };
 
   const toggleChangePasswordModal = (): void => setShowChangePasswordModal(
     (state: boolean): boolean => !state,

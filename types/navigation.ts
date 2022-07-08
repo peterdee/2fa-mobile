@@ -21,6 +21,7 @@ export type RootTabParamList = {
 };
 
 export type RootStackParamList = {
+  LogOut: undefined;
   Modal: undefined;
   NotFound: undefined;
   PINCode: undefined;

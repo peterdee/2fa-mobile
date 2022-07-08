@@ -52,6 +52,7 @@ function ProfileLayout(props: ProfileLayoutProps): React.ReactElement {
         <>
           <ChangePasswordModal
             handleClose={toggleChangePasswordModal}
+            handleNavigation={handleNavigation}
             showModal={showChangePasswordModal}
           />
           <DeleteProfileModal

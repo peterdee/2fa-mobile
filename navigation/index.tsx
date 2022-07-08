@@ -19,6 +19,7 @@ import { COLORS, SPACER, SPACER_HALF } from '../constants';
 import LinkingConfiguration from './LinkingConfiguration';
 import List from '../screens/List';
 import ListOptionsModal from '../screens/ListOptionsModal';
+import LogOut from '../screens/LogOut';
 import NotFound from '../screens/NotFound';
 import PINCode from '../screens/PINCode';
 import Profile from '../screens/Profile';
@@ -103,6 +104,11 @@ function Navigation(): React.ReactElement {
   return (
     <NavigationContainer linking={LinkingConfiguration}>
       <Stack.Navigator initialRouteName="PINCode">
+        <Stack.Screen
+          component={LogOut}
+          name="LogOut"
+          options={{ headerShown: false }}
+        />
         <Stack.Group screenOptions={{ presentation: 'modal' }}>
           <Stack.Screen
             component={ListOptionsModal}

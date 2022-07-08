@@ -7,6 +7,7 @@ const linking: LinkingOptions<RootStackParamList> = {
   prefixes: [Linking.makeUrl('/')],
   config: {
     screens: {
+      LogOut: 'log-out',
       Modal: 'modal',
       NotFound: '*',
       PINCode: 'pin',
