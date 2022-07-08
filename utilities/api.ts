@@ -60,8 +60,6 @@ export default async function request<T = null>(
     url: `${BACKEND_URL}${options.url}`,
   };
 
-  // TODO: create interceptors for 401 error
-
   if (options.data) {
     config.data = options.data;
   }
@@ -71,6 +69,7 @@ export default async function request<T = null>(
       Authorization: token as string,
     };
   }
+
   return axios({
     ...config,
   });

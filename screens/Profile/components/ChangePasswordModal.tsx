@@ -22,11 +22,13 @@ import request, {
   ENDPOINTS,
   ResponsePayload,
 } from '../../../utilities/api';
+import { RootStackParamList } from '../../../types/navigation';
 import styles from '../styles';
 import WideButton from '../../../components/WideButton';
 
 interface ChangePasswordModalProps {
   handleClose: () => void;
+  handleNavigation: (destination: keyof RootStackParamList) => void;
   showModal: boolean;
 }
 
@@ -37,6 +39,7 @@ interface ChangePasswordResponse {
 function ChangePasswordModal(props: ChangePasswordModalProps): React.ReactElement {
   const {
     handleClose,
+    handleNavigation,
     showModal,
   } = props;
 
@@ -135,8 +138,7 @@ function ChangePasswordModal(props: ChangePasswordModalProps): React.ReactElemen
             }
           }
           if (response.status === 401) {
-            // TODO: log out the user, delete all of the synchronized entries
-            return setFormError(ERROR_MESSAGES.accessDenied);
+            return handleNavigation('LogOut');
           }
         }
         return setFormError(ERROR_MESSAGES.generic);
@@ -159,7 +161,6 @@ function ChangePasswordModal(props: ChangePasswordModalProps): React.ReactElemen
             <Text
               style={{
                 ...styles.modalText,
-                marginTop: SPACER,
                 textAlign: 'left',
               }}
             >
