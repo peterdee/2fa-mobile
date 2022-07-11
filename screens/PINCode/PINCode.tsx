@@ -6,57 +6,54 @@ import React, {
 } from 'react';
 import * as haptics from 'expo-haptics';
 
-import {
-  deleteValue,
-  getValue,
-  KEYS,
-  storeValue,
-} from '../../utilities/storage';
+import { deleteAllSecrets } from '../../features/secrets/secrets.slice';
+import { deleteUserData } from '../../features/user/user.slice';
 import {
   KEYBOARD,
   PIN_REQUIRED,
   PROFILE_MODAL_ACTIONS,
-  PROFILE_MODAL_STATE,
 } from '../../constants';
 import PINCodeLayout from './components/PINCodeLayout';
-import { PINRequired } from '../../types/models';
 import { RootStackScreenProps } from '../../types/navigation';
+import {
+  resetConfiguration,
+  setPIN,
+  setPINRequired,
+  setProfileModalShown,
+} from '../../features/configuration/configuration.slice';
+import { useAppSelector, useAppDispatch } from '../../hooks/redux';
 
 function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactElement {
+  const dispatch = useAppDispatch();
+
   const [disableBackspace, setDisableBackspace] = useState<boolean>(true);
   const [disableKeyboard, setDisableKeyboard] = useState<boolean>(false);
   const [hasPIN, setHasPIN] = useState<boolean>(false);
   const [input, setInput] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
-  const [PIN, setPIN] = useState<string>('');
   const [PINError, setPINError] = useState<string>('');
-  const [profileModalShown, setProfileModalShown] = useState<boolean>(true);
   const [showPINSetModal, setShowPINSetModal] = useState<boolean>(false);
   const [showProfileModal, setShowProfileModal] = useState<boolean>(false);
   const [showResetPINModal, setShowResetPINModal] = useState<boolean>(false);
   const [showSkipPINModal, setShowSkipPINModal] = useState<boolean>(false);
 
+  const {
+    pin,
+    pinRequired,
+    profileModalShown,
+  } = useAppSelector(
+    (state) => state.configuration,
+  );
+
   useEffect(
     (): void => {
       async function checkPin(): Promise<void> {
-        const [pinRequired, pinValue, profileModal] = await Promise.all([
-          getValue<string>(KEYS.pinRequired),
-          getValue<number>(KEYS.pin),
-          getValue<string>(KEYS.profileModalShown),
-        ]);
-        // redirect to the List tab if PIN is not required
-        if (pinRequired && pinRequired === PIN_REQUIRED.isNotRequired) {
+        if (pinRequired === PIN_REQUIRED.isNotRequired) {
           return navigation.replace('Root');
         }
-        if (pinValue && pinRequired === PIN_REQUIRED.isRequired) {
+        if (pin && pinRequired === PIN_REQUIRED.isRequired) {
           setHasPIN(true);
-          setPIN(`${pinValue}`);
         }
-
-        // profile modal condition
-        setProfileModalShown(
-          !!(profileModal && profileModal === PROFILE_MODAL_STATE.shown),
-        );
 
         // artificial delay to show the loader
         await new Promise((resolve): void => {
@@ -75,10 +72,7 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
   const handleCloseProfileModal = async (
     action: keyof typeof PROFILE_MODAL_ACTIONS,
   ): Promise<void> => {
-    await storeValue<string>(
-      KEYS.profileModalShown,
-      PROFILE_MODAL_STATE.shown,
-    );
+    dispatch(setProfileModalShown(true));
     setShowProfileModal(false);
     if (action === PROFILE_MODAL_ACTIONS.signIn) {
       return navigation.replace('SignIn');
@@ -121,7 +115,7 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
       const newPIN = `${input}${value}`;
       if (newPIN.length === 4 && hasPIN) {
         setDisableKeyboard(true);
-        if (Number(PIN) === Number(newPIN)) {
+        if (Number(pin) === Number(newPIN)) {
           if (!profileModalShown) {
             return setShowProfileModal(true);
           }
@@ -134,42 +128,39 @@ function PINCode({ navigation }: RootStackScreenProps<'PINCode'>): React.ReactEl
       }
       return setInput(newPIN);
     },
-    [input, PIN],
+    [
+      input,
+      pin,
+    ],
   );
 
-  const handleReset = async (): Promise<void> => {
-    await Promise.all(
-      Object.keys(KEYS).map(
-        (key: string): Promise<void> => deleteValue(key as keyof typeof KEYS),
-      ),
-    );
+  const handleReset = (): void => {
+    dispatch(deleteAllSecrets());
+    dispatch(deleteUserData());
+    dispatch(resetConfiguration());
+
     setHasPIN(false);
     setInput('');
-    setPIN('');
     return setShowResetPINModal(false);
   };
 
   const handleResetPIN = (): void => setShowResetPINModal(true);
 
   const handleSetPIN = useCallback(
-    async (): Promise<void> => {
-      await Promise.all([
-        storeValue<number>(KEYS.pin, Number(input)),
-        storeValue<PINRequired>(
-          KEYS.pinRequired,
-          PIN_REQUIRED.isRequired,
-        ),
-      ]);
+    (): void => {
+      dispatch(setPIN(input));
+      dispatch(
+        setPINRequired(PIN_REQUIRED.isRequired as keyof typeof PIN_REQUIRED),
+      );
 
       return setShowPINSetModal(true);
     },
     [input],
   );
 
-  const handleSkipPIN = async (): Promise<void> => {
-    await storeValue<PINRequired>(
-      KEYS.pinRequired,
-      PIN_REQUIRED.isNotRequired,
+  const handleSkipPIN = (): void => {
+    dispatch(
+      setPINRequired(PIN_REQUIRED.isNotRequired as keyof typeof PIN_REQUIRED),
     );
 
     return setShowSkipPINModal(true);

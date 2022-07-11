@@ -17,22 +17,22 @@ export const userSlice = createSlice({
   initialState,
   name: 'user',
   reducers: {
-    setData: (state, action: PayloadAction<UserState>) => {
-      state.login = action.payload.login;
-    },
-    // decrement: (state) => {
-    //   state.value -= 1
-    // },
-    // // Use the PayloadAction type to declare the contents of `action.payload`
-    // incrementByAmount: (state, action: PayloadAction<number>) => {
-    //   state.value += action.payload
-    // },
+    deleteUserData: (): UserState => ({ ...initialState }),
+    setToken: (state, action: PayloadAction<string>): UserState => ({
+      ...state,
+      token: action.payload,
+    }),
+    setUserData: (state, action: PayloadAction<UserState>): UserState => ({
+      ...state,
+      ...action.payload,
+    }),
   },
 });
 
-export const { setData } = userSlice.actions;
-
-// Other code such as selectors can use the imported `RootState` type
-// export const selectCount = (state: RootState) => state.counter.value;
+export const {
+  deleteUserData,
+  setToken,
+  setUserData,
+} = userSlice.actions;
 
 export default userSlice.reducer;

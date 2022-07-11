@@ -23,10 +23,10 @@ interface PINCodeLayoutProps {
   handleCloseProfileModal: (action: keyof typeof PROFILE_MODAL_ACTIONS) => void;
   handleCloseSetPINModal: () => void;
   handlePress: (value: string) => void;
-  handleReset: () => Promise<void>;
+  handleReset: () => void;
   handleResetPIN: () => void;
-  handleSetPIN: () => Promise<void>;
-  handleSkipPIN: () => Promise<void>;
+  handleSetPIN: () => void;
+  handleSkipPIN: () => void;
   hasPIN: boolean;
   loading: boolean;
   PIN: string;
