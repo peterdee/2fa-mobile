@@ -8,7 +8,7 @@ import WideButton from '../../../components/WideButton';
 
 interface ResetPINModalProps {
   handleCancel: () => void;
-  handleReset: () => Promise<void>;
+  handleReset: () => void;
   showResetPINModal: boolean;
 }
 
