@@ -11,17 +11,14 @@ import {
   ERROR_MESSAGES,
   RESPONSE_MESSAGES,
 } from '../../constants';
-import {
-  getValue,
-  KEYS,
-  storeValue,
-} from '../../utilities/storage';
 import request, {
   ENDPOINTS,
   ResponsePayload,
 } from '../../utilities/api';
 import { RootStackScreenProps } from '../../types/navigation';
+import { setUserData } from '../../features/user/user.slice';
 import SignInLayout from './components/SignInLayout';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
 interface SignInResponseData {
   token: string;
@@ -34,26 +31,30 @@ interface SignInResponseData {
 function SignIn(
   { navigation }: RootStackScreenProps<'SignIn'>,
 ): React.ReactElement {
+  const dispatch = useAppDispatch();
+
   const [formError, setFormError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const [login, setLogin] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [loginInput, setLoginInput] = useState<string>('');
+  const [passwordInput, setPasswordInput] = useState<string>('');
+
+  const {
+    login,
+    token,
+    userId,
+  } = useAppSelector((state) => state.user);
 
   useEffect(
     (): void => {
-      async function getValues(): Promise<void> {
-        const [existingLogin, existingToken, existingUserId] = await Promise.all([
-          getValue<string>(KEYS.login),
-          getValue<string>(KEYS.token),
-          getValue<number>(KEYS.userId),
-        ]);
-        if (existingLogin && existingToken && existingUserId) {
-          navigation.replace('Root');
-        }
+      if (login && token && userId) {
+        navigation.replace('Root');
       }
-      getValues();
     },
-    [],
+    [
+      login,
+      token,
+      userId,
+    ],
   );
 
   const handleAction = (action: string): void => {
@@ -65,10 +66,10 @@ function SignIn(
 
   const handleInput = (name: string, value: string): void => {
     if (name === 'login') {
-      setLogin(value);
+      setLoginInput(value);
     }
     if (name === 'password') {
-      setPassword(value);
+      setPasswordInput(value);
     }
     return setFormError('');
   };
@@ -87,21 +88,21 @@ function SignIn(
           ...ENDPOINTS.signIn,
           data: {
             clientType: CLIENT_TYPE,
-            login,
-            password,
+            login: loginInput,
+            password: passwordInput,
           },
         });
 
-        const { data: { token, user } = {} } = data;
-        if (!(token && user)) {
+        const { data: { token: tokenString, user } = {} } = data;
+        if (!(tokenString && user)) {
           return setFormError(ERROR_MESSAGES.generic);
         }
 
-        await Promise.all([
-          storeValue<number>(KEYS.userId, user.id),
-          storeValue<string>(KEYS.login, user.login),
-          storeValue<string>(KEYS.token, token),
-        ]);
+        dispatch(setUserData({
+          login: user.login,
+          token: tokenString,
+          userId: user.id,
+        }));
 
         setLoading(false);
         return navigation.replace('Root');
@@ -126,8 +127,8 @@ function SignIn(
       }
     },
     [
-      login,
-      password,
+      loginInput,
+      passwordInput,
     ],
   );
 
@@ -138,8 +139,8 @@ function SignIn(
       handleInput={handleInput}
       handleSubmit={handleSubmit}
       loading={loading}
-      login={login}
-      password={password}
+      login={loginInput}
+      password={passwordInput}
     />
   );
 }
