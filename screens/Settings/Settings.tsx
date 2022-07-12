@@ -6,14 +6,14 @@ import React, {
 } from 'react';
 
 import { deleteValue, getValue, KEYS } from '../../utilities/storage';
-import ProfileLayout from './components/ProfileLayout';
+import ProfileLayout from './components/SettingsLayout';
 import request, { ENDPOINTS } from '../../utilities/api';
 import {
   RootStackParamList,
   RootStackScreenProps,
 } from '../../types/navigation';
 
-function Profile({ navigation }: RootStackScreenProps<'Root'>): React.ReactElement {
+function Settings({ navigation }: RootStackScreenProps<'Root'>): React.ReactElement {
   const [loading, setLoading] = useState<boolean>(true);
   const [login, setLogin] = useState<string>('');
   const [showChangePasswordModal, setShowChangePasswordModal] = useState<boolean>(false);
@@ -130,4 +130,4 @@ function Profile({ navigation }: RootStackScreenProps<'Root'>): React.ReactEleme
   );
 }
 
-export default memo(Profile);
+export default memo(Settings);

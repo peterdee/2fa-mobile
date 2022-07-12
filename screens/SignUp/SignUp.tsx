@@ -13,18 +13,15 @@ import {
   PASSWORD_MIN_LENGTH,
   RESPONSE_MESSAGES,
 } from '../../constants';
-import {
-  getValue,
-  KEYS,
-  storeValue,
-} from '../../utilities/storage';
 import isAlphanumeric from '../../utilities/alphanumeric';
 import request, {
   ENDPOINTS,
   ResponsePayload,
 } from '../../utilities/api';
 import { RootStackScreenProps } from '../../types/navigation';
+import { setUserData } from '../../features/user/user.slice';
 import SignUpLayout from './components/SignUpLayout';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
 interface SignUpResponseData {
   token: string;
@@ -37,28 +34,32 @@ interface SignUpResponseData {
 function SignUp(
   { navigation }: RootStackScreenProps<'SignUp'>,
 ): React.ReactElement {
+  const dispatch = useAppDispatch();
+
   const [formError, setFormError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const [login, setLogin] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [recoveryAnswer, setRecoveryAnswer] = useState<string>('');
-  const [recoveryQuestion, setRecoveryQuestion] = useState<string>('');
+  const [loginInput, setLoginInput] = useState<string>('');
+  const [passwordInput, setPasswordInput] = useState<string>('');
+  const [recoveryAnswerInput, setRecoveryAnswerInput] = useState<string>('');
+  const [recoveryQuestionInput, setRecoveryQuestionInput] = useState<string>('');
+
+  const {
+    login,
+    token,
+    userId,
+  } = useAppSelector((state) => state.user);
 
   useEffect(
     (): void => {
-      async function getValues(): Promise<void> {
-        const [existingLogin, existingToken, existingUserId] = await Promise.all([
-          getValue<string>(KEYS.login),
-          getValue<string>(KEYS.token),
-          getValue<number>(KEYS.userId),
-        ]);
-        if (existingLogin && existingToken && existingUserId) {
-          navigation.replace('Root');
-        }
+      if (login && token && userId) {
+        navigation.replace('Root');
       }
-      getValues();
     },
-    [],
+    [
+      login,
+      token,
+      userId,
+    ],
   );
 
   const handleAction = (action: string): void => {
@@ -70,34 +71,35 @@ function SignUp(
 
   const handleInput = (name: string, value: string): void => {
     if (name === 'login') {
-      setLogin(value);
+      setLoginInput(value);
     }
     if (name === 'password') {
-      setPassword(value);
+      setPasswordInput(value);
     }
     if (name === 'recoveryAnswer') {
-      setRecoveryAnswer(value);
+      setRecoveryAnswerInput(value);
     }
     if (name === 'recoveryQuestion') {
-      setRecoveryQuestion(value);
+      setRecoveryQuestionInput(value);
     }
     return setFormError('');
   };
 
   const handleSubmit = useCallback(
     async (): Promise<void> => {
-      if (!(login && password && recoveryAnswer && recoveryQuestion)) {
+      if (!(loginInput && passwordInput
+        && recoveryAnswerInput && recoveryQuestionInput)) {
         return setFormError(ERROR_MESSAGES.pleaseProvideTheData);
       }
 
-      if (password.includes(' ')) {
+      if (passwordInput.includes(' ')) {
         return setFormError(ERROR_MESSAGES.passwordContainsSpaces);
       }
 
-      const trimmedLogin = login.trim();
-      const trimmedPassword = password.trim();
-      const trimmedRecoveryAnswer = recoveryAnswer.trim();
-      const trimmedRecoveryQuestion = recoveryQuestion.trim();
+      const trimmedLogin = loginInput.trim();
+      const trimmedPassword = passwordInput.trim();
+      const trimmedRecoveryAnswer = recoveryAnswerInput.trim();
+      const trimmedRecoveryQuestion = recoveryQuestionInput.trim();
       if (!(trimmedLogin && trimmedPassword
         && trimmedRecoveryAnswer && trimmedRecoveryQuestion)) {
         return setFormError(ERROR_MESSAGES.pleaseProvideTheData);
@@ -106,7 +108,7 @@ function SignUp(
       if (trimmedLogin.length > LOGIN_MAX_LENGTH) {
         return setFormError(ERROR_MESSAGES.loginIsTooLong);
       }
-      if (!isAlphanumeric(login)) {
+      if (!isAlphanumeric(trimmedLogin)) {
         return setFormError(ERROR_MESSAGES.loginShouldBeAlphanumeric);
       }
       if (trimmedPassword.length < PASSWORD_MIN_LENGTH) {
@@ -125,23 +127,23 @@ function SignUp(
           ...ENDPOINTS.signUp,
           data: {
             clientType: CLIENT_TYPE,
-            login,
-            password,
-            recoveryAnswer,
-            recoveryQuestion,
+            login: trimmedLogin,
+            password: trimmedPassword,
+            recoveryAnswer: trimmedRecoveryAnswer,
+            recoveryQuestion: trimmedRecoveryQuestion,
           },
         });
 
-        const { data: { token, user } = {} } = data;
-        if (!(token && user)) {
+        const { data: { token: tokenString, user } = {} } = data;
+        if (!(tokenString && user)) {
           return setFormError(ERROR_MESSAGES.generic);
         }
 
-        await Promise.all([
-          storeValue<number>(KEYS.userId, user.id),
-          storeValue<string>(KEYS.login, user.login),
-          storeValue<string>(KEYS.token, token),
-        ]);
+        dispatch(setUserData({
+          login: user.login,
+          token: tokenString,
+          userId: user.id,
+        }));
 
         setLoading(false);
         return navigation.replace('Root');
@@ -181,8 +183,10 @@ function SignUp(
       }
     },
     [
-      login,
-      password,
+      loginInput,
+      passwordInput,
+      recoveryAnswerInput,
+      recoveryQuestionInput,
     ],
   );
 
@@ -193,10 +197,10 @@ function SignUp(
       handleInput={handleInput}
       handleSubmit={handleSubmit}
       loading={loading}
-      login={login}
-      password={password}
-      recoveryAnswer={recoveryAnswer}
-      recoveryQuestion={recoveryQuestion}
+      login={loginInput}
+      password={passwordInput}
+      recoveryAnswer={recoveryAnswerInput}
+      recoveryQuestion={recoveryQuestionInput}
     />
   );
 }

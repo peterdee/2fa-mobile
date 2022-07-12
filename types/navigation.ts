@@ -1,3 +1,4 @@
+import React from 'react';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import {
   CompositeScreenProps,
@@ -5,7 +6,6 @@ import {
 } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React from 'react';
 
 export interface BottomBarIconProps {
   color?: string;
@@ -17,10 +17,11 @@ export interface BottomBarIconProps {
 export type RootTabParamList = {
   CodeScanner: undefined;
   List: undefined;
-  Profile: undefined;
+  Settings: undefined;
 };
 
 export type RootStackParamList = {
+  AccountRecovery: undefined;
   LogOut: undefined;
   Modal: undefined;
   NotFound: undefined;

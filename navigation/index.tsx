@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { Pressable } from 'react-native';
 
+import AccountRecovery from '../screens/AccountRecovery';
 import {
   BottomBarIconProps,
   RootStackParamList,
@@ -22,7 +23,7 @@ import ListOptionsModal from '../screens/ListOptionsModal';
 import LogOut from '../screens/LogOut';
 import NotFound from '../screens/NotFound';
 import PINCode from '../screens/PINCode';
-import Profile from '../screens/Profile';
+import Settings from '../screens/Settings';
 import SignIn from '../screens/SignIn';
 import SignUp from '../screens/SignUp';
 
@@ -71,7 +72,10 @@ function BottomTabNavigator(): React.ReactElement {
         name="List"
         options={(props: RootTabScreenProps<'List'>): BottomTabNavigationOptions => ({
           headerRight: (): React.ReactElement => HeaderMenu(props),
-          tabBarIcon: ({ color }): React.ReactElement => BottomIcon({ color, name: 'md-list' }),
+          tabBarIcon: ({ color }): React.ReactElement => BottomIcon({
+            color,
+            name: 'md-list-circle',
+          }),
           title: 'List',
         })}
       />
@@ -79,19 +83,22 @@ function BottomTabNavigator(): React.ReactElement {
         component={CodeScanner}
         name="CodeScanner"
         options={{
-          tabBarIcon: ({ color }): React.ReactElement => BottomIcon({ color, name: 'qr-code' }),
+          tabBarIcon: ({ color }): React.ReactElement => BottomIcon({
+            color,
+            name: 'qr-code',
+          }),
           title: 'Code Scanner',
         }}
       />
       <BottomTab.Screen
-        component={Profile}
-        name="Profile"
+        component={Settings}
+        name="Settings"
         options={{
           tabBarIcon: ({ color }): React.ReactElement => BottomIcon({
             color,
-            name: 'person-outline',
+            name: 'settings',
           }),
-          title: 'Profile',
+          title: 'Settings',
         }}
       />
     </BottomTab.Navigator>
@@ -104,6 +111,11 @@ function Navigation(): React.ReactElement {
   return (
     <NavigationContainer linking={LinkingConfiguration}>
       <Stack.Navigator initialRouteName="PINCode">
+        <Stack.Screen
+          component={AccountRecovery}
+          name="AccountRecovery"
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           component={LogOut}
           name="LogOut"

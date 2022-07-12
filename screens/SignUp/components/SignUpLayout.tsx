@@ -100,7 +100,7 @@ function SignUpLayout(props: SignUpLayoutProps): React.ReactElement {
             buttonStyle={{
               backgroundColor: submitDisabled
                 ? COLORS.muted
-                : COLORS.positive,
+                : COLORS.accent,
               marginTop: SPACER,
             }}
             disabled={submitDisabled}
@@ -124,7 +124,7 @@ function SignUpLayout(props: SignUpLayoutProps): React.ReactElement {
             onPress={(): void => handleAction('cancel')}
             text="Cancel"
             textStyle={{
-              color: COLORS.negative,
+              color: COLORS.accent,
             }}
           />
         </>
