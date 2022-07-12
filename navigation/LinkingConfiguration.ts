@@ -13,14 +13,19 @@ const linking: LinkingOptions<RootStackParamList> = {
       PINCode: 'pin',
       Root: {
         screens: {
+          CodeScanner: {
+            screens: {
+              CodeScannerScreen: 'codescanner',
+            },
+          },
           List: {
             screens: {
               ListScreen: 'list',
             },
           },
-          CodeScanner: {
+          Settings: {
             screens: {
-              CodeScannerScreen: 'codescanner',
+              SettingsScreen: 'settings',
             },
           },
         },

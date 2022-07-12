@@ -61,6 +61,9 @@ function SignIn(
     if (action === 'cancel') {
       return navigation.replace('Root');
     }
+    if (action === 'forgot-password') {
+      return navigation.replace('AccountRecovery');
+    }
     return navigation.replace('SignUp');
   };
 

@@ -73,7 +73,7 @@ function SignInLayout(props: SignInLayoutProps): React.ReactElement {
             buttonStyle={{
               backgroundColor: submitDisabled
                 ? COLORS.muted
-                : COLORS.positive,
+                : COLORS.accent,
               marginTop: SPACER,
             }}
             disabled={submitDisabled}
@@ -84,8 +84,20 @@ function SignInLayout(props: SignInLayoutProps): React.ReactElement {
             buttonStyle={{
               marginTop: SPACER * 2,
             }}
+            onPress={(): void => handleAction('forgot-password')}
+            text="I forgot my password"
+            textStyle={{
+              color: loading
+                ? COLORS.muted
+                : COLORS.accent,
+            }}
+          />
+          <LinkButton
+            buttonStyle={{
+              marginTop: SPACER * 2,
+            }}
             onPress={(): void => handleAction('sign-up')}
-            text="Create a new account"
+            text="Create account"
             textStyle={{
               color: loading
                 ? COLORS.muted
@@ -101,7 +113,7 @@ function SignInLayout(props: SignInLayoutProps): React.ReactElement {
             textStyle={{
               color: loading
                 ? COLORS.muted
-                : COLORS.negative,
+                : COLORS.accent,
             }}
           />
         </>
