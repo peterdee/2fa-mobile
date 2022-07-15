@@ -2,20 +2,24 @@ import React, { memo } from 'react';
 import { Text, View } from 'react-native';
 
 import { COLORS, SPACER } from '../../../constants';
-import Input from '../../../components/Input';
-import Loader from '../../../components/Loader';
-import styles from '../styles';
-import WideButton from '../../../components/WideButton';
-import { RootStackParamList } from '../../../types/navigation';
 import LinkButton from '../../../components/LinkButton';
+import Loader from '../../../components/Loader';
+import { RootStackParamList } from '../../../types/navigation';
+import styles from '../styles';
+import StageOne from './StageOne';
+import StageTwo from './StageTwo';
 
 interface AccountRecoveryLayoutProps {
   formError: string;
   handleInput: (name: string, value: string) => void;
   handleNavigation: (destination: keyof RootStackParamList) => void;
   handleStageOne: () => Promise<void>;
+  handleStageTwo: () => Promise<void>;
   loading: boolean;
   login: string;
+  newPassword: string;
+  recoveryAnswer: string;
+  recoveryQuestion: string;
   stage: number;
 }
 
@@ -25,8 +29,12 @@ function AccountRecoveryLayout(props: AccountRecoveryLayoutProps): React.ReactEl
     handleInput,
     handleNavigation,
     handleStageOne,
+    handleStageTwo,
     loading,
     login,
+    newPassword,
+    recoveryAnswer,
+    recoveryQuestion,
     stage,
   } = props;
 
@@ -41,33 +49,32 @@ function AccountRecoveryLayout(props: AccountRecoveryLayoutProps): React.ReactEl
             ACCOUNT RECOVERY
           </Text>
           { stage === 1 && (
-            <>
-              <Text style={styles.inputLabel}>
-                Login
-              </Text>
-              <Input
-                customStyles={styles.input}
-                handleChange={(value: string): void => handleInput('login', value)}
-                value={login}
-              />
-              <View style={styles.formErrorContainer}>
-                <Text style={styles.formErrorText}>
-                  { formError }
-                </Text>
-              </View>
-              <WideButton
-                buttonStyle={{
-                  backgroundColor: COLORS.accent,
-                  marginTop: SPACER,
-                }}
-                onPress={handleStageOne}
-                text="Sign in"
-              />
-            </>
+            <StageOne
+              formError={formError}
+              handleInput={handleInput}
+              handleSubmit={handleStageOne}
+              login={login}
+            />
+          ) }
+          { stage === 2 && (
+            <StageTwo
+              formError={formError}
+              handleInput={handleInput}
+              handleSubmit={handleStageTwo}
+              newPassword={newPassword}
+              recoveryAnswer={recoveryAnswer}
+              recoveryQuestion={recoveryQuestion}
+            />
           ) }
           <LinkButton
+            buttonStyle={{
+              marginTop: SPACER * 2,
+            }}
             onPress={(): void => handleNavigation('SignIn')}
             text="Cancel"
+            textStyle={{
+              color: COLORS.accent,
+            }}
           />
         </>
       ) }
