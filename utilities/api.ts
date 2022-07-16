@@ -46,6 +46,10 @@ export const ENDPOINTS = {
     method: METHODS.post,
     url: '/api/recovery/check',
   },
+  recoveryUpdate: {
+    method: METHODS.patch,
+    url: '/api/recovery/update',
+  },
   signIn: {
     method: METHODS.post,
     url: '/api/auth/sign-in',
