@@ -4,19 +4,28 @@ import React, {
   useEffect,
   useState,
 } from 'react';
+import { AxiosError } from 'axios';
 
 import AccountRecoveryLayout from './components/AccountRecoveryLayout';
+import { CLIENT_TYPE, ERROR_MESSAGES, RESPONSE_MESSAGES } from '../../constants';
+import request, { ENDPOINTS, ResponsePayload } from '../../utilities/api';
 import {
   RootStackParamList,
   RootStackScreenProps,
 } from '../../types/navigation';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { ERROR_MESSAGES } from '../../constants';
-import request, { ENDPOINTS } from '../../utilities/api';
 
 interface RecoveryCheckPayload {
   recoveryQuestion: string;
   userId: number;
+}
+
+interface RecoveryUpdatePayload {
+  token: string;
+  user: {
+    id: number;
+    login: string;
+  };
 }
 
 function AccountRecovery(
@@ -70,6 +79,8 @@ function AccountRecovery(
     destination: keyof RootStackParamList,
   ): void => navigation.replace(destination);
 
+  const handleStage = (): void => setStage(1);
+
   const handleStageOne = useCallback(
     async (): Promise<void> => {
       if (!(loginInput && loginInput.trim())) {
@@ -105,10 +116,19 @@ function AccountRecovery(
         return setStage(2);
       } catch (error) {
         setLoading(false);
-
-        // TODO: error handling
-
-        return console.log(error);
+        const typedError = error as AxiosError<ResponsePayload>;
+        if (typedError.response && typedError.response.data) {
+          const response = typedError.response.data;
+          if (response.status === 400) {
+            if (response.info === RESPONSE_MESSAGES.missingData) {
+              return setFormError(ERROR_MESSAGES.missingData);
+            }
+          }
+          if (response.status === 401) {
+            return setFormError(ERROR_MESSAGES.accessDenied);
+          }
+        }
+        return setFormError(ERROR_MESSAGES.generic);
       }
     },
     [loginInput],
@@ -116,7 +136,35 @@ function AccountRecovery(
 
   const handleStageTwo = useCallback(
     async (): Promise<void> => {
-      console.log('handle stage 2', newPasswordInput, recoveryAnswerInput);
+      setLoading(true);
+      try {
+        const { data } = await request<RecoveryUpdatePayload>({
+          ...ENDPOINTS.recoveryUpdate,
+          data: {
+            clientType: CLIENT_TYPE,
+            newPassword: newPasswordInput,
+            recoveryAnswer: recoveryAnswerInput,
+            userId,
+          },
+        });
+        setLoading(false);
+        return console.log(data);
+      } catch (error) {
+        setLoading(false);
+        const typedError = error as AxiosError<ResponsePayload>;
+        if (typedError.response && typedError.response.data) {
+          const response = typedError.response.data;
+          if (response.status === 400) {
+            if (response.info === RESPONSE_MESSAGES.missingData) {
+              return setFormError(ERROR_MESSAGES.missingData);
+            }
+          }
+          if (response.status === 401) {
+            return setFormError(ERROR_MESSAGES.accessDenied);
+          }
+        }
+        return setFormError(ERROR_MESSAGES.generic);
+      }
     },
     [
       newPasswordInput,
@@ -130,6 +178,7 @@ function AccountRecovery(
       formError={formError}
       handleInput={handleInput}
       handleNavigation={handleNavigation}
+      handleStage={handleStage}
       handleStageOne={handleStageOne}
       handleStageTwo={handleStageTwo}
       loading={loading}

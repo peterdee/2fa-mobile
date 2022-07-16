@@ -5,10 +5,12 @@ import { COLORS, SPACER } from '../../../constants';
 import Input from '../../../components/Input';
 import styles from '../styles';
 import WideButton from '../../../components/WideButton';
+import LinkButton from '../../../components/LinkButton';
 
 interface StageTwoProps {
   formError: string;
   handleInput: (name: string, value: string) => void;
+  handleStage: () => void;
   handleSubmit: () => Promise<void>;
   newPassword: string;
   recoveryAnswer: string;
@@ -19,6 +21,7 @@ function StageTwo(props: StageTwoProps): React.ReactElement {
   const {
     formError,
     handleInput,
+    handleStage,
     handleSubmit,
     newPassword,
     recoveryAnswer,
@@ -26,7 +29,7 @@ function StageTwo(props: StageTwoProps): React.ReactElement {
   } = props;
 
   const submitDisabled = useMemo(
-    (): boolean => !!(newPassword && newPassword.trim()
+    (): boolean => !(newPassword && newPassword.trim()
       && recoveryAnswer && recoveryAnswer.trim()),
     [
       newPassword,
@@ -63,7 +66,7 @@ function StageTwo(props: StageTwoProps): React.ReactElement {
       </View>
       <WideButton
         buttonStyle={{
-          backgroundColor: submitDisabled
+          backgroundColor: !submitDisabled
             ? COLORS.accent
             : COLORS.muted,
           marginTop: SPACER,
@@ -71,6 +74,16 @@ function StageTwo(props: StageTwoProps): React.ReactElement {
         disabled={submitDisabled}
         onPress={handleSubmit}
         text="Submit"
+      />
+      <LinkButton
+        buttonStyle={{
+          marginTop: SPACER * 2,
+        }}
+        onPress={handleStage}
+        text="Back"
+        textStyle={{
+          color: COLORS.accent,
+        }}
       />
     </>
   );

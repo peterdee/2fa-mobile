@@ -13,6 +13,7 @@ interface AccountRecoveryLayoutProps {
   formError: string;
   handleInput: (name: string, value: string) => void;
   handleNavigation: (destination: keyof RootStackParamList) => void;
+  handleStage: () => void;
   handleStageOne: () => Promise<void>;
   handleStageTwo: () => Promise<void>;
   loading: boolean;
@@ -28,6 +29,7 @@ function AccountRecoveryLayout(props: AccountRecoveryLayoutProps): React.ReactEl
     formError,
     handleInput,
     handleNavigation,
+    handleStage,
     handleStageOne,
     handleStageTwo,
     loading,
@@ -60,6 +62,7 @@ function AccountRecoveryLayout(props: AccountRecoveryLayoutProps): React.ReactEl
             <StageTwo
               formError={formError}
               handleInput={handleInput}
+              handleStage={handleStage}
               handleSubmit={handleStageTwo}
               newPassword={newPassword}
               recoveryAnswer={recoveryAnswer}
