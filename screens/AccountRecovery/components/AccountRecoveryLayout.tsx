@@ -8,9 +8,11 @@ import { RootStackParamList } from '../../../types/navigation';
 import styles from '../styles';
 import StageOne from './StageOne';
 import StageTwo from './StageTwo';
+import SuccessModal from './SuccessModal';
 
 interface AccountRecoveryLayoutProps {
   formError: string;
+  handleCloseModal: () => void;
   handleInput: (name: string, value: string) => void;
   handleNavigation: (destination: keyof RootStackParamList) => void;
   handleStage: () => void;
@@ -21,12 +23,14 @@ interface AccountRecoveryLayoutProps {
   newPassword: string;
   recoveryAnswer: string;
   recoveryQuestion: string;
+  showModal: boolean;
   stage: number;
 }
 
 function AccountRecoveryLayout(props: AccountRecoveryLayoutProps): React.ReactElement {
   const {
     formError,
+    handleCloseModal,
     handleInput,
     handleNavigation,
     handleStage,
@@ -37,6 +41,7 @@ function AccountRecoveryLayout(props: AccountRecoveryLayoutProps): React.ReactEl
     newPassword,
     recoveryAnswer,
     recoveryQuestion,
+    showModal,
     stage,
   } = props;
 
@@ -47,6 +52,11 @@ function AccountRecoveryLayout(props: AccountRecoveryLayoutProps): React.ReactEl
       ) }
       { !loading && (
         <>
+          <SuccessModal
+            handleClose={handleCloseModal}
+            login={login}
+            showModal={showModal}
+          />
           <Text style={styles.title}>
             ACCOUNT RECOVERY
           </Text>

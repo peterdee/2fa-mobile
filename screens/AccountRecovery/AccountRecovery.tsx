@@ -7,12 +7,21 @@ import React, {
 import { AxiosError } from 'axios';
 
 import AccountRecoveryLayout from './components/AccountRecoveryLayout';
-import { CLIENT_TYPE, ERROR_MESSAGES, RESPONSE_MESSAGES } from '../../constants';
-import request, { ENDPOINTS, ResponsePayload } from '../../utilities/api';
+import {
+  CLIENT_TYPE,
+  ERROR_MESSAGES,
+  PASSWORD_MIN_LENGTH,
+  RESPONSE_MESSAGES,
+} from '../../constants';
+import request, {
+  ENDPOINTS,
+  ResponsePayload,
+} from '../../utilities/api';
 import {
   RootStackParamList,
   RootStackScreenProps,
 } from '../../types/navigation';
+import { setUserData } from '../../features/user/user.slice';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
 interface RecoveryCheckPayload {
@@ -39,6 +48,7 @@ function AccountRecovery(
   const [newPasswordInput, setNewPasswordInput] = useState<string>('');
   const [recoveryAnswerInput, setRecoveryAnswerInput] = useState<string>('');
   const [recoveryQuestion, setRecoveryQuestion] = useState<string>('');
+  const [showModal, setShowModal] = useState<boolean>(false);
   const [stage, setStage] = useState<number>(1);
   const [userId, setUserId] = useState<number | null>(null);
 
@@ -62,6 +72,15 @@ function AccountRecovery(
     ],
   );
 
+  const handleCloseModal = (): void => {
+    setLoginInput('');
+    setNewPasswordInput('');
+    setRecoveryAnswerInput('');
+    setShowModal(false);
+    setStage(1);
+    return navigation.replace('Root');
+  };
+
   const handleInput = (name: string, value: string): void => {
     if (name === 'login') {
       setLoginInput(value);
@@ -79,7 +98,10 @@ function AccountRecovery(
     destination: keyof RootStackParamList,
   ): void => navigation.replace(destination);
 
-  const handleStage = (): void => setStage(1);
+  const handleStage = (): void => {
+    setFormError('');
+    return setStage(1);
+  };
 
   const handleStageOne = useCallback(
     async (): Promise<void> => {
@@ -136,31 +158,78 @@ function AccountRecovery(
 
   const handleStageTwo = useCallback(
     async (): Promise<void> => {
+      if (!(newPasswordInput && recoveryAnswerInput)) {
+        return setFormError(ERROR_MESSAGES.pleaseProvideTheData);
+      }
+
+      const trimmedNewPassword = newPasswordInput.trim();
+      const trimmedRecoveryAnswer = recoveryAnswerInput.trim();
+      if (!(trimmedNewPassword && trimmedRecoveryAnswer)) {
+        return setFormError(ERROR_MESSAGES.pleaseProvideTheData);
+      }
+
+      if (trimmedNewPassword.includes(' ')) {
+        return setFormError(ERROR_MESSAGES.passwordContainsSpaces);
+      }
+      if (trimmedNewPassword.length < PASSWORD_MIN_LENGTH) {
+        return setFormError(ERROR_MESSAGES.passwordIsTooShort);
+      }
+
       setLoading(true);
+
       try {
+        // artificial delay to show the loader
+        await new Promise((resolve): void => {
+          setTimeout(resolve, 500);
+        });
+
         const { data } = await request<RecoveryUpdatePayload>({
           ...ENDPOINTS.recoveryUpdate,
           data: {
             clientType: CLIENT_TYPE,
-            newPassword: newPasswordInput,
-            recoveryAnswer: recoveryAnswerInput,
+            newPassword: trimmedNewPassword,
+            recoveryAnswer: trimmedRecoveryAnswer,
             userId,
           },
         });
+
         setLoading(false);
-        return console.log(data);
+        const { data: { token: tokenString, user: userData } = {} } = data;
+        if (!(tokenString && userData)) {
+          return setFormError(ERROR_MESSAGES.generic);
+        }
+
+        dispatch(setUserData({
+          login: userData.login,
+          token: tokenString,
+          userId: userData.id,
+        }));
+
+        return setShowModal(true);
       } catch (error) {
         setLoading(false);
         const typedError = error as AxiosError<ResponsePayload>;
         if (typedError.response && typedError.response.data) {
           const response = typedError.response.data;
           if (response.status === 400) {
+            if (response.info === RESPONSE_MESSAGES.invalidData) {
+              return setFormError(ERROR_MESSAGES.invalidData);
+            }
             if (response.info === RESPONSE_MESSAGES.missingData) {
               return setFormError(ERROR_MESSAGES.missingData);
+            }
+            if (response.info === RESPONSE_MESSAGES.passwordContainsSpaces) {
+              return setFormError(ERROR_MESSAGES.passwordContainsSpaces);
+            }
+            if (response.info === RESPONSE_MESSAGES.passwordIsTooShort) {
+              return setFormError(ERROR_MESSAGES.passwordIsTooShort);
             }
           }
           if (response.status === 401) {
             return setFormError(ERROR_MESSAGES.accessDenied);
+          }
+          if (response.status === 403) {
+            return setFormError(ERROR_MESSAGES.recoveryAnswerIsInvalid);
           }
         }
         return setFormError(ERROR_MESSAGES.generic);
@@ -176,6 +245,7 @@ function AccountRecovery(
   return (
     <AccountRecoveryLayout
       formError={formError}
+      handleCloseModal={handleCloseModal}
       handleInput={handleInput}
       handleNavigation={handleNavigation}
       handleStage={handleStage}
@@ -186,6 +256,7 @@ function AccountRecovery(
       newPassword={newPasswordInput}
       recoveryAnswer={recoveryAnswerInput}
       recoveryQuestion={recoveryQuestion}
+      showModal={showModal}
       stage={stage}
     />
   );

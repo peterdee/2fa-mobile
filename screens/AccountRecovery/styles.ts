@@ -31,9 +31,30 @@ export default StyleSheet.create({
     textAlign: 'left',
     width: '80%',
   },
+  modalText: {
+    color: COLORS.textInverted,
+    fontSize: SPACER + SPACER_HALF / 4,
+    marginTop: SPACER * 2,
+    textAlign: 'center',
+    width: '80%',
+  },
+  recoveryQuestion: {
+    color: COLORS.accent,
+    fontSize: SPACER + SPACER_HALF / 4,
+    marginTop: SPACER,
+    textAlign: 'center',
+    width: '80%',
+  },
   title: {
     color: COLORS.accent,
     fontSize: SPACER + SPACER_HALF,
     fontWeight: '300',
+  },
+  subtitle: {
+    color: COLORS.text,
+    fontSize: SPACER + SPACER_HALF / 4,
+    marginTop: SPACER,
+    textAlign: 'center',
+    width: '80%',
   },
 });
