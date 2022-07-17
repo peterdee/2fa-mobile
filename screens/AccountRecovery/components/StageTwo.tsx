@@ -3,9 +3,9 @@ import { Text, View } from 'react-native';
 
 import { COLORS, SPACER } from '../../../constants';
 import Input from '../../../components/Input';
+import LinkButton from '../../../components/LinkButton';
 import styles from '../styles';
 import WideButton from '../../../components/WideButton';
-import LinkButton from '../../../components/LinkButton';
 
 interface StageTwoProps {
   formError: string;
@@ -39,7 +39,10 @@ function StageTwo(props: StageTwoProps): React.ReactElement {
 
   return (
     <>
-      <Text style={styles.inputLabel}>
+      <Text style={styles.subtitle}>
+        Please provide the answer to the following question:
+      </Text>
+      <Text style={styles.recoveryQuestion}>
         { recoveryQuestion }
       </Text>
       <Text style={styles.inputLabel}>

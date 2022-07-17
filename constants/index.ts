@@ -33,6 +33,7 @@ export const ERROR_MESSAGES = {
   passwordContainsSpaces: 'Password contains spaces!',
   passwordIsTooShort: 'Password is too short!',
   pleaseProvideTheData: 'Please provide the data!',
+  recoveryAnswerIsInvalid: 'Recovery answer is invalid!',
 };
 
 export const KEYBOARD = {
